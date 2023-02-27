@@ -27,9 +27,9 @@ delete /api/frontdeskop/:id -> discharges a patient, changes endDate in possible
 
 ** Data Entry Operator
 get /api/dataentryop/:patientId -> get a patient
-post /api/dataentryop/test/:id -> add a test to a patient
-post /api/dataentryop/treatment/:id -> add a treatment to a patient
-put /api/dataentryop/test/:id -> update a test of a patient
+post /api/dataentryop/test/:patientId -> add a test to a patient
+post /api/dataentryop/treatment/:patientId -> add a treatment to a patient
+put /api/dataentryop/test/:testId -> update a test of a patient
 
 ** Doctor
 get /api/doctor/:docId -> get all patients of a doctor
