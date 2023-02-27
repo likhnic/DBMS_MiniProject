@@ -1,0 +1,50 @@
+1) Extra table for Front Desk Operators --> FrontDeskOpId(PK), Name, Username
+                                        --> Register -> insert Patient, check Appointment avail of physician
+                                        --> Admit -> Room avail, Change room unavailable, Add to stay
+                                        --> Discharge -> Make End time to current time, change room availability
+                                    
+2) Data entry operators --> DataEntryOp(PK), Name, Username
+                        --> From Procedure get Code; Add that code, patient ID, Doctor ID, Stay ID, Date to Undergoes
+
+3) New Create Table Test, attr TestId, ProcedureId, PatientID, Date, Results
+
+4) Doctor --> Get patientId from the apppointments of that current Doctor, then get Tests, Undergoes, Prescribes
+          --> Add record to prescribes to the current Appointment 
+
+5) Admin --> cascade delete, Add user
+
+
+
+
+Routes and Functionalities
+---------------------------------------------------------------------------------------
+
+** Front Desk Operator
+post /api/frontdeskop/register -> registers a patient
+post /api/frontdeskop/:id -> adds an appointment for a patient
+put /api/frontdeskop/:id -> updates a patient to Admit, give room
+delete /api/frontdeskop/:id -> discharges a patient, changes endDate in possible places
+
+** Data Entry Operator
+get /api/dataentryop -> get all patients
+get /api/dataentryop/:id -> get a patient
+post /api/dataentryop/test/:id -> add a test to a patient
+post /api/dataentryop/treatment/:id -> add a treatment to a patient
+put /api/dataentryop/test/:id -> update a test of a patient
+put /api/dataentryop/treatment/:id -> update a treatment of a patient
+delete /api/dataentryop/test/:id -> delete a test of a patient
+delete /api/dataentryop/treatment/:id -> delete a treatment of a patient
+
+** Doctor
+get /api/doctor/:docId -> get all patients of a doctor
+get /api/doctor/:docId/:appointmentId -> get all details of a patient
+post /api/doctor/:docId/:appointmentId -> add a prescription to a patient
+put /api/doctor/:docId/:appointmentId -> update a prescription of a patient
+delete /api/doctor/:docId/:appointmentId -> delete a prescription of a patient
+
+** Admin
+post /api/admin/user -> add a user
+delete /api/admin/user/:id -> delete a user
+
+** Login
+post /api/login -> login a user
