@@ -26,21 +26,15 @@ put /api/frontdeskop/:id -> updates a patient to Admit, give room
 delete /api/frontdeskop/:id -> discharges a patient, changes endDate in possible places
 
 ** Data Entry Operator
-get /api/dataentryop -> get all patients
-get /api/dataentryop/:id -> get a patient
+get /api/dataentryop/:patientId -> get a patient
 post /api/dataentryop/test/:id -> add a test to a patient
 post /api/dataentryop/treatment/:id -> add a treatment to a patient
 put /api/dataentryop/test/:id -> update a test of a patient
-put /api/dataentryop/treatment/:id -> update a treatment of a patient
-delete /api/dataentryop/test/:id -> delete a test of a patient
-delete /api/dataentryop/treatment/:id -> delete a treatment of a patient
 
 ** Doctor
 get /api/doctor/:docId -> get all patients of a doctor
 get /api/doctor/:docId/:appointmentId -> get all details of a patient
 post /api/doctor/:docId/:appointmentId -> add a prescription to a patient
-put /api/doctor/:docId/:appointmentId -> update a prescription of a patient
-delete /api/doctor/:docId/:appointmentId -> delete a prescription of a patient
 
 ** Admin
 post /api/admin/user -> add a user

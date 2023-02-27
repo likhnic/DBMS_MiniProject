@@ -2,13 +2,14 @@ const express = require('express');
 const dotenv = require('dotenv')
 const { Client } = require('pg');
 const fetchuser = require('./public/js/fetchuser');
-const app = express();
 const bcrypt = require('bcryptjs');
+
+const app = express();
 
 dotenv.config({ path: './.env' })
 
 const client = new Client({
-    user: process.env.DATABASE_USER,
+user: process.env.DATABASE_USER,
     host: process.env.DATABASE_HOST,
     database: process.env.DATABASE,
     password: process.env.DATABASE_PASSWORD,
