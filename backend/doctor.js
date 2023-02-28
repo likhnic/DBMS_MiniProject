@@ -48,11 +48,11 @@ app.post('/login', async (req, res) => {
     }
 })
 
-app.get('/api/doctor/:docId', fetchuser, async(req, res)=>{
+app.get('/api/doctor/:docId', async(req, res)=>{
 
-    if(req.user.id != req.params.docId){
-        return res.json({error: "You are not authorized to view this page!"})
-    }
+    // if(req.user.id != req.params.docId){
+    //     return res.json({error: "You are not authorized to view this page!"})
+    // }
     const docId = req.params.docId;
 
     let sqlQuery = `SELECT Patient.Name 
@@ -69,11 +69,11 @@ app.get('/api/doctor/:docId', fetchuser, async(req, res)=>{
     }
 })
 
-app.get('/api/doctor/:docId/:appointmentId', fetchuser, async(req, res)=>{
+app.get('/api/doctor/:docId/:appointmentId', async(req, res)=>{
 
-    if(req.user.id != req.params.docId){
-        return res.json({error: "You are not authorized to view this page!"})
-    }
+    // if(req.user.id != req.params.docId){
+    //     return res.json({error: "You are not authorized to view this page!"})
+    // }
     const appointmentId = req.params.appointmentId;
     let patientId;
     let sqlQuery = `SELECT PatientAadhar FROM Appointment WHERE AppointmentId = ${appointmentId};`
@@ -109,11 +109,11 @@ app.get('/api/doctor/:docId/:appointmentId', fetchuser, async(req, res)=>{
 })
 
 
-app.post('/api/doctor/:docId/:appointmentId', fetchuser, async(req, res)=>{
+app.post('/api/doctor/:docId/:appointmentId', async(req, res)=>{
 
-    if(req.user.id != req.params.docId){
-        return res.json({error: "You are not authorized to view this page!"})
-    }
+    // if(req.user.id != req.params.docId){
+    //     return res.json({error: "You are not authorized to view this page!"})
+    // }
     const appointmentId = req.params.appointmentId;
     const {MedicationCode, Dose} = req.body;
     let patientId, DocId;
