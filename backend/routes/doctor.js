@@ -1,34 +1,14 @@
 const express = require('express');
-const dotenv = require('dotenv')
-const { Client } = require('mysql');
-const fetchuser = require('./public/js/fetchuser');
+const fetchuser = require('../public/js/fetchuser');
 const bcrypt = require('bcryptjs');
-const util = require('util')
+const router = express.Router();
+const query = require('../dbConnection');
 
-const app = express();
-
-dotenv.config({ path: './.env' })
-
-const client = new Client({
-user: process.env.DATABASE_USER,
-    host: process.env.DATABASE_HOST,
-    database: process.env.DATABASE,
-    password: process.env.DATABASE_PASSWORD,
-    port: process.env.DATABASE_PORT
-})
-
-client.connect(function (err) {
-    if (err) throw err;
-    console.log("Connected!");
-});
-
-const query = util.promisify(client.query).bind(client);
-
-app.use(express.urlencoded({extended: 'false'}))
-app.use(express.json())
+router.use(express.urlencoded({extended: 'false'}))
+router.use(express.json())
 
 
-app.post('/login', async (req, res) => {
+router.post('/login', async (req, res) => {
 
     const { ID, password } = req.body
 
@@ -47,11 +27,12 @@ app.post('/login', async (req, res) => {
 
     } catch (error) {
         console.log(error);
-        res.json({error: error});
+        return res.json({error: error});
     }
 })
 
-app.get('/api/doctor', async(req, res)=>{
+
+router.get('/', async(req, res)=>{
 
     // if(req.user.id != req.params.docId){
     //     return res.json({error: "You are not authorized to view this page!"})
@@ -68,11 +49,11 @@ app.get('/api/doctor', async(req, res)=>{
         return res.json({result: patients});
     }catch(error){
         console.log(error);
-        res.json({error: error});
+        return res.json({error: error});
     }
 })
 
-app.get('/api/doctor/:appointmentId', async(req, res)=>{
+router.get('/:appointmentId', async(req, res)=>{
 
     // if(req.user.id != req.params.docId){
     //     return res.json({error: "You are not authorized to view this page!"})
@@ -90,7 +71,7 @@ app.get('/api/doctor/:appointmentId', async(req, res)=>{
     }
     catch(error){
         console.log(error);
-        res.json({error: error});
+        return res.json({error: error});
     }
 
     let sqlQuery1 = `SELECT TestId, Name, Date, Result FROM Test, Procedure WHERE PatientAadhar = ${patientId} AND Procedure.Code = Test.Code;`
@@ -112,7 +93,7 @@ app.get('/api/doctor/:appointmentId', async(req, res)=>{
 })
 
 
-app.post('/api/doctor/:appointmentId', async(req, res)=>{
+router.post('/:appointmentId', async(req, res)=>{
 
     // if(req.user.id != req.params.docId){
     //     return res.json({error: "You are not authorized to view this page!"})
@@ -136,7 +117,7 @@ app.post('/api/doctor/:appointmentId', async(req, res)=>{
     }
     catch(error){
         console.log(error);
-        res.json({error: error});
+        return res.json({error: error});
     }
 
     let Date = new Date().toISOString().slice(0, 19).replace('T', ' ');
@@ -152,11 +133,13 @@ app.post('/api/doctor/:appointmentId', async(req, res)=>{
     }
 })
 
-app.get('/', (req, res)=>{
-    res.json({success:"Website is live!"})
-})
+// router.get('/hello/world/hi', (req, res)=>{
+//     res.json({success:"Website is live!"})
+// })
 
-app.listen(3000, ()=> {
-    console.log("server started on port 3000")
-})
+// router.listen(3000, ()=> {
+//     console.log("server started on port 3000")
+// })
+
+module.exports = router;
 

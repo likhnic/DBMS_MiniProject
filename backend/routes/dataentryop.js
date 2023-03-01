@@ -1,37 +1,18 @@
 const express = require('express');
-const dotenv = require('dotenv')
-const { Client } = require('mysql');
-const fetchuser = require('./public/js/fetchuser');
+const fetchuser = require('../public/js/fetchuser');
 const bcrypt = require('bcryptjs');
-const util = require('util')
+const router = express.Router();
 
-const app = express();
+const query = require('../dbConnection');
 
-dotenv.config({ path: './.env' })
-
-const client = new Client({
-user: process.env.DATABASE_USER,
-    host: process.env.DATABASE_HOST,
-    database: process.env.DATABASE,
-    password: process.env.DATABASE_PASSWORD,
-    port: process.env.DATABASE_PORT
-})
-
-client.connect(function (err) {
-    if (err) throw err;
-    console.log("Connected!");
-});
-
-const query = util.promisify(client.query).bind(client);
-
-app.use(express.urlencoded({extended: 'false'}))
-app.use(express.json())
+router.use(express.urlencoded({extended: 'false'}))
+router.use(express.json())
 
 let testId = 0;
 
-app.get('get /api/dataentryop/:patientId',async (req, res) => {
+router.get('/:patientId',async (req, res) => {
 
-    let sqlQuery = `SELECT * FROM DataEntryOp WHERE DataEntryOpID = ${req.user.id};`
+    let sqlQuery //= `SELECT * FROM DataEntryOp WHERE DataEntryOpID = ${req.user.id};`
     // try{
     //     let operator = await query(sqlQuery);
     //     if(operator.rows.length == 0){
@@ -58,9 +39,9 @@ app.get('get /api/dataentryop/:patientId',async (req, res) => {
 })
 
 // need to give Test Name
-app.post('/api/dataentryop/test/:patientId',async (req, res) => {
+router.post('/test/:patientId',async (req, res) => {
 
-    let sqlQuery = `SELECT * FROM DataEntryOp WHERE DataEntryOpID = ${req.user.id};`
+    let sqlQuery //= `SELECT * FROM DataEntryOp WHERE DataEntryOpID = ${req.user.id};`
     // try{
     //     let operator = await query(sqlQuery);
     //     if(operator.rows.length == 0){
@@ -84,7 +65,7 @@ app.post('/api/dataentryop/test/:patientId',async (req, res) => {
     }
     catch(error){
         console.log(error);
-        res.json({error: error});
+        return res.json({error: error});
     }
     let Date = new Date().toISOString().slice(0, 19).replace('T', ' ');
     sqlQuery = `INSERT INTO Test(TestID, Date, Result, PatientAadhar, Code) VALUES (${testId}, '${Date}','Not Yet Available',${req.params.patientId}, ${Code});`
@@ -100,9 +81,9 @@ app.post('/api/dataentryop/test/:patientId',async (req, res) => {
 })
 
 // need to give TreatmentName and DocID
-app.post('/api/dataentryop/treatment/:patientId', async(req, res)=>{
+router.post('/treatment/:patientId', async(req, res)=>{
 
-    let sqlQuery = `SELECT * FROM DataEntryOp WHERE DataEntryOpID = ${req.user.id};`
+    let sqlQuery //= `SELECT * FROM DataEntryOp WHERE DataEntryOpID = ${req.user.id};`
     // try{
     //     let operator = await query(sqlQuery);
     //     if(operator.rows.length == 0){
@@ -126,7 +107,7 @@ app.post('/api/dataentryop/treatment/:patientId', async(req, res)=>{
     }
     catch(error){
         console.log(error);
-        res.json({error: error});
+        return res.json({error: error});
     }
 
     // get stayID from patientId where stayid = (select stayid from stay where stay.patient = " + id + " order by starttime desc limit 1)
@@ -141,7 +122,7 @@ app.post('/api/dataentryop/treatment/:patientId', async(req, res)=>{
     }
     catch(error){
         console.log(error);
-        res.json({error: error});
+        return res.json({error: error});
     }
     sqlQuery = `INSERT INTO Undergoes(Date, StayId, ProcedureCode, PatientAadhar, DocID) VALUES ('${new Date().toISOString().slice(0, 19).replace('T', ' ')}', ${StayID}, ${Code}, ${req.params.patientId}, ${DocID});`
 
@@ -152,14 +133,14 @@ app.post('/api/dataentryop/treatment/:patientId', async(req, res)=>{
     }
     catch(error){
         console.log(error);
-        res.json({error: error});
+        return res.json({error: error});
     }
 })
 
 // give Result in Body
-app.put('/api/dataentryop/test/:testId',async (req, res) => {
+router.put('/test/:testId',async (req, res) => {
 
-    let sqlQuery = `SELECT * FROM DataEntryOp WHERE DataEntryOpID = ${req.user.id};`
+    let sqlQuery //= `SELECT * FROM DataEntryOp WHERE DataEntryOpID = ${req.user.id};`
     // try{
     //     let operator = await query(sqlQuery);
     //     if(operator.rows.length == 0){
@@ -189,16 +170,18 @@ app.put('/api/dataentryop/test/:testId',async (req, res) => {
     }
     catch(error){
         console.log(error);
-        res.json({error: error});
+        return res.json({error: error});
     }
 
 })
 
 
-app.get('/', (req, res)=>{
-    res.json({success:"Website is live!"})
-})
+// router.get('/', (req, res)=>{
+//     res.json({success:"Website is live!"})
+// })
 
-app.listen(3000, ()=> {
-    console.log("server started on port 3000")
-})
+// router.listen(3000, ()=> {
+//     console.log("server started on port 3000")
+// })
+
+module.exports = router;

@@ -1,31 +1,15 @@
 const express = require('express');
 const dotenv = require('dotenv')
 const Client = require('mysql');
-const fetchuser = require('./public/js/fetchuser');
-const app = express();
+const fetchuser = require('../public/js/fetchuser');
 const util = require('util');
 const bcrypt = require('bcryptjs');
+const router = express.Router();
+const query = require('../dbConnection');
 
-dotenv.config({ path: './.env' })
 
-
-const client = Client.createConnection({
-    user: process.env.DATABASE_USER,
-    host: process.env.DATABASE_HOST,
-    database: process.env.DATABASE,
-    password: process.env.DATABASE_PASSWORD,
-    port: process.env.DATABASE_PORT
-})
-
-client.connect((err) => {
-    if (err) throw err;
-    console.log("Connected!");
-});
-
-const query = util.promisify(client.query).bind(client);
-
-app.use(express.urlencoded({ extended: 'false' }))
-app.use(express.json())
+router.use(express.urlencoded({ extended: 'false' }))
+router.use(express.json())
 
 const types = {
     '0': 'Front_Desk_Operator',
@@ -41,7 +25,7 @@ const type_IDs = {
     '3': 'AdminID'
 }
 
-app.delete("/api/admin/user/:id/:type", async (req, res) => {
+router.delete("/user/:id/:type", async (req, res) => {
     // if (req.user.id != req.params.id) {
     //     return res.json({ error: "You are not authorized to do this operation!" })
     // }
@@ -77,7 +61,7 @@ app.delete("/api/admin/user/:id/:type", async (req, res) => {
 })
 
 
-app.post("/api/admin/user", async (req, res) => {
+router.post("/user", async (req, res) => {
     // if (req.user.id != req.params.id) {
     //     return res.json({ error: "You are not authorized to do this operation!" })
     // }
@@ -115,10 +99,12 @@ app.post("/api/admin/user", async (req, res) => {
 })
 
 
-app.get('/', (req, res) => {
+router.get('/', (req, res) => {
     res.json({ success: "Website is live!" })
 })
 
-app.listen(7001, () => {
-    console.log("server started on port ", 7001)
-})
+// router.listen(7001, () => {
+//     console.log("server started on port ", 7001)
+// })
+
+module.exports = router

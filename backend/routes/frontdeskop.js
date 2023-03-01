@@ -1,35 +1,16 @@
 const express = require('express');
-const { Client } = require('mysql');
-const path = require("path");
-const dotenv = require('dotenv');
+const Client = require('mysql');
 const jwt = require("jsonwebtoken");
 const bcrypt = require("bcryptjs");
-const util = require('util')
+const router = express.Router();
+const query = require('../dbConnection');
 
-const app = express();
+router.use(express.json());
+router.use(express.urlencoded({ extended: 'false' }));
 
-app.use(express.json());
-app.use(express.urlencoded({ extended: 'false' }));
-
-dotenv.config({ path: './.env' });
-
-const client = new Client({
-    user: process.env.DATABASE_USER,
-    host: process.env.DATABASE_HOST,
-    database: process.env.DATABASE,
-    password: process.env.DATABASE_PASSWORD,
-    port: process.env.DATABASE_PORT
-});
-
-client.connect(function (err) {
-    if (err) throw err;
-    console.log("Connected!");
-});
-
-const query = util.promisify(client.query).bind(client)
 
 // registering a new patient (using patient table)
-app.post("/api/frontdeskop/register", async (req, res) => {
+router.post("/register", async (req, res) => {
     const {Aadhar, Name, Address, Phone, InsuranceId, PCPDocID} = req.body;
 
     let sql = "select * from patient where Aadhar = " + Aadhar;
@@ -61,7 +42,7 @@ app.post("/api/frontdeskop/register", async (req, res) => {
 
 
 // creating a new appointment to a patient (appointment table)
-app.post("/api/frontdeskop/:id", async (req, res) => {
+router.post("/:id", async (req, res) => {
     const {id} = req.params;
     const {AppointmentID, StartTime, EndTIme, ExaminationRoom, PatientAadhar, DocID} = req.body;
     try {
@@ -92,7 +73,7 @@ app.post("/api/frontdeskop/:id", async (req, res) => {
 
 
 // give a room to the patient (stay table)
-app.put("/api/frontdeskop/:id", async (req, res) => {
+router.put("/:id", async (req, res) => {
     const {id} = req.params;
     const {StayID, StartTime, RoomNo, PatientAadhar} = req.body;
 
@@ -129,7 +110,7 @@ app.put("/api/frontdeskop/:id", async (req, res) => {
 });
 
 // removing the patient from the patient table and update the end time of patient (patient, stay tables)
-app.delete("/api/frontdeskop/:id", async (req, res) => {
+router.delete("/:id", async (req, res) => {
     const {id} = req.params;
     console.log("id = " + id);
     try {
@@ -170,6 +151,8 @@ app.delete("/api/frontdeskop/:id", async (req, res) => {
     }
 });
 
-app.listen(3000, () => {
-    console.log("Server started on port 3000");
-});
+// router.listen(3000, () => {
+//     console.log("Server started on port 3000");
+// });
+
+module.exports = router;
