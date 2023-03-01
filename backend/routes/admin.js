@@ -31,6 +31,15 @@ router.delete("/user/:ID/:type", async (req, res) => {
     // }
     const ID = req.params.ID
     const type_index = req.params.type
+    sqlQuery = `Select * from User where ID = ${ID} AND status = 1`
+    try {
+        let result = await query(sqlQuery);
+        if(result.length==0){
+            return res.json({error:"There is no such user!!!"}); 
+        }
+    } catch (error) {
+        
+    }
     if (type_index == 2) {
         let sqlQuery1 = `UPDATE User SET Status = 0 where ID = ${ID}`
         let sqlQuery2 = `UPDATE Doctor SET isWorking = 0 where ${type_IDs[type_index]} = ${ID}`
@@ -140,7 +149,7 @@ router.get('/', (req, res) => {
     res.json({ success: "Website is live!" })
 })
 
-// router.listen(7001, () => {
+// router.listen(7001, () => { 
 //     console.log("server started on port ", 7001)
 // })
 
