@@ -15,7 +15,7 @@ CREATE TABLE Front_desk_operator
     Name VARCHAR(50) NOT NULL,
     Phone VARCHAR(20) NOT NULL,
     Address VARCHAR(200) NOT NULL,
-    PRIMARY KEY (FrontDeskOpID)
+    PRIMARY KEY (FrontDeskOpID),
     FOREIGN KEY (FrontDeskOpID) REFERENCES User (ID)
 );
 
@@ -26,7 +26,7 @@ CREATE TABLE Data_entry_operator
     Name VARCHAR(50) NOT NULL,
     Phone VARCHAR(20) NOT NULL,
     Address VARCHAR(200) NOT NULL,
-    PRIMARY KEY (DataEntryOpID)
+    PRIMARY KEY (DataEntryOpID),
     FOREIGN KEY (DataEntryOpID) REFERENCES User (ID)
 );
 
@@ -37,7 +37,7 @@ CREATE TABLE Database_administrator
     Name VARCHAR(50) NOT NULL,
     Phone VARCHAR(20) NOT NULL,
     Address VARCHAR(200) NOT NULL,
-    PRIMARY KEY (AdminID)
+    PRIMARY KEY (AdminID),
     FOREIGN KEY (AdminID) REFERENCES User (ID)
 );
 
@@ -47,7 +47,7 @@ CREATE TABLE Medication
     Code INTEGER NOT NULL,
     Name VARCHAR(100) NOT NULL,
     Brand VARCHAR(100) NOT NULL,
-    Description VARCHAR(200) NOT NULL
+    Description VARCHAR(200) NOT NULL,
     PRIMARY KEY (Code)
 );
 
@@ -60,8 +60,8 @@ CREATE TABLE Doctor
     Phone VARCHAR(20) ,
     Address VARCHAR(200) ,
     isWorking BOOLEAN,
-    PRIMARY KEY (Doctor),
-    FOREIGN KEY (Doctor) REFERENCES User(ID)
+    PRIMARY KEY (DocID),
+    FOREIGN KEY (DocID) REFERENCES User(ID)
 );
 
 DROP TABLE IF EXISTS Department;
@@ -120,7 +120,7 @@ CREATE TABLE Prescribes
     DocID INTEGER,
     Dose VARCHAR(100),
     AppointmentID INTEGER,
-    PRIMARY KEY (Date, PatientAadhar, MedicationCode, DocID)
+    PRIMARY KEY (Date, PatientAadhar, MedicationCode, DocID),
     FOREIGN KEY (MedicationCode) REFERENCES Medication(Code),
     FOREIGN KEY (PatientAadhar) REFERENCES Patient(Aadhar),
     FOREIGN KEY (AppointmentID) REFERENCES Appointment(AppointmentID)
@@ -131,7 +131,7 @@ CREATE TABLE Room
 (
     RoomNo INTEGER,
     Type VARCHAR(100),
-    Availability BOOLEAN
+    Availability BOOLEAN,
     PRIMARY KEY (RoomNo)
 );
 
@@ -148,13 +148,13 @@ CREATE TABLE Stay
     FOREIGN KEY (PatientAadhar) REFERENCES Patient(Aadhar)
 );
 
-DROP TABLE IF EXISTS Procedure;
-CREATE TABLE Procedure
+DROP TABLE IF EXISTS `Procedure`;
+CREATE TABLE `Procedure`
 (
     Code INTEGER,
     Name VARCHAR(100),
-    Cost INTEGER
-    PRIMARY KEY(Code)
+    Cost INTEGER,
+    PRIMARY KEY (Code)
 );
 
 DROP TABLE IF EXISTS Test;
@@ -167,7 +167,7 @@ CREATE TABLE Test
     Code INTEGER,
     PRIMARY KEY(TestID),
     FOREIGN KEY(PatientAadhar) REFERENCES Patient(Aadhar),
-    FOREIGN KEY(Code) REFERENCES Procedure(Code)
+    FOREIGN KEY(Code) REFERENCES `Procedure`(Code)
 );
 
 DROP TABLE IF EXISTS Undergoes;
@@ -178,9 +178,9 @@ CREATE TABLE Undergoes
     ProcedureCode INTEGER,
     PatientAadhar CHAR(12),
     DocID INTEGER,
-    PRIMARY KEY (Date, StayID, ProcedureCode, PatientAadhar)
+    PRIMARY KEY (Date, StayID, ProcedureCode, PatientAadhar),
     FOREIGN KEY (StayID) REFERENCES Stay(StayID),
-    FOREIGN KEY (ProcedureCode) REFERENCES Procedure(Code),
+    FOREIGN KEY (ProcedureCode) REFERENCES `Procedure`(Code),
     FOREIGN KEY (PatientAadhar) REFERENCES Patient(Aadhar),
     FOREIGN KEY (DocID) REFERENCES Doctor(DocID)
 );
@@ -193,7 +193,7 @@ CREATE TABLE Trained_in
     CertificationDate DATETIME,
     CertificationExpires DATETIME,
     PRIMARY KEY (ProcedureCode, DocID),
-    FOREIGN KEY (ProcedureCode) REFERENCES Procedure(Code),
+    FOREIGN KEY (ProcedureCode) REFERENCES `Procedure`(Code),
     FOREIGN KEY (DocID) REFERENCES Doctor(DocID)
 );
 
