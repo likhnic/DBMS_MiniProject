@@ -3,10 +3,10 @@ import { useNavigate } from 'react-router'
 
 const Login = () => {
 
-    const [credentials, setCredentials] = useState({ ID: "", Password: ""})
+    const [credentials, setCredentials] = useState({ ID: "", password: ""})
     let navigate = useNavigate()
 
-    const onChange = (e) => {
+    const onClick = (e) => {
         console.log("Hello")
         setCredentials({ ...credentials, [e.target.name]: e.target.value })
     }

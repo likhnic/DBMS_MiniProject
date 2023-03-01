@@ -29,6 +29,15 @@ router.delete("/user/:ID/:type", async (req, res) => {
     // }
     const ID = req.params.ID
     const type_index = req.params.type
+    sqlQuery = `Select * from User where ID = ${ID} AND status = 1`
+    try {
+        let result = await query(sqlQuery);
+        if(result.length==0){
+            return res.json({error:"There is no such user!!!"}); 
+        }
+    } catch (error) {
+        
+    }
     if (type_index == 2) {
         let sqlQuery1 = `UPDATE User SET Status = 0 where ID = ${ID}`
         let sqlQuery2 = `UPDATE Doctor SET isWorking = 0 where ${type_IDs[type_index]} = ${ID}`
@@ -110,12 +119,36 @@ router.post("/user", async (req, res) => {
     }
 })
 
+router.post('/login', async (req, res) => {
+
+    const { ID, Password } = req.body
+
+    let sqlQuery = `SELECT * FROM User WHERE ID = ${ID} AND Status=1;`
+    console.log(sqlQuery)
+    try {
+        const result = await query(sqlQuery);
+        console.log(result.length)
+        if(result.length == 0){
+            return res.json({error: "Invalid Credentials"});
+        }
+        const comPass = bcrypt.compare(Password, result[0].Password)
+        if(!comPass){
+            return res.json({error: "Invalid Credentials"});
+        }
+        // const token = jwt.sign({user: {id: result.rows[0].ID}}, "secrethaha")
+        // return res.json({user: token})
+        return res.json({success:"successfully logged in"})
+    } catch (error) {
+        console.log(error);
+        return res.json({error: error});
+    }
+})
 
 router.get('/', (req, res) => {
     res.json({ success: "Website is live!" })
 })
 
-// router.listen(7001, () => {
+// router.listen(7001, () => { 
 //     console.log("server started on port ", 7001)
 // })
 
