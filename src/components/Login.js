@@ -11,7 +11,7 @@ const Login = () => {
 
     const handleOnClick = async (e) => {
         e.preventDefault();
-        const { ID, Password, type_index } = credentials;
+        const { ID, Password } = credentials;
         console.log(credentials)
         const response = await fetch('http://localhost:5000/login', {
             method: 'POST',
