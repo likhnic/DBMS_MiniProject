@@ -1,9 +1,10 @@
 const express = require('express');
-const { Client } = require('pg');
+const { Client } = require('mysql');
 const path = require("path");
 const dotenv = require('dotenv');
 const jwt = require("jsonwebtoken");
 const bcrypt = require("bcryptjs");
+const util = require('util')
 
 const app = express();
 
@@ -25,13 +26,15 @@ client.connect(function (err) {
     console.log("Connected!");
 });
 
+const query = util.promisify(client.query).bind(client)
+
 // registering a new patient (using patient table)
 app.post("/api/frontdeskop/register", async (req, res) => {
     const {Aadhar, Name, Address, Phone, InsuranceId, PCPDocID} = req.body;
 
     let sql = "select * from patient where Aadhar = " + Aadhar;
     try{
-        let result = await client.query(sql);
+        let result = await query(sql);
         if (result.rows.length > 0) {
             res.status(404).json({
                 error: "Patient already registered"
@@ -42,7 +45,7 @@ app.post("/api/frontdeskop/register", async (req, res) => {
     
         sql = "insert into patient (Aadhar, Name, Address, Phone, InsuranceId, PCPDocID) values (" + Aadhar + ", '" + Name + "', '" + Address + "', " + Phone + ", " + InsuranceId + ", " + PCPDocID + ")";
     
-        result = await client.query(sql);
+        result = await query(sql);
         console.log("Patient registered successfully");
         res.status(200).json({
             success: 'Patient registered successfully'
@@ -63,7 +66,7 @@ app.post("/api/frontdeskop/:id", async (req, res) => {
     const {AppointmentID, StartTime, EndTIme, ExaminationRoom, PatientAadhar, DocID} = req.body;
     try {
         let sql = "select * from appointment where AppointmentID = " + AppointmentID;
-        let result = await client.query(sql);
+        let result = await query(sql);
         if (result.rows.length > 0) {
             console.log("Appointment already exists");
             res.status(404).json({
@@ -74,7 +77,7 @@ app.post("/api/frontdeskop/:id", async (req, res) => {
 
         sql = "insert into appointment (AppointmentID, StartTime, EndTime, ExaminationRoom, PatientAadhar, DocID) values (" + AppointmentID + ", '" + StartTime + "', '" + EndTIme + "', " + ExaminationRoom + ", " + PatientAadhar + ", " + DocID + ")";
         
-        result = await client.query(sql);
+        result = await query(sql);
         console.log("Appointment created successfully");
         res.status(200).json({
             success: 'Appointment created successfully'
@@ -102,7 +105,7 @@ app.put("/api/frontdeskop/:id", async (req, res) => {
     }
     try {
         let sql = "select * from stay where StayID = " + StayID;
-        let result  = await client.query(sql);
+        let result  = await query(sql);
         if (result.rows.length > 0) {
             console.log("Stay already exists");
             res.status(404).json({
@@ -112,7 +115,7 @@ app.put("/api/frontdeskop/:id", async (req, res) => {
         }
 
         sql = "insert into stay (StayID, StartTime, RoomNo, PatientAadhar) values (" + StayID + ", '" + StartTime + "', " + RoomNo + ", " + PatientAadhar + ")";
-        result = await client.query(sql);
+        result = await query(sql);
         console.log("Stay created successfully");
         res.status(200).json({
             success: 'Stay created successfully'
@@ -131,7 +134,7 @@ app.delete("/api/frontdeskop/:id", async (req, res) => {
     console.log("id = " + id);
     try {
         let sql = "select * from patient where Aadhar = " + id;
-        let result = await client.query(sql);
+        let result = await query(sql);
         if (result.rows.length == 0) {
             console.log("Patient not found");
             res.status(404).json({
@@ -153,7 +156,7 @@ app.delete("/api/frontdeskop/:id", async (req, res) => {
         var time = today.getHours() + ":" + today.getMinutes() + ":" + today.getSeconds();
         var dateTime = date+' '+time;
         sql = "update stay set endtime = '" + dateTime + "' where stayid = (select stayid from stay where stay.patient = " + id + " order by starttime desc limit 1)";
-        result = client.query(sql);
+        result = query(sql);
 
         console.log("End time updated successfully");
         res.status(200).json({

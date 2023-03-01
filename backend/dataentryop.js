@@ -1,8 +1,9 @@
 const express = require('express');
 const dotenv = require('dotenv')
-const { Client } = require('pg');
+const { Client } = require('mysql');
 const fetchuser = require('./public/js/fetchuser');
 const bcrypt = require('bcryptjs');
+const util = require('util')
 
 const app = express();
 
@@ -21,6 +22,8 @@ client.connect(function (err) {
     console.log("Connected!");
 });
 
+const query = util.promisify(client.query).bind(client);
+
 app.use(express.urlencoded({extended: 'false'}))
 app.use(express.json())
 
@@ -30,7 +33,7 @@ app.get('get /api/dataentryop/:patientId',async (req, res) => {
 
     let sqlQuery = `SELECT * FROM DataEntryOp WHERE DataEntryOpID = ${req.user.id};`
     // try{
-    //     let operator = await client.query(sqlQuery);
+    //     let operator = await query(sqlQuery);
     //     if(operator.rows.length == 0){
     //         return res.json({error: "No Data Entry Operator found!"});
     //     }
@@ -42,7 +45,7 @@ app.get('get /api/dataentryop/:patientId',async (req, res) => {
 
     sqlQuery = `SELECT * FROM Patient WHERE Aadhar = ${req.params.patientId};`
     try{
-        let patient = await client.query(sqlQuery);
+        let patient = await query(sqlQuery);
         if(patient.rows.length == 0){
             return res.json({error: "No patients found!"});
         }
@@ -59,7 +62,7 @@ app.post('/api/dataentryop/test/:patientId',async (req, res) => {
 
     let sqlQuery = `SELECT * FROM DataEntryOp WHERE DataEntryOpID = ${req.user.id};`
     // try{
-    //     let operator = await client.query(sqlQuery);
+    //     let operator = await query(sqlQuery);
     //     if(operator.rows.length == 0){
     //         return res.json({error: "No Data Entry Operator found!"});
     //     }
@@ -73,7 +76,7 @@ app.post('/api/dataentryop/test/:patientId',async (req, res) => {
     sqlQuery = `SELECT Code FROM Procedure WHERE Name = '${Name}';`
     let Code;
     try{
-        let code = await client.query(sqlQuery);
+        let code = await query(sqlQuery);
         if(code.rows.length == 0){
             return res.json({error: "No procedure found!"});
         }
@@ -86,7 +89,7 @@ app.post('/api/dataentryop/test/:patientId',async (req, res) => {
     let Date = new Date().toISOString().slice(0, 19).replace('T', ' ');
     sqlQuery = `INSERT INTO Test(TestID, Date, Result, PatientAadhar, Code) VALUES (${testId}, '${Date}','Not Yet Available',${req.params.patientId}, ${Code});`
     try{
-        await client.query(sqlQuery);
+        await query(sqlQuery);
         testId++;
         return res.json({success: "Test added successfully!"});
     }
@@ -101,7 +104,7 @@ app.post('/api/dataentryop/treatment/:patientId', async(req, res)=>{
 
     let sqlQuery = `SELECT * FROM DataEntryOp WHERE DataEntryOpID = ${req.user.id};`
     // try{
-    //     let operator = await client.query(sqlQuery);
+    //     let operator = await query(sqlQuery);
     //     if(operator.rows.length == 0){
     //         return res.json({error: "No Data Entry Operator found!"});
     //     }
@@ -115,7 +118,7 @@ app.post('/api/dataentryop/treatment/:patientId', async(req, res)=>{
     sqlQuery = `SELECT Code FROM Procedure WHERE Name = '${Name}';`
     let Code;
     try{
-        let code = await client.query(sqlQuery);
+        let code = await query(sqlQuery);
         if(code.rows.length == 0){
             return res.json({error: "No procedure found!"});
         }
@@ -130,7 +133,7 @@ app.post('/api/dataentryop/treatment/:patientId', async(req, res)=>{
     sqlQuery = `SELECT StayID FROM Stay WHERE StayID = (SELECT StayID FROM Stay WHERE PatientAadhar = ${req.params.patientId} ORDER BY StartTime DESC LIMIT 1);`
     let StayID;
     try{
-        let stayRes = client.query(sqlQuery);
+        let stayRes = query(sqlQuery);
         if(stayRes.rows.length == 0){
             return res.json({error: "No stay found!"});
         }
@@ -144,7 +147,7 @@ app.post('/api/dataentryop/treatment/:patientId', async(req, res)=>{
 
     try{
 
-        await client.query(sqlQuery);
+        await query(sqlQuery);
         return res.json({success: "Treatment added successfully!"});
     }
     catch(error){
@@ -158,7 +161,7 @@ app.put('/api/dataentryop/test/:testId',async (req, res) => {
 
     let sqlQuery = `SELECT * FROM DataEntryOp WHERE DataEntryOpID = ${req.user.id};`
     // try{
-    //     let operator = await client.query(sqlQuery);
+    //     let operator = await query(sqlQuery);
     //     if(operator.rows.length == 0){
     //         return res.json({error: "No Data Entry Operator found!"});
     //     }
@@ -174,14 +177,14 @@ app.put('/api/dataentryop/test/:testId',async (req, res) => {
     sqlQuery = `SELECT * FROM Test WHERE TestID = ${testId};`
     try{
 
-        let testRes = await client.query(sqlQuery);
+        let testRes = await query(sqlQuery);
         if(testRes.rows.length == 0){
             return res.json({error: "No test found!"});
         }
         testRes.rows[0].Result = Result;
         sqlQuery = `UPDATE Test SET Result = '${Result}' WHERE TestID = ${testId};`
     
-        await client.query(sqlQuery);
+        await query(sqlQuery);
         return res.json({success: "Test updated successfully!"});
     }
     catch(error){

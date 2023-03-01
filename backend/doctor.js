@@ -1,8 +1,9 @@
 const express = require('express');
 const dotenv = require('dotenv')
-const { Client } = require('pg');
+const { Client } = require('mysql');
 const fetchuser = require('./public/js/fetchuser');
 const bcrypt = require('bcryptjs');
+const util = require('util')
 
 const app = express();
 
@@ -21,6 +22,8 @@ client.connect(function (err) {
     console.log("Connected!");
 });
 
+const query = util.promisify(client.query).bind(client);
+
 app.use(express.urlencoded({extended: 'false'}))
 app.use(express.json())
 
@@ -31,7 +34,7 @@ app.post('/login', async (req, res) => {
 
     let sqlQuery = `SELECT * FROM User WHERE ID = ${ID}';`
     try {
-        const result = await client.query(sqlQuery);
+        const result = await query(sqlQuery);
         if(result.rows.length == 0){
             return res.json({error: "Invalid Credentials"});
         }
@@ -61,7 +64,7 @@ app.get('/api/doctor', async(req, res)=>{
                 WHERE Appointment.DocId = ${docId};`
 
     try{
-        const patients = await client.query(sqlQuery);
+        const patients = await query(sqlQuery);
         return res.json({result: patients});
     }catch(error){
         console.log(error);
@@ -79,7 +82,7 @@ app.get('/api/doctor/:appointmentId', async(req, res)=>{
     let sqlQuery = `SELECT PatientAadhar FROM Appointment WHERE AppointmentId = ${appointmentId};`
     try{
 
-        let patientDet = await client.query(sqlQuery);
+        let patientDet = await query(sqlQuery);
         patientId = patientDet.rows[0].PatientAadhar;
         if(!patientId){
             return res.json({error: "Patient not found!"})
@@ -96,9 +99,9 @@ app.get('/api/doctor/:appointmentId', async(req, res)=>{
 
     try{
 
-        let tests = await client.query(sqlQuery1);
-        let undergoes = await client.query(sqlQuery2);
-        let prescribes = await client.query(sqlQuery3);
+        let tests = await query(sqlQuery1);
+        let undergoes = await query(sqlQuery2);
+        let prescribes = await query(sqlQuery3);
 
         res.json({tests: tests, undergoes: undergoes, prescribes: prescribes});
 
@@ -121,7 +124,7 @@ app.post('/api/doctor/:appointmentId', async(req, res)=>{
     
     try{
 
-        let patientDet = await client.query(sqlQuery);
+        let patientDet = await query(sqlQuery);
         patientId = patientDet.rows[0].PatientAadhar;
         DocId = patientDet.rows[0].DocId;
         if(!patientId){
@@ -140,7 +143,7 @@ app.post('/api/doctor/:appointmentId', async(req, res)=>{
     sqlQuery = `INSERT INTO Prescribes(Medication, Dose, DocId, AppointmentId, PatientAadhar, Date) VALUES(${MedicationCode}, ${Dose}, ${DocId}, ${appointmentId}, ${patientId}, ${Date});`
 
     try{
-        const result = await client.query(sqlQuery);
+        const result = await query(sqlQuery);
         res.json({result: result});
     }
     catch(error){
