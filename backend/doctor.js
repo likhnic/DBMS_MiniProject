@@ -48,12 +48,12 @@ app.post('/login', async (req, res) => {
     }
 })
 
-app.get('/api/doctor/:docId', async(req, res)=>{
+app.get('/api/doctor', async(req, res)=>{
 
     // if(req.user.id != req.params.docId){
     //     return res.json({error: "You are not authorized to view this page!"})
     // }
-    const docId = req.params.docId;
+    const docId = req.user.id;
 
     let sqlQuery = `SELECT Patient.Name 
                 FROM Patient
@@ -69,7 +69,7 @@ app.get('/api/doctor/:docId', async(req, res)=>{
     }
 })
 
-app.get('/api/doctor/:docId/:appointmentId', async(req, res)=>{
+app.get('/api/doctor/:appointmentId', async(req, res)=>{
 
     // if(req.user.id != req.params.docId){
     //     return res.json({error: "You are not authorized to view this page!"})
@@ -109,7 +109,7 @@ app.get('/api/doctor/:docId/:appointmentId', async(req, res)=>{
 })
 
 
-app.post('/api/doctor/:docId/:appointmentId', async(req, res)=>{
+app.post('/api/doctor/:appointmentId', async(req, res)=>{
 
     // if(req.user.id != req.params.docId){
     //     return res.json({error: "You are not authorized to view this page!"})
