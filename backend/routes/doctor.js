@@ -8,30 +8,6 @@ router.use(express.urlencoded({extended: 'false'}))
 router.use(express.json())
 
 
-router.post('/login', async (req, res) => {
-
-    const { ID, password } = req.body
-
-    let sqlQuery = `SELECT * FROM User WHERE ID = ${ID}';`
-    try {
-        const result = await query(sqlQuery);
-        if(result.rows.length == 0){
-            return res.json({error: "Invalid Credentials"});
-        }
-        const comPass = bcrypt.compare(password, result.rows[0].password)
-        if(!comPass){
-            return res.json({error: "Invalid Credentials"});
-        }
-        const token = jwt.sign({user: {id: result.rows[0].ID}}, "secrethaha")
-        return res.json({user: token})
-
-    } catch (error) {
-        console.log(error);
-        return res.json({error: error});
-    }
-})
-
-
 router.get('/', async(req, res)=>{
 
     // if(req.user.id != req.params.docId){
