@@ -15,7 +15,7 @@ const types = {
     '0': 'Front_Desk_Operator',
     '1': 'Data_Entry_Operator',
     '2': 'Doctor',
-    '3': 'Database_Administrator'
+    '3': 'Database_administrator'
 }
 
 const type_IDs = {
@@ -69,6 +69,7 @@ router.post("/user", async (req, res) => {
     password_confirm = req.body['password-confirm']
     console.log(req.body);
     let sqlQuery1 = 'SELECT ' + type_IDs[type_index] + ' FROM ' + types[type_index] + ' WHERE ' + type_IDs[type_index] + ' = ' + username
+    console.log(sqlQuery1)
     try {
         let result1 = await query(sqlQuery1);
         if (result1.length > 0) {
@@ -81,7 +82,9 @@ router.post("/user", async (req, res) => {
             })
         }else{
             let hashedPassword = await bcrypt.hash(password, 8)
-            let sqlQuery2 = 'INSERT INTO ' + types[type_index] + ' values (' + username + ','+Aadhar+',"' + hashedPassword + '")'
+            let sqlQuery2 = 'INSERT INTO ' + 'User' + ' values (' + username + ','+Aadhar+',"' + hashedPassword + '",1)'
+            console.log(sqlQuery2)
+            
             try {
                 let result2 = await query(sqlQuery2);
                 return res.json({
