@@ -3,10 +3,10 @@ import { useNavigate } from 'react-router'
 
 const Login = () => {
 
-    const [credentials, setCredentials] = useState({ ID: "", password: ""})
+    const [credentials, setCredentials] = useState({ ID: "", Password: ""})
     let navigate = useNavigate()
 
-    const onClick = (e) => {
+    const onChange = (e) => {
         console.log("Hello")
         setCredentials({ ...credentials, [e.target.name]: e.target.value })
     }
@@ -20,12 +20,13 @@ const Login = () => {
             headers: {
                 'Content-Type': 'application/json',
             },
+            body: JSON.stringify({ ID, Password:Password })
         })
         const json = await response.json();
         console.log(json);
-        if (json.success) {
+        if (!json.error) {
             // save the auth token and redirect
-            localStorage.setItem('token', json.authToken)
+            localStorage.setItem('token', json.user)
             navigate("/dashboard", { replace: true })
         }
     }
@@ -40,13 +41,12 @@ const Login = () => {
                             <form>
                                 <div className="mb-3">
                                     <label htmlFor="exampleInputEmail1" className="form-label">Employee ID</label>
-                                    <input type="text" name="ID" className="form-control" id="exampleInputEmail1" aria-describedby="emailHelp" onChange={onClick}/>
+                                    <input type="text" name="ID" className="form-control" id="exampleInputEmail1" aria-describedby="emailHelp" onChange={onChange}/>
                                 </div>
                                 <div className="mb-3">
                                     <label htmlFor="exampleInputPassword1" className="form-label">Password</label>
-                                    <input type="password" name="password" className="form-control" id="exampleInputPassword1" onChange={onClick} />
+                                    <input type="password" name="Password" className="form-control" id="exampleInputPassword1" onChange={onChange} />
                                 </div>
-                               
                                 <button type="submit" className="mt-3 btn btn-primary" onClick={handleOnClick}>Submit</button>
                             </form>
                         </div>

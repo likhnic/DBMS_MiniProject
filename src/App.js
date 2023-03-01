@@ -7,6 +7,7 @@ import {
     Route,
 } from "react-router-dom";
 import Admin_Dashboard from './components/Admin_Dashboard/Admin_Dashboard';
+import DoctorDashboard from './components/Doctor/DoctorDashboard';
 
 const App = () => {
     return (
@@ -16,6 +17,7 @@ const App = () => {
                 <Routes>
                     <Route exact path="/" element={<Login />} />
                     <Route exact path='/admin' element={<Admin_Dashboard/>}/>
+                    <Route exact path='/doctor' element={<DoctorDashboard/>}/>
                 </Routes>
             </Router>
         </>

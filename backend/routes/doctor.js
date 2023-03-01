@@ -8,14 +8,11 @@ router.use(express.urlencoded({extended: 'false'}))
 router.use(express.json())
 
 
-router.get('/', async(req, res)=>{
+router.get('/', fetchuser, async(req, res)=>{
 
-    // if(req.user.id != req.params.docId){
-    //     return res.json({error: "You are not authorized to view this page!"})
-    // }
     const docId = req.user.id;
 
-    let sqlQuery = `SELECT Patient.Name 
+    let sqlQuery = `SELECT Patient.Name as patientname, Patient.Aadhar as patientaadhar, Appointment.AppointmentId as appointmentid, Appointment.StartTime as starttime, Appointment.EndTime as endtime, Patient.Phone as phone, Patient.Address as address 
                 FROM Patient
                 JOIN Appointment ON Patient.Aadhar = Appointment.PatientAadhar
                 WHERE Appointment.DocId = ${docId};`
@@ -29,18 +26,15 @@ router.get('/', async(req, res)=>{
     }
 })
 
-router.get('/:appointmentId', async(req, res)=>{
+router.get('/:appointmentId', fetchuser, async(req, res)=>{
 
-    // if(req.user.id != req.params.docId){
-    //     return res.json({error: "You are not authorized to view this page!"})
-    // }
     const appointmentId = req.params.appointmentId;
     let patientId;
     let sqlQuery = `SELECT PatientAadhar FROM Appointment WHERE AppointmentId = ${appointmentId};`
     try{
 
         let patientDet = await query(sqlQuery);
-        patientId = patientDet.rows[0].PatientAadhar;
+        patientId = patientDet[0].PatientAadhar;
         if(!patientId){
             return res.json({error: "Patient not found!"})
         }
@@ -50,9 +44,9 @@ router.get('/:appointmentId', async(req, res)=>{
         return res.json({error: error});
     }
 
-    let sqlQuery1 = `SELECT TestId, Name, Date, Result FROM Test, Procedure WHERE PatientAadhar = ${patientId} AND Procedure.Code = Test.Code;`
-    let sqlQuery2 = `SELECT Procedure.Name, Undergoes.Date, Doctor.Name FROM Undergoes, Procedure, Doctor WHERE Undergoes.PatientAadhar = ${patientId} AND Procedure.Code = Undergoes.ProcedureCode AND Doctor.DocId = Undergoes.DocId;`
-    let sqlQuery3 = `SELECT Medication.Name, Prescibes.Dose, Doctor.Name, Prescribes.Date FROM Prescribes, Doctor, Medication WHERE Prescribes.PatientAadhar = ${patientId} AND Medication.Code = Prescribes.MedicationCode AND Doctor.DocId = Prescribes.DocId;`
+    let sqlQuery1 = `SELECT TestId as testid, Name as procedurename, Date as date, Result as result FROM Test, Procedure WHERE PatientAadhar = ${patientId} AND Procedure.Code = Test.Code;`
+    let sqlQuery2 = `SELECT Procedure.Name as procedurename, Undergoes.Date as undergoesdate, Doctor.Name as doctorname FROM Undergoes, Procedure, Doctor WHERE Undergoes.PatientAadhar = ${patientId} AND Procedure.Code = Undergoes.ProcedureCode AND Doctor.DocId = Undergoes.DocId;`
+    let sqlQuery3 = `SELECT Medication.Name as medicationname, Prescibes.Dose as presribesdose, Doctor.Name as doctorname, Prescribes.Date as prescribesdate FROM Prescribes, Doctor, Medication WHERE Prescribes.PatientAadhar = ${patientId} AND Medication.Code = Prescribes.MedicationCode AND Doctor.DocId = Prescribes.DocId;`
 
     try{
 
@@ -71,9 +65,6 @@ router.get('/:appointmentId', async(req, res)=>{
 
 router.post('/:appointmentId', async(req, res)=>{
 
-    // if(req.user.id != req.params.docId){
-    //     return res.json({error: "You are not authorized to view this page!"})
-    // }
     const appointmentId = req.params.appointmentId;
     const {MedicationCode, Dose} = req.body;
     let patientId, DocId;
@@ -82,8 +73,8 @@ router.post('/:appointmentId', async(req, res)=>{
     try{
 
         let patientDet = await query(sqlQuery);
-        patientId = patientDet.rows[0].PatientAadhar;
-        DocId = patientDet.rows[0].DocId;
+        patientId = patientDet[0].PatientAadhar;
+        DocId = patientDet[0].DocId;
         if(!patientId){
             return res.json({error: "Patient not found!"})
         }

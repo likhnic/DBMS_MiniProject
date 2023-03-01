@@ -3,7 +3,7 @@ DROP TABLE IF EXISTS User;
 CREATE TABLE User
 (
     ID INTEGER NOT NULL,
-    Aadhar CHAR(12) NOT NULL,
+    Aadhar VARCHAR(12) NOT NULL UNIQUE,
     Password VARCHAR(100) NOT NULL,
     Status BOOLEAN NOT NULL,
     PRIMARY KEY (ID) 
@@ -88,7 +88,7 @@ CREATE TABLE Affiliated_with
 DROP TABLE IF EXISTS Patient;
 CREATE TABLE Patient
 (
-    Aadhar CHAR(12),
+    Aadhar VARCHAR(12) ,
     Name VARCHAR(50),
     Phone VARCHAR(20),
     Address VARCHAR(200),
@@ -105,7 +105,7 @@ CREATE TABLE Appointment
     StartTime DATETIME,
     EndTime DATETIME,
     ExaminationRoom VARCHAR(50),
-    PatientAadhar CHAR(12),
+    PatientAadhar VARCHAR(12),
     DocID INTEGER,
     PRIMARY KEY(AppointmentID),
     FOREIGN KEY (PatientAadhar) REFERENCES Patient(Aadhar),
@@ -116,7 +116,7 @@ DROP TABLE IF EXISTS Prescribes;
 CREATE TABLE Prescribes
 (
     Date DATETIME,
-    PatientAadhar CHAR(12),
+    PatientAadhar VARCHAR(12),
     MedicationCode INTEGER,
     DocID INTEGER,
     Dose VARCHAR(100),
@@ -143,7 +143,7 @@ CREATE TABLE Stay
     StartTime DATETIME, 
     EndTime DATETIME,
     RoomNo INTEGER,
-    PatientAadhar CHAR(12),
+    PatientAadhar VARCHAR(12),
     PRIMARY KEY (StayID),
     FOREIGN KEY (RoomNo) REFERENCES Room(RoomNo),
     FOREIGN KEY (PatientAadhar) REFERENCES Patient(Aadhar)
@@ -161,10 +161,10 @@ CREATE TABLE `Procedure`
 DROP TABLE IF EXISTS Test;
 CREATE TABLE Test
 (
-    TestID INTEGER,
+    TestID INTEGER NOT NULL AUTO_INCREMENT,
     Date DATETIME,
     Result VARCHAR(50),
-    PatientAadhar CHAR(12),
+    PatientAadhar VARCHAR(12),
     Code INTEGER,
     PRIMARY KEY(TestID),
     FOREIGN KEY(PatientAadhar) REFERENCES Patient(Aadhar),
@@ -177,7 +177,7 @@ CREATE TABLE Undergoes
     Date DATETIME,
     StayID INTEGER,
     ProcedureCode INTEGER,
-    PatientAadhar CHAR(12),
+    PatientAadhar VARCHAR(12),
     DocID INTEGER,
     PRIMARY KEY (Date, StayID, ProcedureCode, PatientAadhar),
     FOREIGN KEY (StayID) REFERENCES Stay(StayID),
@@ -210,3 +210,11 @@ CREATE TABLE TimeSlot
     FOREIGN KEY (AppointmentID) REFERENCES Appointment(AppointmentID)
 );
 SET FOREIGN_KEY_CHECKS = 1;
+
+
+
+select * from user;
+select * from Front_desk_operator;
+select * from Data_entry_operator;
+select * from Doctor;
+select * from Database_administrator;

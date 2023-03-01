@@ -4,7 +4,7 @@ const SECRET = 'secrethaha';
 
 const fetchuser=async (req,res,next)=>{
 
-    const token=req.header('authToken')
+    const token=req.header('token')
     if(!token){
         res.status(401).json({error:"Please authenticate using a valid token"})
     }

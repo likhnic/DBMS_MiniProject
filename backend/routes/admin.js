@@ -1,8 +1,5 @@
 const express = require('express');
-const dotenv = require('dotenv')
-const Client = require('mysql');
 const fetchuser = require('../public/js/fetchuser');
-const util = require('util');
 const bcrypt = require('bcryptjs');
 const router = express.Router();
 const query = require('../dbConnection');
@@ -13,7 +10,7 @@ router.use(express.json())
 
 const types = {
     '0': 'Front_Desk_Operator',
-    '1': 'Data_Entry_Operator',
+    '1': 'Data_entry_operator',
     '2': 'Doctor',
     '3': 'Database_administrator'
 }
@@ -24,6 +21,7 @@ const type_IDs = {
     '2': 'DocID',
     '3': 'AdminID'
 }
+
 
 router.delete("/user/:ID/:type", async (req, res) => {
     // if (req.user.ID != req.params.ID) {
@@ -84,7 +82,8 @@ router.post("/user", async (req, res) => {
             })
         }else{
             let hashedPassword = await bcrypt.hash(Password, 8)
-            let sqlQuery2 = 'INSERT INTO ' + 'User' + ' values (' + ID + ','+Aadhar+',"' + hashedPassword + '",1)'
+            let sqlQuery2 = `INSERT INTO User values (${ID},"${Aadhar}","${hashedPassword}",1)`
+            let sqlQuery3;
             if(type_index==2)
                 sqlQuery3 = `INSERT INTO ${types[type_index]} values (${ID},"${Position}","${Name}","${Phone}","${Address}",1)`
             else
@@ -111,30 +110,6 @@ router.post("/user", async (req, res) => {
     }
 })
 
-router.post('/login', async (req, res) => {
-
-    const { ID, Password } = req.body
-
-    let sqlQuery = `SELECT * FROM User WHERE ID = ${ID} AND Status=1;`
-    console.log(sqlQuery)
-    try {
-        const result = await query(sqlQuery);
-        console.log(result.length)
-        if(result.length == 0){
-            return res.json({error: "Invalid Credentials"});
-        }
-        const comPass = bcrypt.compare(Password, result[0].Password)
-        if(!comPass){
-            return res.json({error: "Invalid Credentials"});
-        }
-        // const token = jwt.sign({user: {id: result.rows[0].ID}}, "secrethaha")
-        // return res.json({user: token})
-        return res.json({success:"successfully logged in"})
-    } catch (error) {
-        console.log(error);
-        return res.json({error: error});
-    }
-})
 
 router.get('/', (req, res) => {
     res.json({ success: "Website is live!" })

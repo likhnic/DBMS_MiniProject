@@ -16,7 +16,7 @@ router.post("/register", async (req, res) => {
     let sql = "select * from patient where Aadhar = " + Aadhar;
     try{
         let result = await query(sql);
-        if (result.rows.length > 0) {
+        if (result.length > 0) {
             res.status(404).json({
                 error: "Patient already registered"
             })
@@ -24,7 +24,7 @@ router.post("/register", async (req, res) => {
             return;
         }
     
-        sql = "insert into patient (Aadhar, Name, Address, Phone, InsuranceId, PCPDocID) values (" + Aadhar + ", '" + Name + "', '" + Address + "', " + Phone + ", " + InsuranceId + ", " + PCPDocID + ")";
+        sql = `insert into patient (Aadhar, Name, Address, Phone, InsuranceId, PCPDocID) values ('${Aadhar}', '${Name}', '${Address}', '${Phone}', ${InsuranceId}, ${PCPDocID})`
     
         result = await query(sql);
         console.log("Patient registered successfully");
@@ -48,7 +48,7 @@ router.post("/:id", async (req, res) => {
     try {
         let sql = "select * from appointment where AppointmentID = " + AppointmentID;
         let result = await query(sql);
-        if (result.rows.length > 0) {
+        if (result.length > 0) {
             console.log("Appointment already exists");
             res.status(404).json({
                 error: "Appointment already exists"
@@ -87,7 +87,7 @@ router.put("/:id", async (req, res) => {
     try {
         let sql = "select * from stay where StayID = " + StayID;
         let result  = await query(sql);
-        if (result.rows.length > 0) {
+        if (result.length > 0) {
             console.log("Stay already exists");
             res.status(404).json({
                 error: "Stay already exists"
@@ -116,7 +116,7 @@ router.delete("/:id", async (req, res) => {
     try {
         let sql = "select * from patient where Aadhar = " + id;
         let result = await query(sql);
-        if (result.rows.length == 0) {
+        if (result.length == 0) {
             console.log("Patient not found");
             res.status(404).json({
                 error: "Patient not found"
