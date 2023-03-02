@@ -1,6 +1,5 @@
 const express = require('express');
 const fetchuser = require('../public/js/fetchuser');
-const bcrypt = require('bcryptjs');
 const router = express.Router();
 const query = require('../dbConnection');
 
@@ -24,7 +23,8 @@ router.get('/', fetchuser, async(req, res)=>{
     let sqlQuery = `SELECT Patient.Name as patientname, Patient.Aadhar as patientaadhar, Appointment.AppointmentID as appointmentid, Appointment.StartTime as starttime, Appointment.EndTime as endtime, Patient.Phone as phone, Patient.Address as address 
                 FROM Patient
                 JOIN Appointment ON Patient.Aadhar = Appointment.PatientAadhar
-                WHERE Appointment.DocID = ${docId};`
+                WHERE Appointment.DocID = ${docId}
+                ORDER BY Appointment.StartTime DESC;`
 
     try{
         const patients = await query(sqlQuery);
@@ -133,14 +133,6 @@ router.post('/:appointmentId', fetchuser,async(req, res)=>{
         return res.json({error: error});
     }
 })
-
-// router.get('/hello/world/hi', (req, res)=>{
-//     res.json({success:"Website is live!"})
-// })
-
-// router.listen(3000, ()=> {
-//     console.log("server started on port 3000")
-// })
 
 module.exports = router;
 

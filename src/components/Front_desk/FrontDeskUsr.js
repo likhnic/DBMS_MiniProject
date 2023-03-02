@@ -1,14 +1,39 @@
-import React from 'react'
+import React, { useEffect, useState } from 'react'
 import Card from '../Card'
 import img1 from './register.jpeg'
 import img2 from './appointment.avif'
 import img3 from './room.jpeg'
 import img4 from './discharge.jpeg'
+import { useNavigate } from 'react-router-dom'
 
 const FrontDeskUsr = () => {
+
+    const [loading, setLoading] = useState(true);
+    let navigate = useNavigate()
+    const onRender = async () => {
+        const token = localStorage.getItem("token");
+        const response = await fetch('http://localhost:5000/checkUser/0', {
+            method: 'GET',
+            headers: {
+                'Content-Type': 'application/json',
+                'token': token
+            }
+        }
+        )
+        const json = await response.json();
+        if (json.error) {
+            navigate("/", { replace: true })
+        }
+        setLoading(false);
+    }
+
+    useEffect(() => {
+        onRender();
+    }, [])
+
     return (
         <div className="container mt-3">
-        <div className="row">
+        {!loading && (<div className="row">
             <div className="col-md-5 m-3">
                 <Card
                     url="/frontdesk/register"
@@ -43,7 +68,7 @@ const FrontDeskUsr = () => {
                     name="Discharge"
                 />
             </div>
-        </div>
+        </div>)}
         </div>
     )
 }

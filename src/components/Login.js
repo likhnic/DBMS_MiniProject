@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import { useNavigate } from 'react-router'
 
 const Login = (props) => {
@@ -22,17 +22,41 @@ const Login = (props) => {
             body: JSON.stringify({ ID, Password:Password })
         })
         const json = await response.json();
-        console.log(json);
         if (!json.error) {
             localStorage.setItem('token', json.user)
-            navigate("/doctor", { replace: true })
+            console.log(json)
+            if(json.type === 0){
+                navigate("/frontdesk", { replace: true })
+            }
+            else if(json.type === 1){
+                navigate("/dataentry", { replace: true })
+            }
+            else if(json.type === 2){
+                navigate("/doctor", { replace: true })
+            }
+            else if(json.type === 3){
+                navigate("/admin", { replace: true })
+            }
         }
     }
+
+    const onRender = ()=>{
+
+        if(localStorage.getItem('token')){
+            localStorage.removeItem('token')
+            navigate("/", { replace: true })
+        }
+    }
+
+    useEffect(() => {
+        onRender()
+    }, [])
+
 
     return (
         <>
             <div className="container mt-3">
-                <div className="card" >
+                <div className="card shadow bg-body rounded p-3 mb-5" >
                     <div className="card-body">
                         <h2 className="card-title">Login</h2>
                         <div className="card-text">

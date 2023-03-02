@@ -1,19 +1,19 @@
 const express = require('express');
-const jwt = require("jsonwebtoken");
-const bcrypt = require("bcryptjs");
 const router = express.Router();
 const query = require('../dbConnection');
+const fetchuser = require('../public/js/fetchuser');
 
 router.use(express.json());
 router.use(express.urlencoded({ extended: 'false' }));
 
 
 // registering a new patient (using patient table)
-router.post("/register", async (req, res) => {
-    const {Aadhar, Name, Address, Phone, InsuranceID, PCPDocID} = req.body;
+router.post("/register", fetchuser, async (req, res) => {
+
+    const { Aadhar, Name, Address, Phone, InsuranceID, PCPDocID } = req.body;
 
     let sql = `SELECT * from Patient WHERE Aadhar = '${Aadhar}'`
-    try{
+    try {
         let result = await query(sql);
         if (result.length > 0) {
             res.status(404).json({
@@ -22,16 +22,16 @@ router.post("/register", async (req, res) => {
             console.log("Patient already registered");
             return;
         }
-    
+
         sql = `INSERT INTO Patient (Aadhar, Name, Address, Phone, InsuranceId, PCPDocID) VALUES ('${Aadhar}', '${Name}', '${Address}', '${Phone}', ${InsuranceID}, ${PCPDocID})`
-    
+
         result = await query(sql);
         console.log("Patient registered successfully");
         res.status(200).json({
             success: 'Patient registered successfully'
         });
     }
-    catch(error){
+    catch (error) {
         console.log(error);
         res.status(404).json({
             error: error
@@ -42,8 +42,9 @@ router.post("/register", async (req, res) => {
 
 // creating a new appointment to a patient (appointment table)
 // add a new appointment to the appointment table
-router.post("/appointment", async (req, res) => {
-    const {StartTime, EndTime, ExaminationRoom, PatientAadhar, DocID} = req.body;
+router.post("/appointment", fetchuser, async (req, res) => {
+
+    const { StartTime, EndTime, ExaminationRoom, PatientAadhar, DocID } = req.body;
     try {
         let sql = `INSERT INTO Appointment (StartTime, EndTime, ExaminationRoom, PatientAadhar, DocID) VALUES ('${StartTime}', '${EndTime}', '${ExaminationRoom}', '${PatientAadhar}', ${DocID})`
         result = await query(sql);
@@ -52,7 +53,7 @@ router.post("/appointment", async (req, res) => {
             success: 'Appointment created successfully'
         });
     }
-    catch(error) {
+    catch (error) {
         res.status(404).json({
             error: error
         });
@@ -63,8 +64,9 @@ router.post("/appointment", async (req, res) => {
 // give a room to the patient (stay table)
 // add a new entity to the stay table
 // change the availability status of the room
-router.put("/stay", async (req, res) => {
-    const {StartTime, RoomNo, PatientAadhar} = req.body;
+router.put("/stay", fetchuser, async (req, res) => {
+
+    const { StartTime, RoomNo, PatientAadhar } = req.body;
 
     try {
 
@@ -79,7 +81,7 @@ router.put("/stay", async (req, res) => {
             success: 'Stay created successfully'
         });
     }
-    catch(error) {
+    catch (error) {
         res.status(404).json({
             error: error
         });
@@ -90,31 +92,28 @@ router.put("/stay", async (req, res) => {
 // change the end time in stay table for the patient
 // change the availability status of the room
 // do not remove the patient from patient table
-router.delete("/discharge", async (req, res) => {
-    const {PatientAadhar} = req.body;
+router.delete("/discharge", fetchuser, async (req, res) => {
+
+    const { PatientAadhar } = req.body;
     const id = PatientAadhar;
     console.log("id = " + id);
     try {
         let sql = `SELECT * FROM Patient WHERE Aadhar = '${id}'`;
 
         let result = await query(sql);
-        if (result.length == 0) {
+        if (result.length === 0) {
             console.log("Patient not found");
             return res.status(404).json({
                 error: "Patient not found"
             });
         }
 
-        // sql = `DELETE FROM Patient WHERE Aadhar = '${id}'`;
-        // result = await query(sql);
-        // console.log("Patient removed successfully");
-
         // update the end time of the patient in the stay table
         var today = new Date();
-        var date = today.getFullYear()+'-'+(today.getMonth()+1)+'-'+today.getDate();
+        var date = today.getFullYear() + '-' + (today.getMonth() + 1) + '-' + today.getDate();
         var time = today.getHours() + ":" + today.getMinutes() + ":" + today.getSeconds();
-        var dateTime = date+' '+time;
-        
+        var dateTime = date + ' ' + time;
+
         sql = `UPDATE Stay 
                 INNER JOIN (SELECT StayID FROM Stay WHERE Stay.PatientAadhar = '${id}' ORDER BY StartTime DESC LIMIT 1) AS S2 ON Stay.StayID = S2.StayID 
                 SET EndTime = '${dateTime}';`;
@@ -126,7 +125,7 @@ router.delete("/discharge", async (req, res) => {
         sql = `SELECT RoomNo FROM Stay 
                 INNER JOIN (SELECT StayID FROM Stay WHERE Stay.PatientAadhar = '${id}' ORDER BY StartTime DESC LIMIT 1) AS S2 ON Stay.StayID = S2.StayID`
         result = await query(sql);
-        
+
         console.log("RoomNo = " + result[0].RoomNo);
         sql = `UPDATE Room SET Availability = 1 WHERE RoomNo = ${result[0].RoomNo} `;
         result = await query(sql);
@@ -143,8 +142,6 @@ router.delete("/discharge", async (req, res) => {
     }
 });
 
-// router.listen(3000, () => {
-//     console.log("Server started on port 3000");
-// });
+
 
 module.exports = router;

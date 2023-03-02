@@ -9,7 +9,7 @@ router.use(express.urlencoded({ extended: 'false' }))
 router.use(express.json())
 
 const types = {
-    '0': 'Front_Desk_Operator',
+    '0': 'Front_desk_operator',
     '1': 'Data_entry_operator',
     '2': 'Doctor',
     '3': 'Database_administrator'

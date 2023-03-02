@@ -2,17 +2,13 @@ import React, { useEffect, useState } from 'react'
 
 const DoctorDashboard = () => {
 
-    // const [search, setSearch] = useState('')
     const [searchResult, setSearchResult] = useState([])
     const [showDetails, setShowDetails] = useState(0)
     const [patientDetails, setPatientDetails] = useState({})
     const [patientPres, setPatientPres] = useState({ tests: [], undergoes: [], prescribes: [] })
     const [patientPrescribe, setPatientPrescribe] = useState({ medicationcode: '', dose: '' })
     const [showType, setShowType] = useState(-1)
-
-    // const searchOnChange = (e) => {
-    //     setSearch(e.target.value)
-    // }
+    const [currTime, setCurrTime] = useState(new Date().toISOString())
 
     const presChange = (e) => {
         setPatientPrescribe({ ...patientPrescribe, [e.target.name]: e.target.value })
@@ -40,18 +36,6 @@ const DoctorDashboard = () => {
         return new Date(date).toLocaleString(undefined, {timeZone: 'Asia/Kolkata'});
     }
 
-    // const handleOnSubmit = async (e) => {
-    //     e.preventDefault();
-    //     const response = await fetch('http://localhost:5000/api/doctor/search', {
-    //         method: 'POST',
-    //         headers: {
-    //             'Content-Type': 'application/json',
-    //         },
-    //         body: JSON.stringify({ search })
-    //     })
-    //     console.log(response)
-    // }
-
     const handleType = async (e) => {
         if (e.target.name === 'tests') {
             await getAccordingType('tests')
@@ -68,21 +52,35 @@ const DoctorDashboard = () => {
     }
 
     const onRenderPage = async () => {
-        const response = await fetch('http://localhost:5000/api/doctor', {
+
+        const token = localStorage.getItem('token')
+        let response = await fetch('http://localhost:5000/checkUser/2', { 
+            method: 'GET',
+            headers: {
+                'Content-Type': 'application/json',
+                'token': token
+            }
+
+        })  
+        let json = await response.json();
+        console.log(json);
+        if(json.error){
+            window.location.href = '/'
+        }
+        response = await fetch('http://localhost:5000/api/doctor', {
             method: 'GET',
             headers: {
                 'Content-Type': 'application/json',
                 'token': localStorage.getItem('token')
             },
         })
-        const json = await response.json();
+        json = await response.json();
         console.log(json);
         setSearchResult(json.result)
     }
 
     const resetPage = async (e) => {
         e.preventDefault();
-        // setSearch('')
         setShowDetails(0)
         setPatientDetails({})
         setShowType(-1)
@@ -116,21 +114,19 @@ const DoctorDashboard = () => {
 
     useEffect(() => {
         if (showDetails === 0) onRenderPage()
+        if(showDetails===0){
+            setCurrTime(new Date().toISOString())
+        }
     }, [showDetails])
 
     return (
         <>
 
             <div className="container">
-                {/* <form className="d-flex mt-3" role="search"> */}
-                {/* <input className="form-control me-2" type="search" placeholder="Search" name='search' onChange={searchOnChange} aria-label="Search" /> */}
-                {/* <button className="btn btn-outline-success" onClick={handleOnSubmit} type="submit">Search</button> */}
-                {/* {showDetails===1 && (<button className="btn btn-outline-success m-3" onClick={resetPage} type="submit">Go Back</button>)} */}
-                {/* </form> */}
 
                 {showDetails === 0 && searchResult.length > 0 && searchResult.map((result, i) => {
                     return (
-                        <div className="card mt-3" key={i}>
+                        <div className={`card shadow mt-3 p-3 mb-3 rounded bg-${result.starttime >= currTime ? 'light':'secondary'} text-${result.starttime >= currTime ? 'dark':'light'}`} key={i}>
                             <div className="card-body">
                                 <div className="row">
                                     <div className="row col-md-9">
@@ -169,10 +165,10 @@ const DoctorDashboard = () => {
                 {
                     showDetails === 1 && (
                         <>
-                            <button className="btn btn-outline-success m-3" onClick={resetPage} type="submit">Go Back</button>
+                            <button className="btn btn-outline-primary m-3" onClick={resetPage} type="submit">Go Back</button>
 
                             <div className="container mt-3">
-                                <div className="card">
+                                <div className="card shadow p-3 mb-5 bg-body rounded">
                                     <div className="card-body">
                                         <div className="row">
                                     <div className="row col-md-9">
@@ -216,9 +212,9 @@ const DoctorDashboard = () => {
                             <div className="container mt-3">
                                 <div className="row">
                                     <div className="col-md-3"></div>
-                                    <button className="btn btn-primary col-md-2 m-2 " name='tests' onClick={handleType}>Tests</button>
-                                    <button className="btn btn-primary col-md-2 m-2" name='undergoes' onClick={handleType}>Treatments</button>
-                                    <button className="btn btn-primary col-md-2 m-2" name='prescribes' onClick={handleType}>Prescriptions</button>
+                                    <button className={`btn btn-${showType !== 0 ? "outline-":""}primary col-md-2 m-2`} name='tests' onClick={handleType}>Tests</button>
+                                    <button className={`btn btn-${showType !== 1 ? "outline-":""}primary col-md-2 m-2`} name='undergoes' onClick={handleType}>Treatments</button>
+                                    <button className={`btn btn-${showType !== 2 ? "outline-":""}primary col-md-2 m-2`} name='prescribes' onClick={handleType}>Prescriptions</button>
                                     <div className="col-md-3"></div>
                                 </div>
                             </div>
@@ -245,7 +241,7 @@ const DoctorDashboard = () => {
                                         </h4>
                                     )}
                                     {showType === 1 && patientPres.undergoes.length!==0 && (
-                                        <div className="card">
+                                        <div className="card shadow p-3 mb-5 bg-body rounded">
                                             {
                                                 patientPres.undergoes.map((undergo, i) => {
                                                     return (
@@ -270,7 +266,7 @@ const DoctorDashboard = () => {
                                     {showType === 2 && (
 
                                         <div className="container mt-3">
-                                            <div className="card">
+                                            <div className="card shadow p-3 mb-5 bg-body rounded">
                                                 <div className="card-body">
                                                 <form>
                                                     <div className="mb-3">
@@ -281,14 +277,14 @@ const DoctorDashboard = () => {
                                                         <label htmlFor="dose" className="form-label">Dose</label>
                                                         <input type="text" name="dose" className="form-control" id="dose" onChange={presChange} />
                                                     </div>
-                                                    <button type="submit" className="mt-3 btn btn-primary" onClick={prescribeClick}>Prescribe</button>
+                                                    <button type="submit" className="mt-3 btn btn-outline-primary" onClick={prescribeClick}>Prescribe</button>
                                                 </form>
                                                 </div>
                                             </div>
                                             {
                                                 patientPres.prescribes.length!==0 &&  patientPres.prescribes.map((prescribe, i) => {
                                                     return (
-                                                        <div className='card m-3' key={i}>
+                                                        <div className='card shadow p-3 mb-5 bg-body rounded m-3' key={i}>
                                                             <div className="card-body">
                                                             <div>Medication Name: {prescribe.medicationname}</div>
                                                             <div>Prescribed by: {prescribe.doctorname}</div>

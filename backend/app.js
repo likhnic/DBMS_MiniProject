@@ -9,6 +9,7 @@ const app = express();
 const query = require('./dbConnection');
 const bcrypt = require('bcrypt');
 const jwt = require('jsonwebtoken');
+const fetchuser = require('./public/js/fetchuser');
 
 app.use(express.urlencoded({ extended: 'false' }));
 app.use(express.json());
@@ -19,6 +20,19 @@ app.use('/api/frontdeskop', frontdeskopRouter);
 app.use('/api/doctor', doctorRouter);
 app.use('/api/admin', adminRouter);
 
+const types = {
+    '0': 'Front_desk_operator',
+    '1': 'Data_entry_operator',
+    '2': 'Doctor',
+    '3': 'Database_administrator'
+}
+
+const type_IDs = {
+    '0': 'FrontDeskOpID',
+    '1': 'DataEntryOpID',
+    '2': 'DocID',
+    '3': 'AdminID'
+}
 
 app.post('/login', async (req, res) => {
 
@@ -38,11 +52,29 @@ app.post('/login', async (req, res) => {
             return res.json({error: "Invalid Credentials"});
         }
         const token = jwt.sign({user: {id: result[0].ID}}, "secrethaha")
-        return res.json({user: token})
+        return res.json({user: token, type: result[0].Type})
     } catch (error) {
         console.log(error);
         return res.json({error: error});
     }
+})
+
+app.get('/checkUser/:type', fetchuser, async(req, res)=>{
+
+    const isUser = req.user.id;
+    const {type} = req.params
+    let sqlQuery = `SELECT ${type_IDs[type]} FROM ${types[type]} WHERE  ${type_IDs[type]} = ${isUser};`
+
+    try {
+        const found = await query(sqlQuery)
+        console.log("Hey",found)
+        if(!found || found.length == 0){
+            return res.json({error:"Not Authorised"})
+        }
+    } catch (error) {
+        return res.json({error:error})
+    }
+    return res.json({success: "Fine"})
 })
 
 app.listen(PORT, () => {
