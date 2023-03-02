@@ -1,6 +1,14 @@
 import React from 'react'
+import { useNavigate, Link } from 'react-router-dom';
 
 const Navbar = () => {
+
+    let navigate = useNavigate()
+    const handleOnClick = (e) => {
+        e.preventDefault();
+        localStorage.removeItem('token');
+        navigate("/")
+    }
     return (
         <div>
 
@@ -15,9 +23,17 @@ const Navbar = () => {
                             <li className="nav-item">
                                 <a className="nav-link active" aria-current="page" href="#">Home</a>
                             </li>
-                            <li className="nav-item">
-                                <a className="nav-link active" aria-current="page" href="#">Login</a>
-                            </li>
+                            {!localStorage.getItem('token') && 
+                                <li className="nav-item">
+                                    <Link className="btn btn-dark" to="/">
+                                        Login
+                                    </Link>
+                                </li>}
+                            {localStorage.getItem('token') && <li className="nav-item">
+                                <button className="btn btn-dark" onClick={handleOnClick}>
+                                    Logout
+                                </button>
+                            </li>}
                         </ul>
 
                     </div>

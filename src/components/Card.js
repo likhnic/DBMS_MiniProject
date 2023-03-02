@@ -12,7 +12,7 @@ const Card = (props) => {
     return (
         <>
         <div className="card" style={style_card}>
-            <img className="card-img-top" src={props.img_url} alt="Card image"/>
+            <img className="card-img-top" src={props.img_url} style={{height:"300px"}} alt="Card image"/>
             <div className="card-body">
             <p className="card-text">{props.card_text}</p>
             <button type="submit" className="btn btn-primary btn-block mb-4" onClick={handleOnClick}>{props.name}</button>
@@ -21,4 +21,4 @@ const Card = (props) => {
         </>
     )
 }
-export default Card
+export default Card;

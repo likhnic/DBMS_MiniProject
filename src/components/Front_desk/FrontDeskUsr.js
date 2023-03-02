@@ -1,34 +1,50 @@
 import React from 'react'
 import Card from '../Card'
+import img1 from './register.jpeg'
+import img2 from './appointment.avif'
+import img3 from './room.jpeg'
+import img4 from './discharge.jpeg'
 
 const FrontDeskUsr = () => {
     return (
-        <>
-            <Card
-                url="/frontdesk/register"
-                img_url="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQSpgPb_Fg_0fUat4d5jd0twdUVB_M1rthevw&usqp=CAU"
-                card_text="Register a new patient"
-                name="Register"
-            />
-            <Card
-                url="/frontdesk/appointment"
-                img_url="https://img.freepik.com/free-vector/appointment-booking-with-calendar_52683-39658.jpg?w=2000"
-                card_text="Create a new appointment"
-                name="Appointment"
-            />
-            <Card
-                url="/frontdesk/room"
-                img_url="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTmAm-3g6Q8vmMIDUAX7MBI0OUTzfikEGEfBA&usqp=CAU"
-                card_text="Assign a room to a patient"
-                name="Room"
-            />
-            <Card
-                url="/frontdesk/discharge"
-                img_url="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSeThq2gZzFCnJOMVyBIE6KQABB-vZMLy3jxg&usqp=CAU"
-                card_text="Remove a patient"
-                name="Discharge"
-            />
-        </>
+        <div className="container mt-3">
+        <div className="row">
+            <div className="col-md-5 m-3">
+                <Card
+                    url="/frontdesk/register"
+                    img_url={img1}
+                    card_text="Register a new patient"
+                    name="Register"
+                />
+            </div>
+
+            <div className="col-md-5 m-3">
+                <Card
+                    url="/frontdesk/appointment"
+                    img_url={img2}
+                    card_text="Create a new appointment"
+                    name="Appointment"
+                />
+            </div>
+
+            <div className="col-md-5 m-3">
+                <Card
+                    url="/frontdesk/room"
+                    img_url={img3}
+                    card_text="Assign a room to a patient"
+                    name="Room"
+                />
+            </div>
+            <div className="col-md-5 m-3">
+                <Card
+                    url="/frontdesk/discharge"
+                    img_url={img4}
+                    card_text="Discharge a patient"
+                    name="Discharge"
+                />
+            </div>
+        </div>
+        </div>
     )
 }
 

@@ -44,7 +44,7 @@ const RegisterPatient = () => {
                     </div>
 
                     <div className="form-outline mb-4">
-                        <input type="number" name='Aadhar' className="form-control" placeholder='Aadhar' maxLength={12} minLength={12} onChange={handleOnChange} />
+                        <input type="text" name='Aadhar' className="form-control" placeholder='Aadhar' maxLength={12} minLength={12} onChange={handleOnChange} />
                     </div>
 
                     <div className="form-outline mb-4">
@@ -52,7 +52,7 @@ const RegisterPatient = () => {
                     </div>
 
                     <div className="form-outline mb-4">
-                        <input type="number" name="Phone" className="form-control" maxLength={12} minLength={10} placeholder="Phone Number" onChange={handleOnChange} />
+                        <input type="text" name="Phone" className="form-control" maxLength={20} minLength={10} placeholder="Phone Number" onChange={handleOnChange} />
                     </div>
 
                     <div className="form-outline mb-4">

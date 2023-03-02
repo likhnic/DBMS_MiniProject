@@ -6,7 +6,7 @@ const fetchuser=async (req,res,next)=>{
 
     const token=req.header('token')
     if(!token){
-        res.status(401).json({error:"Please authenticate using a valid token"})
+        return res.status(401).json({error:"Please authenticate using a valid token"})
     }
     try {
         // here user is the employeeId
@@ -14,7 +14,7 @@ const fetchuser=async (req,res,next)=>{
         req.user = data.user
         return next()
     } catch (error) {
-        res.status(401).json({error:"Authenicate using valid token"})
+        return res.status(401).json({error:"Authenicate using valid token"})
     }
 }
 

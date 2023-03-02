@@ -10,6 +10,10 @@ import Admin_Dashboard from './components/Admin_Dashboard/Admin_Dashboard';
 import DoctorDashboard from './components/Doctor/DoctorDashboard';
 import RegisterPatient from './components/Front_desk/RegisterPatient';
 import FrontDeskUsr from './components/Front_desk/FrontDeskUsr';
+import Stay from './components/Front_desk/Stay';
+import Discharge from './components/Front_desk/Discharge';
+import Appointment from './components/Front_desk/Appointment';
+import { ProtectedRoute } from './components/ProtectedRoute';
 
 const App = () => {
     return (
@@ -19,12 +23,12 @@ const App = () => {
                 <Routes>
                     <Route exact path="/" element={<Login />} />
                     <Route exact path='/admin' element={<Admin_Dashboard/>}/>
-                    <Route exact path='/doctor' element={<DoctorDashboard/>}/>
-                    <Route exact path='/frontdesk' element={<FrontDeskUsr />}/>
-                    <Route exact path='/frontdesk/register' element={<RegisterPatient />}/>
-                    <Route exact path='/frontdesk/appointment' element={<FrontDeskUsr />}/>
-                    <Route exact path='/frontdesk/room' element={<FrontDeskUsr />}/>
-                    <Route exact path='/frontdesk/discharge' element={<FrontDeskUsr />}/>
+                    <Route exact path="/doctor" element={<ProtectedRoute element={DoctorDashboard} />} />
+                    <Route exact path='/frontdesk' element={<ProtectedRoute element={FrontDeskUsr} />}/>
+                    <Route exact path='/frontdesk/register' element={<ProtectedRoute element={RegisterPatient} />}/>
+                    <Route exact path='/frontdesk/appointment' element={<ProtectedRoute element={Appointment} />}/>
+                    <Route exact path='/frontdesk/room' element={<ProtectedRoute element={Stay} />}/>
+                    <Route exact path='/frontdesk/discharge' element={<ProtectedRoute element={Discharge} />}/>
                 </Routes>
             </Router>
         </>

@@ -1,5 +1,4 @@
 const express = require('express');
-const Client = require('mysql');
 const jwt = require("jsonwebtoken");
 const bcrypt = require("bcryptjs");
 const router = express.Router();
@@ -42,11 +41,10 @@ router.post("/register", async (req, res) => {
 
 
 // creating a new appointment to a patient (appointment table)
-router.post("/:id", async (req, res) => {
-    const {id} = req.params;
+// add a new appointment to the appointment table
+router.post("/appointment", async (req, res) => {
     const {StartTime, EndTime, ExaminationRoom, PatientAadhar, DocID} = req.body;
     try {
-
         let sql = `INSERT INTO Appointment (StartTime, EndTime, ExaminationRoom, PatientAadhar, DocID) VALUES ('${StartTime}', '${EndTime}', '${ExaminationRoom}', '${PatientAadhar}', ${DocID})`
         result = await query(sql);
         console.log("Appointment created successfully");
@@ -56,52 +54,45 @@ router.post("/:id", async (req, res) => {
     }
     catch(error) {
         res.status(404).json({
-            error: 'Error in creating Appointment'
+            error: error
         });
     }
 });
 
 
 // give a room to the patient (stay table)
-router.put("/:id", async (req, res) => {
-    const {id} = req.params;
+// add a new entity to the stay table
+// change the availability status of the room
+router.put("/stay", async (req, res) => {
     const {StartTime, RoomNo, PatientAadhar} = req.body;
 
-    if (id != PatientAadhar) {
-        console.log("Patient not found");
-        res.status(404).json({
-            error: "Patient not found"
-        });
-        return;
-    }
     try {
-        let sql = `SELECT * FROM Stay WHERE StayID = ${StayID}`;
-        let result  = await query(sql);
-        if (result.length > 0) {
-            console.log("Stay already exists");
-            res.status(404).json({
-                error: "Stay already exists"
-            });
-            return;
-        }
 
         sql = `INSERT INTO Stay (StartTime, RoomNo, PatientAadhar) VALUES ('${StartTime}', ${RoomNo}, '${PatientAadhar}')`
         result = await query(sql);
         console.log("Stay created successfully");
+
+        sql = `UPDATE Room SET Availability = '0' WHERE RoomNo = ${RoomNo}`;
+        result = await query(sql);
+        console.log("Room availability updated successfully");
         res.status(200).json({
             success: 'Stay created successfully'
         });
     }
-    catch {
+    catch(error) {
         res.status(404).json({
-            error: 'Error in creating stay'
+            error: error
         });
     }
 });
 
 // removing the patient from the patient table and update the end time of patient (patient, stay tables)
-router.delete("/:id", async (req, res) => {
-    const {id} = req.params;
+// change the end time in stay table for the patient
+// change the availability status of the room
+// do not remove the patient from patient table
+router.delete("/discharge", async (req, res) => {
+    const {PatientAadhar} = req.body;
+    const id = PatientAadhar;
     console.log("id = " + id);
     try {
         let sql = `SELECT * FROM Patient WHERE Aadhar = '${id}'`;
@@ -114,9 +105,9 @@ router.delete("/:id", async (req, res) => {
             });
         }
 
-        sql = `DELETE FROM Patient WHERE Aadhar = '${id}'`;
-        result = await query(sql);
-        console.log("Patient removed successfully");
+        // sql = `DELETE FROM Patient WHERE Aadhar = '${id}'`;
+        // result = await query(sql);
+        // console.log("Patient removed successfully");
 
         // update the end time of the patient in the stay table
         var today = new Date();
@@ -124,10 +115,23 @@ router.delete("/:id", async (req, res) => {
         var time = today.getHours() + ":" + today.getMinutes() + ":" + today.getSeconds();
         var dateTime = date+' '+time;
         
-        sql = `UPDATE Stay SET EndTime = '${dateTime}' WHERE StayID = (SELECT StayID FROM Stay WHERE Stay.PatientAadhar = '${id}' ORDER BY StartTime DESC LIMIT 1)`;
+        sql = `UPDATE Stay 
+                INNER JOIN (SELECT StayID FROM Stay WHERE Stay.PatientAadhar = '${id}' ORDER BY StartTime DESC LIMIT 1) AS S2 ON Stay.StayID = S2.StayID 
+                SET EndTime = '${dateTime}';`;
         result = query(sql);
 
         console.log("End time updated successfully");
+
+        // change the availability status of the room
+        sql = `SELECT RoomNo FROM Stay 
+                INNER JOIN (SELECT StayID FROM Stay WHERE Stay.PatientAadhar = '${id}' ORDER BY StartTime DESC LIMIT 1) AS S2 ON Stay.StayID = S2.StayID`
+        result = await query(sql);
+        
+        console.log("RoomNo = " + result[0].RoomNo);
+        sql = `UPDATE Room SET Availability = 1 WHERE RoomNo = ${result[0].RoomNo} `;
+        result = await query(sql);
+        console.log("Room availability updated successfully");
+
         res.status(200).json({
             success: 'End time updated successfully'
         });

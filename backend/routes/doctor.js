@@ -9,13 +9,22 @@ router.use(express.json())
 
 
 router.get('/', fetchuser, async(req, res)=>{
-
+    let checkquery = `SELECT * FROM Doctor WHERE DocID = ${req.user.id}`
+    try{
+        const checkdoc = await query(checkquery)
+        if(!checkdoc){
+            return res.json({error:"Not Authorised"})
+        }
+    }
+    catch(error){
+        return res.json({error:error})
+    }
     const docId = req.user.id;
 
-    let sqlQuery = `SELECT Patient.Name as patientname, Patient.Aadhar as patientaadhar, Appointment.AppointmentId as appointmentid, Appointment.StartTime as starttime, Appointment.EndTime as endtime, Patient.Phone as phone, Patient.Address as address 
+    let sqlQuery = `SELECT Patient.Name as patientname, Patient.Aadhar as patientaadhar, Appointment.AppointmentID as appointmentid, Appointment.StartTime as starttime, Appointment.EndTime as endtime, Patient.Phone as phone, Patient.Address as address 
                 FROM Patient
                 JOIN Appointment ON Patient.Aadhar = Appointment.PatientAadhar
-                WHERE Appointment.DocId = ${docId};`
+                WHERE Appointment.DocID = ${docId};`
 
     try{
         const patients = await query(sqlQuery);
@@ -26,11 +35,21 @@ router.get('/', fetchuser, async(req, res)=>{
     }
 })
 
-router.get('/:appointmentId', fetchuser, async(req, res)=>{
+router.get('/:appointmentId/:type', fetchuser, async(req, res)=>{
 
-    const appointmentId = req.params.appointmentId;
+    let checkquery = `SELECT * FROM Doctor WHERE DocID = ${req.user.id}`
+    try{
+        const checkdoc = await query(checkquery)
+        if(!checkdoc){
+            return res.json({error:"Not Authorised"})
+        }
+    }
+    catch(error){
+        return res.json({error:error})
+    }
+    const {appointmentId, type} = req.params;
     let patientId;
-    let sqlQuery = `SELECT PatientAadhar FROM Appointment WHERE AppointmentId = ${appointmentId};`
+    let sqlQuery = `SELECT PatientAadhar FROM Appointment WHERE AppointmentID = ${appointmentId};`
     try{
 
         let patientDet = await query(sqlQuery);
@@ -44,18 +63,24 @@ router.get('/:appointmentId', fetchuser, async(req, res)=>{
         return res.json({error: error});
     }
 
-    let sqlQuery1 = `SELECT TestId as testid, Name as procedurename, Date as date, Result as result FROM Test, Procedure WHERE PatientAadhar = ${patientId} AND Procedure.Code = Test.Code;`
-    let sqlQuery2 = `SELECT Procedure.Name as procedurename, Undergoes.Date as undergoesdate, Doctor.Name as doctorname FROM Undergoes, Procedure, Doctor WHERE Undergoes.PatientAadhar = ${patientId} AND Procedure.Code = Undergoes.ProcedureCode AND Doctor.DocId = Undergoes.DocId;`
-    let sqlQuery3 = `SELECT Medication.Name as medicationname, Prescibes.Dose as presribesdose, Doctor.Name as doctorname, Prescribes.Date as prescribesdate FROM Prescribes, Doctor, Medication WHERE Prescribes.PatientAadhar = ${patientId} AND Medication.Code = Prescribes.MedicationCode AND Doctor.DocId = Prescribes.DocId;`
+    let sqlQuery1 = `SELECT TestID as testid, Name as procedurename, Date as date, Result as result FROM Test, \`Procedure\` WHERE Test.PatientAadhar = '${patientId}' AND Procedure.Code = Test.Code;`
+    let sqlQuery2 = `SELECT Procedure.Name as procedurename, Undergoes.Date as undergoesdate, Doctor.Name as doctorname FROM Undergoes, \`Procedure\`, Doctor WHERE Undergoes.PatientAadhar = '${patientId}' AND Procedure.Code = Undergoes.ProcedureCode AND Doctor.DocID = Undergoes.DocID;`
+    let sqlQuery3 = `SELECT Medication.Name as medicationname, Prescribes.Dose as prescribesdose, Doctor.Name as doctorname, Prescribes.Date as prescribesdate FROM Prescribes, Doctor, Medication WHERE Prescribes.PatientAadhar = '${patientId}' AND Medication.Code = Prescribes.MedicationCode AND Doctor.DocID = Prescribes.DocID;`
 
     try{
 
-        let tests = await query(sqlQuery1);
-        let undergoes = await query(sqlQuery2);
-        let prescribes = await query(sqlQuery3);
-
-        res.json({tests: tests, undergoes: undergoes, prescribes: prescribes});
-
+        if(type === 'tests'){
+            let tests = await query(sqlQuery1);
+            return res.json({tests: tests})
+        }
+        else if(type === 'undergoes'){
+            let undergoes = await query(sqlQuery2);
+            return res.json({undergoes: undergoes})
+        }
+        else {
+            let prescribes = await query(sqlQuery3);
+            return res.json({prescribes: prescribes})
+        }
     }catch(error){
         console.log(error);
         res.json({error: error});
@@ -63,18 +88,26 @@ router.get('/:appointmentId', fetchuser, async(req, res)=>{
 })
 
 
-router.post('/:appointmentId', async(req, res)=>{
-
+router.post('/:appointmentId', fetchuser,async(req, res)=>{
+    let checkquery = `SELECT * FROM Doctor WHERE DocID = ${req.user.id}`
+    try{
+        const checkdoc = await query(checkquery)
+        if(!checkdoc){
+            return res.json({error:"Not Authorised"})
+        }
+    }
+    catch(error){
+        return res.json({error:error})
+    }
     const appointmentId = req.params.appointmentId;
     const {MedicationCode, Dose} = req.body;
     let patientId, DocId;
-    let sqlQuery = `SELECT PatientAadhar, DocId FROM Appointment WHERE AppointmentId = ${appointmentId};`
-    
+    let sqlQuery = `SELECT PatientAadhar, DocID FROM Appointment WHERE AppointmentID = ${appointmentId};`
+     
     try{
-
         let patientDet = await query(sqlQuery);
         patientId = patientDet[0].PatientAadhar;
-        DocId = patientDet[0].DocId;
+        DocId = patientDet[0].DocID;
         if(!patientId){
             return res.json({error: "Patient not found!"})
         }
@@ -87,16 +120,17 @@ router.post('/:appointmentId', async(req, res)=>{
         return res.json({error: error});
     }
 
-    let Date = new Date().toISOString().slice(0, 19).replace('T', ' ');
-    sqlQuery = `INSERT INTO Prescribes(Medication, Dose, DocId, AppointmentId, PatientAadhar, Date) VALUES(${MedicationCode}, ${Dose}, ${DocId}, ${appointmentId}, ${patientId}, ${Date});`
+    let DateN = new Date().toISOString().slice(0, 19).replace('T', ' ');
+    sqlQuery = `INSERT INTO Prescribes(MedicationCode, Dose, DocID, AppointmentID, PatientAadhar, Date) VALUES(${MedicationCode}, '${Dose}', ${DocId}, ${appointmentId}, '${patientId}', '${DateN}');`
 
+    
     try{
         const result = await query(sqlQuery);
-        res.json({result: result});
+        return res.json({result: result});
     }
     catch(error){
         console.log(error);
-        res.json({error: error});
+        return res.json({error: error});
     }
 })
 

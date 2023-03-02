@@ -1,7 +1,7 @@
 import React, { useState } from 'react'
 import { useNavigate } from 'react-router'
 
-const Login = () => {
+const Login = (props) => {
 
     const [credentials, setCredentials] = useState({ ID: "", password: ""})
     let navigate = useNavigate()
@@ -24,9 +24,8 @@ const Login = () => {
         const json = await response.json();
         console.log(json);
         if (!json.error) {
-            // save the auth token and redirect
             localStorage.setItem('token', json.user)
-            navigate("/dashboard", { replace: true })
+            navigate("/doctor", { replace: true })
         }
     }
 
