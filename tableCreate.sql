@@ -101,7 +101,7 @@ CREATE TABLE Patient
 DROP TABLE IF EXISTS Appointment;
 CREATE TABLE Appointment
 (
-    AppointmentID INTEGER,
+    AppointmentID INTEGER NOT NULL AUTO_INCREMENT,
     StartTime DATETIME,
     EndTime DATETIME,
     ExaminationRoom VARCHAR(50),
@@ -139,7 +139,7 @@ CREATE TABLE Room
 DROP TABLE IF EXISTS Stay;
 CREATE TABLE Stay
 (
-    StayID INTEGER,
+    StayID INTEGER NOT NULL AUTO_INCREMENT,
     StartTime DATETIME, 
     EndTime DATETIME,
     RoomNo INTEGER,
