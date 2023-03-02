@@ -54,7 +54,7 @@ router.post('/test/:patientId',async (req, res) => {
     // }
 
     const {Name} = req.body;
-    sqlQuery = `SELECT Code FROM Procedure WHERE Name = '${Name}';`
+    sqlQuery = `SELECT Code FROM \`Procedure\` WHERE Name = '${Name}';`
     let Code;
     try{
         let code = await query(sqlQuery);
@@ -96,7 +96,7 @@ router.post('/treatment/:patientId', async(req, res)=>{
     // }
 
     const {Name, DocID} = req.body;
-    sqlQuery = `SELECT Code FROM Procedure WHERE Name = '${Name}';`
+    sqlQuery = `SELECT Code FROM \`Procedure\` WHERE Name = '${Name}';`
     let Code;
     try{
         let code = await query(sqlQuery);
