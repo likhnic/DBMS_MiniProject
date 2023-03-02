@@ -5,7 +5,7 @@ CREATE TABLE User
     ID INTEGER NOT NULL,
     Aadhar VARCHAR(12) NOT NULL UNIQUE,
     Password VARCHAR(100) NOT NULL,
-    Type VARCHAR(50) NOT NULL,
+    Type INT NOT NULL,
     Status BOOLEAN NOT NULL,
     PRIMARY KEY (ID) 
 );
@@ -155,6 +155,7 @@ CREATE TABLE `Procedure`
 (
     Code INTEGER,
     Name VARCHAR(100),
+    Type INT NOT NULL,
     Cost INTEGER,
     PRIMARY KEY (Code)
 );
