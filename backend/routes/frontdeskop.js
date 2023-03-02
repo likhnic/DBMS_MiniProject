@@ -11,9 +11,9 @@ router.use(express.urlencoded({ extended: 'false' }));
 
 // registering a new patient (using patient table)
 router.post("/register", async (req, res) => {
-    const {Aadhar, Name, Address, Phone, InsuranceId, PCPDocID} = req.body;
+    const {Aadhar, Name, Address, Phone, InsuranceID, PCPDocID} = req.body;
 
-    let sql = "select * from patient where Aadhar = " + Aadhar;
+    let sql = `SELECT * from Patient WHERE Aadhar = '${Aadhar}'`
     try{
         let result = await query(sql);
         if (result.length > 0) {
@@ -24,7 +24,7 @@ router.post("/register", async (req, res) => {
             return;
         }
     
-        sql = `insert into patient (Aadhar, Name, Address, Phone, InsuranceId, PCPDocID) values ('${Aadhar}', '${Name}', '${Address}', '${Phone}', ${InsuranceId}, ${PCPDocID})`
+        sql = `INSERT INTO Patient (Aadhar, Name, Address, Phone, InsuranceId, PCPDocID) VALUES ('${Aadhar}', '${Name}', '${Address}', '${Phone}', ${InsuranceID}, ${PCPDocID})`
     
         result = await query(sql);
         console.log("Patient registered successfully");
@@ -35,7 +35,7 @@ router.post("/register", async (req, res) => {
     catch(error){
         console.log(error);
         res.status(404).json({
-            error: 'Error in registering patient'
+            error: error
         });
     }
 });

@@ -6,8 +6,7 @@ const Login = () => {
     const [credentials, setCredentials] = useState({ ID: "", password: ""})
     let navigate = useNavigate()
 
-    const onClick = (e) => {
-        console.log("Hello")
+    const onChange = (e) => {
         setCredentials({ ...credentials, [e.target.name]: e.target.value })
     }
 
