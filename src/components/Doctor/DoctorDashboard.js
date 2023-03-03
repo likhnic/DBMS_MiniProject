@@ -18,7 +18,7 @@ const DoctorDashboard = () => {
         e.preventDefault();
         let appointmentId = patientDetails.appointmentid
         const { medicationcode, dose } = patientPrescribe
-        const response = await fetch(`http://localhost:5000/api/doctor/${appointmentId}`, {
+        const response = await fetch(`http://localhost:5001/api/doctor/${appointmentId}`, {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',
@@ -54,7 +54,7 @@ const DoctorDashboard = () => {
     const onRenderPage = async () => {
 
         const token = localStorage.getItem('token')
-        let response = await fetch('http://localhost:5000/checkUser/2', { 
+        let response = await fetch('http://localhost:5001/checkUser/2', { 
             method: 'GET',
             headers: {
                 'Content-Type': 'application/json',
@@ -67,7 +67,7 @@ const DoctorDashboard = () => {
         if(json.error){
             window.location.href = '/'
         }
-        response = await fetch('http://localhost:5000/api/doctor', {
+        response = await fetch('http://localhost:5001/api/doctor', {
             method: 'GET',
             headers: {
                 'Content-Type': 'application/json',
@@ -98,7 +98,7 @@ const DoctorDashboard = () => {
 
     const getAccordingType = async (type) => {
         let appointmentId = patientDetails.appointmentid
-        const response = await fetch(`http://localhost:5000/api/doctor/${appointmentId}/${type}`, {
+        const response = await fetch(`http://localhost:5001/api/doctor/${appointmentId}/${type}`, {
             method: 'GET',
             headers: {
                 'Content-Type': 'application/json',

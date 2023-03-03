@@ -38,7 +38,10 @@ const Data_Entry_Dashboard = () => {
 
     const sendToPage = (patientID) => {
         console.log(patientID)
-        navigate(`/dataentryop/updateresult?patientID=${patientID}`, { replace: true })
+        // navigate(`/dataentryop/addtest?patientID=${patientID}`,{replace:true})
+        // navigate(`/dataentryop/treatment?patientID=${patientID}`,{replace:true})
+        // navigate(`/dataentryop/updateresult?patientID=${patientID}`, { replace: true })
+        navigate(`/dataentryop/options?patientID=${patientID}`, { replace: true })
 
     }
 
