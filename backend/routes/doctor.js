@@ -31,7 +31,7 @@ router.get('/', fetchuser, async(req, res)=>{
         return res.json({result: patients});
     }catch(error){
         console.log(error);
-        return res.json({error: error});
+        return res.json({error: "Cannot fetch patients"});
     }
 })
 
@@ -42,7 +42,7 @@ router.get('/names',async(req,res) =>{
         return res.json({test:result})
     } catch (error) {
         console.log(error);
-        res.json({error: error});
+        res.json({error: "Internal Server Error"});
     }
 })
 
@@ -71,7 +71,7 @@ router.get('/:appointmentId/:type', fetchuser, async(req, res)=>{
     }
     catch(error){
         console.log(error);
-        return res.json({error: error});
+        return res.json({error: "Cannot fetch patient details"});
     }
 
     let sqlQuery1 = `SELECT TestID as testid, Name as procedurename, Date as date, Result as result FROM Test, \`Procedure\` WHERE Test.PatientAadhar = '${patientId}' AND Procedure.Code = Test.Code;`
@@ -94,7 +94,7 @@ router.get('/:appointmentId/:type', fetchuser, async(req, res)=>{
         }
     }catch(error){
         console.log(error);
-        res.json({error: error});
+        res.json({error: "Internal Server Error"});
     }
 })
 
@@ -108,7 +108,7 @@ router.post('/:appointmentId', fetchuser,async(req, res)=>{
         }
     }
     catch(error){
-        return res.json({error:error})
+        return res.json({error:"Not Authorised"})
     }
     const appointmentId = req.params.appointmentId;
     const {MedicationCode, Dose} = req.body;
@@ -128,7 +128,7 @@ router.post('/:appointmentId', fetchuser,async(req, res)=>{
     }
     catch(error){
         console.log(error);
-        return res.json({error: error});
+        return res.json({error: "Cannot fetch patient details"});
     }
 
     let DateN = new Date().toISOString().slice(0, 19).replace('T', ' ');
@@ -141,7 +141,7 @@ router.post('/:appointmentId', fetchuser,async(req, res)=>{
     }
     catch(error){
         console.log(error);
-        return res.json({error: error});
+        return res.json({error: "Cannot Add Medication"});
     }
 })
 

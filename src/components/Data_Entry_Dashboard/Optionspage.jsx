@@ -17,12 +17,15 @@ const Optionspage = () => {
         navigate(`/dataentryop/`,{replace:true})
     }
   return (
-    <>
-        <button onClick={()=>goBack()}>Go Back</button>
-        <button onClick={()=>sendToPage('0')} >Add Test</button>
-        <button onClick={()=>sendToPage('1')}>Add Treatment</button>
-        <button onClick={()=>sendToPage('2')}>Update Result</button>
-    </>
+    <div className='container mt-3'>
+        <div className="row">
+            <div className="col-md-2"></div>
+            <button className='btn btn-outline-primary m-2 col-md-2 text-center' onClick={()=>goBack()}>Go Back</button>
+            <button className='btn btn-outline-primary m-2 col-md-2 text-center' onClick={()=>sendToPage('0')} >Add Test</button>
+            <button className='btn btn-outline-primary m-2 col-md-2 text-center' onClick={()=>sendToPage('1')}>Add Treatment</button>
+            <button className='btn btn-outline-primary m-2 col-md-2 text-center' onClick={()=>sendToPage('2')}>Update Result</button>
+        </div>
+    </div>
   )
 }
 

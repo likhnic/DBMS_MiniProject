@@ -18,7 +18,7 @@ const DoctorDashboard = () => {
         e.preventDefault();
         let appointmentId = patientDetails.appointmentid
         const { medicationcode, dose } = patientPrescribe
-        const response = await fetch(`http://localhost:5001/api/doctor/${appointmentId}`, {
+        const response = await fetch(`http://localhost:5000/api/doctor/${appointmentId}`, {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',
@@ -28,6 +28,10 @@ const DoctorDashboard = () => {
         })
         const json = await response.json();
         console.log(json);
+        if(json.error){
+            alert(json.error)
+            return;
+        }
         await getAccordingType('prescribes')
 
     }
@@ -54,7 +58,7 @@ const DoctorDashboard = () => {
     const onRenderPage = async () => {
 
         const token = localStorage.getItem('token')
-        let response = await fetch('http://localhost:5001/checkUser/2', { 
+        let response = await fetch('http://localhost:5000/checkUser/2', { 
             method: 'GET',
             headers: {
                 'Content-Type': 'application/json',
@@ -67,7 +71,7 @@ const DoctorDashboard = () => {
         if(json.error){
             window.location.href = '/'
         }
-        response = await fetch('http://localhost:5001/api/doctor', {
+        response = await fetch('http://localhost:5000/api/doctor', {
             method: 'GET',
             headers: {
                 'Content-Type': 'application/json',
@@ -76,7 +80,11 @@ const DoctorDashboard = () => {
         })
         json = await response.json();
         console.log(json);
-        setSearchResult(json.result)
+        if(json.error){
+            alert(json.error)
+            setSearchResult([])
+        }
+        else setSearchResult(json.result)
     }
 
     const resetPage = async (e) => {
@@ -98,7 +106,7 @@ const DoctorDashboard = () => {
 
     const getAccordingType = async (type) => {
         let appointmentId = patientDetails.appointmentid
-        const response = await fetch(`http://localhost:5001/api/doctor/${appointmentId}/${type}`, {
+        const response = await fetch(`http://localhost:5000/api/doctor/${appointmentId}/${type}`, {
             method: 'GET',
             headers: {
                 'Content-Type': 'application/json',
@@ -108,7 +116,11 @@ const DoctorDashboard = () => {
         console.log(response);
         const json = await response.json();
         console.log(json);
-        setPatientPres(json)
+        if(json.error){
+            alert(json.error)
+            setPatientPres({ tests: [], undergoes: [], prescribes: [] })
+        }
+        else setPatientPres(json)
     }
 
 
@@ -227,7 +239,7 @@ const DoctorDashboard = () => {
                                                         <div className="card-body">
                                                         <div>Test Id: {test.testid}</div>
                                                         <div>Procedure Name: {test.procedurename}</div>
-                                                        <div>Date: {test.date}</div>
+                                                        <div>Date: {changeDate(test.date)}</div>
                                                         <div>Result: {test.result}</div>
                                                         </div>
                                                     </div>
@@ -248,7 +260,7 @@ const DoctorDashboard = () => {
                                                         <div className='card m-3' key={i}>
                                                             <div className="card-body">
                                                             <div>Procedure Name: {undergo.procedurename}</div>
-                                                            <div>Undergoes Date: {undergo.undergoesdate}</div>
+                                                            <div>Undergoes Date: {changeDate(undergo.undergoesdate)}</div>
                                                             <div>Doctor Name: {undergo.doctorname}</div>
                                                             </div>
                                                         </div>

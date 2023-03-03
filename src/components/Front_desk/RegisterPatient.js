@@ -29,7 +29,7 @@ const RegisterPatient = () => {
             navigate("/frontdesk", { replace: true })
         }
         else if(!json.success){
-            alert("Error")
+            alert(json.error)
         }
     }
 

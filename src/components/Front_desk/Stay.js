@@ -28,6 +28,9 @@ const Stay = () => {
             // save the auth token and redirect
             navigate("/frontdesk", { replace: true })
         }
+        else{
+            alert(json.error)
+        }
     }
 
     const handleOnChange = (e) => {

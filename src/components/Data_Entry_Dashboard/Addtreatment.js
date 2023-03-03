@@ -1,5 +1,4 @@
 import React, { useEffect, useState } from "react";
-import useFetch from "../useFetch";
 import { useNavigate } from 'react-router-dom';
 
 const Addtreatment = () => {
@@ -11,12 +10,9 @@ const Addtreatment = () => {
     let navigate = useNavigate()
     const onChange = (e) => {
         setCredentials({ ...credentials, [e.target.name]: e.target.value });
-        console.log("credentials : ", credentials);
-
     };
 
     const goBack = () => {
-        // window.location.replace('http://localhost:3000/dataentryop/addtest');
         navigate(`/dataentryop/options?patientID=${patientID}`, { replace: true })
     }
     const handleOnClick = async (e) => {
@@ -47,24 +43,6 @@ const Addtreatment = () => {
         console.log(response)
     };
 
-    // const res_test = useFetch(
-    //     "http://localhost:5000/api/dataentryop/treatment/names",
-    //     {}
-    // );
-    // console.log("Recieved test  : ", res_test.response);
-
-    // let datatest = res_test.response.test;
-    // console.log("DATA : ", datatest);
-
-    // const res_doc = useFetch(
-    //     "http://localhost:5000/api/doctor/names",
-    //     {}
-    // );
-    // console.log("Recieved doc : ", res_doc.response);
-
-    // let datadoc = res_doc.response.test;
-    // console.log("DATA : ", datadoc);
-
     const onRender = async () => {
         const res_test = await fetch("http://localhost:5000/api/dataentryop/treatment/names",
             {
@@ -87,7 +65,6 @@ const Addtreatment = () => {
             });
         const json_doc = await res_doc.json();
         setDatadoc(json_doc.test);
-        console.log("DATA : ", datadoc);
     }
 
     useEffect(() => {
@@ -97,7 +74,7 @@ const Addtreatment = () => {
     const header_style = { textAlign: "center" };
     return (
         <>
-        <button onClick={()=>goBack()}>Go Back</button>
+        <button className='btn btn-outline-primary m-2 text-center' onClick={()=>goBack()}>Go Back</button>
             <div className="container mt-3">
                 <form
                     className="form-control"
@@ -107,7 +84,7 @@ const Addtreatment = () => {
 
 
                     <select
-                        className="form-select"
+                        className="form-select mb-3"
                         aria-label="Default select example"
                         defaultValue={"Treatment"}
                         onChange={onChange}
@@ -121,7 +98,7 @@ const Addtreatment = () => {
                     </select>
 
                     <select
-                        className="form-select"
+                        className="form-select mb-3"
                         aria-label="Default select example"
                         onChange={onChange}
                         defaultValue={"Doctor"}
@@ -135,7 +112,7 @@ const Addtreatment = () => {
                     </select>
                     <button
                         type="submit"
-                        className="btn btn-primary btn-block mb-4"
+                        className="btn btn-primary btn-block mb-3"
                         onClick={handleOnClick}
                     >
                         Add Treatment

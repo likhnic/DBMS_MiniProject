@@ -13,7 +13,7 @@ const Login = (props) => {
         e.preventDefault();
         const { ID, Password } = credentials;
         console.log(credentials)
-        const response = await fetch('http://localhost:5001/login', {
+        const response = await fetch('http://localhost:5000/login', {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',
@@ -37,6 +37,9 @@ const Login = (props) => {
             else if(json.type === 3){
                 navigate("/admin", { replace: true })
             }
+        }
+        else{
+            alert(json.error)
         }
     }
 

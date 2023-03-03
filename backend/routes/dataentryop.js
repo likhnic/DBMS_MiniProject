@@ -17,7 +17,7 @@ router.get('/',fetchuser,async(req,res) => {
         return res.json({patient: patient});
     } catch (error) {
         console.log(error);
-        res.json({error: error});
+        res.json({error: "No patients found!"});
     }
 })
 
@@ -35,7 +35,7 @@ router.get('/:patientId',fetchuser,async (req, res) => {
     }
     catch(error){
         console.log(error);
-        res.json({error: error});
+        res.json({error: "No patients found!"});
     }
 })
 router.get('/test/names/:patientID',fetchuser,async(req,res) =>{
@@ -48,7 +48,7 @@ router.get('/test/names/:patientID',fetchuser,async(req,res) =>{
         return res.json({test:result})
     } catch (error) {
         console.log(error);
-        res.json({error: error});
+        res.status(404).json({error: "Internal Server Error"});
     }
 })
 router.get('/test/names',fetchuser,async(req,res) =>{
@@ -68,7 +68,7 @@ router.get('/treatment/names',fetchuser,async(req,res) =>{
         return res.json({test:result})
     } catch (error) {
         console.log(error);
-        res.json({error: error});
+        res.json({error: "Cannot Show Treatment Names"});
     }
 })
 // need to give Test Name
@@ -90,7 +90,7 @@ router.post('/test/:patientId',fetchuser,async (req, res) => {
     }
     catch(error){
         console.log(error);
-        return res.json({error: error});
+        return res.json({error: "Cannot Show Test Names"});
     }
     let date = new Date().toISOString().slice(0, 19).replace('T', ' ');
     sqlQuery = `INSERT INTO Test( Date, Result, PatientAadhar, Code) VALUES ( '${date}','Not Yet Available','${req.params.patientId}', ${Code});`
@@ -100,7 +100,7 @@ router.post('/test/:patientId',fetchuser,async (req, res) => {
     }
     catch(error){
         console.log(error);
-        res.json({error: error});
+        res.json({error: "Cannot add test!"});
     }
 })
 
@@ -123,7 +123,7 @@ router.post('/treatment/:patientId', fetchuser,async(req, res)=>{
     }
     catch(error){
         console.log(error);
-        return res.json({error: error});
+        return res.json({error: "Cannot Show Treatment Names"});
     }
 
     // get stayID from patientId where stayid = (select stayid from stay where stay.patient = " + id + " order by starttime desc limit 1)
@@ -141,7 +141,7 @@ router.post('/treatment/:patientId', fetchuser,async(req, res)=>{
     }
     catch(error){
         console.log(error);
-        return res.json({error: error});
+        return res.json({error: "Cannot Show Treatment Names"});
     }
     // sqlQuery = `SELECT * FROM Appointment WHERE PatientAadhar = '${req.params.patientId}' AND DocID = ${DocID} AND StartTime = (SELECT MAX(StartTime) FROM Appointment WHERE PatientAadhar = '${req.params.patientId}' AND DocID = ${DocID});`
     // try{
@@ -166,7 +166,7 @@ router.post('/treatment/:patientId', fetchuser,async(req, res)=>{
     }
     catch(error){
         console.log(error);
-        return res.json({error: error});
+        return res.json({error: "Cannot add treatment!"});
     }
 })
 
@@ -195,7 +195,7 @@ router.put('/test/:testId',fetchuser,async (req, res) => {
     }
     catch(error){
         console.log(error);
-        return res.json({error: error});
+        return res.json({error: "Cannot update test"});
     }
 
 })

@@ -34,7 +34,7 @@ router.post("/register", fetchuser,async (req, res) => {
     catch (error) {
         console.log(error);
         res.status(404).json({
-            error: error
+            error: "Cannot Register Patient"
         });
     }
 });
@@ -55,7 +55,7 @@ router.post("/appointment", fetchuser, async (req, res) => {
     }
     catch (error) {
         res.status(404).json({
-            error: error
+            error: "Cannot create appointment"
         });
     }
 });
@@ -83,7 +83,7 @@ router.put("/stay", fetchuser, async (req, res) => {
     }
     catch (error) {
         res.status(404).json({
-            error: error
+            error: "Cannot create stay"
         });
     }
 });

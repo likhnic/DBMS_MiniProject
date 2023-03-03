@@ -60,14 +60,14 @@ const Addtest = () => {
     const header_style = { textAlign: "center" };
     return (
         <>
-        <button onClick={()=>goBack()}>Go Back</button>
+        <button className='btn btn-outline-primary m-2 text-center' onClick={()=>goBack()}>Go Back</button>
             <div className="container mt-3">
                 <form className="form-control" onSubmit={(event) => event.preventDefault()} >
                     <h1 style={header_style}>Add test</h1>
                     {/* <!-- 2 column grid layout with text inputs for the first and last names --> */}
 
                     <select
-                        className="form-select"
+                        className="form-select mb-3"
                         aria-label="Default select example"
                         onChange={onChange}
                         defaultValue="Test"
@@ -85,7 +85,7 @@ const Addtest = () => {
                     </select>
                     <button
                         type="submit"
-                        className="btn btn-primary btn-block mb-4"
+                        className="btn btn-primary btn-block mb-3"
                         onClick={handleOnClick}
                     >
                         Add Test

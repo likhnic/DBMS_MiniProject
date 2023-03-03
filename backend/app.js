@@ -55,9 +55,9 @@ app.post('/login', async (req, res) => {
         return res.json({user: token, type: result[0].Type})
     } catch (error) {
         console.log(error);
-        return res.json({error: error});
+        return res.status(404).json({error: "Cannot Login"});
     }
-    
+
 })
 
 app.get('/checkUser/:type', fetchuser, async(req, res)=>{
@@ -73,7 +73,7 @@ app.get('/checkUser/:type', fetchuser, async(req, res)=>{
             return res.json({error:"Not Authorised"})
         }
     } catch (error) {
-        return res.json({error:error})
+        return res.json({error:"Cannot Authenticate"})
     }
     return res.json({success: "Fine"})
 })

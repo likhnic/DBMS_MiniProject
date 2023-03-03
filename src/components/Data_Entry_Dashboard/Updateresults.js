@@ -38,6 +38,11 @@ const Updateresult = () => {
             }
         );
         console.log(response)
+        let json = await response.json();
+        if(json.error){
+            console.log(json.error)
+            alert(json.error)
+        }
     };
 
     const onRender = async () => {
@@ -52,7 +57,12 @@ const Updateresult = () => {
 
         const json = await res.json();
         console.log("json: ", json)
-        setData(json.test);
+        if(json.error){
+            console.log(json.error)
+            alert(json.error)
+            setData([])
+        }
+        else setData(json.test);
     }
 
     useEffect(() => {
@@ -62,7 +72,7 @@ const Updateresult = () => {
     const header_style = { textAlign: "center" };
     return (
         <>
-        <button onClick={()=>goBack()}>Go Back</button>
+        <button className='btn btn-outline-primary m-2 text-center' onClick={()=>goBack()}>Go Back</button>
             <div className="container mt-3">
                 <form className="form-control" onSubmit={(event) => event.preventDefault()} >
                     <h1 style={header_style}>Update Result</h1>
