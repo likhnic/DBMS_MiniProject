@@ -91,7 +91,7 @@ router.post("/user", async (req, res) => {
             })
         }else{
             let hashedPassword = await bcrypt.hash(Password, 8)
-            let sqlQuery2 = `INSERT INTO User values (${ID},"${Aadhar}","${hashedPassword}",1)`
+            let sqlQuery2 = `INSERT INTO User values (${ID},"${Aadhar}","${hashedPassword}",1, ${type_index})`
             let sqlQuery3;
             if(type_index==2)
                 sqlQuery3 = `INSERT INTO ${types[type_index]} values (${ID},"${Position}","${Name}","${Phone}","${Address}",1)`

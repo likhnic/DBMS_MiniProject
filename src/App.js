@@ -14,6 +14,11 @@ import Stay from './components/Front_desk/Stay';
 import Discharge from './components/Front_desk/Discharge';
 import Appointment from './components/Front_desk/Appointment';
 import { ProtectedRoute } from './components/ProtectedRoute';
+import Addtest from './components/Data_Entry_Dashboard/Addtest'
+import Addtreatment from './components/Data_Entry_Dashboard/Addtreatment'
+import Updateresult from './components/Data_Entry_Dashboard/Updateresults'
+import Data_Entry_Dashboard from './components/Data_Entry_Dashboard/Data_Entry_Dashboard'
+
 
 const App = () => {
     return (
@@ -29,6 +34,10 @@ const App = () => {
                     <Route exact path='/frontdesk/appointment' element={<ProtectedRoute element={Appointment} />}/>
                     <Route exact path='/frontdesk/room' element={<ProtectedRoute element={Stay} />}/>
                     <Route exact path='/frontdesk/discharge' element={<ProtectedRoute element={Discharge} />}/>
+                    <Route exact path='/dataentryop' element={<Data_Entry_Dashboard />}/>
+                    <Route exact path='/dataentryop/addtest' element={<Addtest />}/>
+                    <Route exact path='/dataentryop/treatment' element={<Addtreatment />}/>
+                    <Route exact path='/dataentryop/updateresult' element={<Updateresult />}/>
                 </Routes>
             </Router>
         </>

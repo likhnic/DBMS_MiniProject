@@ -3,7 +3,7 @@ import { useNavigate } from 'react-router'
 
 const Login = (props) => {
 
-    const [credentials, setCredentials] = useState({ ID: "", password: ""})
+    const [credentials, setCredentials] = useState({ ID: "", Password: ""})
     let navigate = useNavigate()
 
     const onChange = (e) => {
@@ -22,6 +22,7 @@ const Login = (props) => {
             body: JSON.stringify({ ID, Password:Password })
         })
         const json = await response.json();
+        console.log(json);
         if (!json.error) {
             localStorage.setItem('token', json.user)
             console.log(json)
@@ -29,7 +30,7 @@ const Login = (props) => {
                 navigate("/frontdesk", { replace: true })
             }
             else if(json.type === 1){
-                navigate("/dataentry", { replace: true })
+                navigate("/dataentryop", { replace: true })
             }
             else if(json.type === 2){
                 navigate("/doctor", { replace: true })

@@ -35,6 +35,17 @@ router.get('/', fetchuser, async(req, res)=>{
     }
 })
 
+router.get('/names',async(req,res) =>{
+    let sqlQuery = `SELECT DocID,Name from Doctor where isWorking=1`;
+    try {
+        let result = await query(sqlQuery)
+        return res.json({test:result})
+    } catch (error) {
+        console.log(error);
+        res.json({error: error});
+    }
+})
+
 router.get('/:appointmentId/:type', fetchuser, async(req, res)=>{
 
     let checkquery = `SELECT * FROM Doctor WHERE DocID = ${req.user.id}`

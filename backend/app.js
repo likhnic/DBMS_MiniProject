@@ -57,6 +57,7 @@ app.post('/login', async (req, res) => {
         console.log(error);
         return res.json({error: error});
     }
+    
 })
 
 app.get('/checkUser/:type', fetchuser, async(req, res)=>{
