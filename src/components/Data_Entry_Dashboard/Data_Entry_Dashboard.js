@@ -26,7 +26,7 @@ const Data_Entry_Dashboard = () => {
 
     return (<div className='container'>
         <Searchbar />
-        <table className="table table-striped table-dark">
+        <table className="table shadow rounded bg-body table-striped table-dark">
             <thead>
                 <tr>
                     <th scope="col">#</th>
