@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import useFetch from "../useFetch";
-
+import { useNavigate } from 'react-router-dom';
 
 const Addtreatment = () => {
     const queryParameters = new URLSearchParams(window.location.search);
@@ -8,14 +8,17 @@ const Addtreatment = () => {
     const [credentials, setCredentials] = useState({ Name: "", DocID: "" });
     const [datatest, setDatatest] = useState([]);
     const [datadoc, setDatadoc] = useState([]);
-
+    let navigate = useNavigate()
     const onChange = (e) => {
         setCredentials({ ...credentials, [e.target.name]: e.target.value });
         console.log("credentials : ", credentials);
 
     };
 
-
+    const goBack = () => {
+        // window.location.replace('http://localhost:3000/dataentryop/addtest');
+        navigate(`/dataentryop/options?patientID=${patientID}`, { replace: true })
+    }
     const handleOnClick = async (e) => {
         // e.preventDefault();
         const { Name, DocID } = credentials;
@@ -92,6 +95,7 @@ const Addtreatment = () => {
     const header_style = { textAlign: "center" };
     return (
         <>
+        <button onClick={()=>goBack()}>Go Back</button>
             <div className="container mt-3">
                 <form
                     className="form-control"

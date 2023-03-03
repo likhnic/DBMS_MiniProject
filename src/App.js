@@ -18,7 +18,7 @@ import Addtest from './components/Data_Entry_Dashboard/Addtest'
 import Addtreatment from './components/Data_Entry_Dashboard/Addtreatment'
 import Updateresult from './components/Data_Entry_Dashboard/Updateresults'
 import Data_Entry_Dashboard from './components/Data_Entry_Dashboard/Data_Entry_Dashboard'
-
+import Optionspage from './components/Data_Entry_Dashboard/Optionspage';
 
 const App = () => {
     return (
@@ -38,6 +38,8 @@ const App = () => {
                     <Route exact path='/dataentryop/addtest' element={<Addtest />}/>
                     <Route exact path='/dataentryop/treatment' element={<Addtreatment />}/>
                     <Route exact path='/dataentryop/updateresult' element={<Updateresult />}/>
+                    <Route exact path='/dataentryop/options' element={<Optionspage />}/>
+                
                 </Routes>
             </Router>
         </>

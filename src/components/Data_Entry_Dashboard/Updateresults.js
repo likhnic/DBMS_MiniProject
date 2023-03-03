@@ -1,17 +1,20 @@
 import React, { useEffect, useState } from "react";
-
+import { useNavigate } from 'react-router-dom';
 const Updateresult = () => {
     const queryParameters = new URLSearchParams(window.location.search)
     const patientID = queryParameters.get("patientID")
     const [credentials, setCredentials] = useState({ Result: "", testId: "" });
     const [data, setData] = useState([]);
-
+    let navigate = useNavigate()
     const onChange = (e) => {
         setCredentials({ ...credentials, [e.target.name]: e.target.value });
         console.log("credentials : ", credentials);
 
     };
-
+    const goBack = () => {
+        // window.location.replace('http://localhost:3000/dataentryop/addtest');
+        navigate(`/dataentryop/options?patientID=${patientID}`, { replace: true })
+    }
     const handleOnClick = async (e) => {
         console.log("cred: ", credentials)
         const { Result, testId } = credentials;
@@ -57,9 +60,10 @@ const Updateresult = () => {
     const header_style = { textAlign: "center" };
     return (
         <>
+        <button onClick={()=>goBack()}>Go Back</button>
             <div className="container mt-3">
                 <form className="form-control" onSubmit={(event) => event.preventDefault()} >
-                    <h1 style={header_style}>Add test</h1>
+                    <h1 style={header_style}>Update Result</h1>
 
                     <select
                         className="form-select mb-4"
