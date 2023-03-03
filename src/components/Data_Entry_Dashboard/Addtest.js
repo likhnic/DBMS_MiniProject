@@ -28,6 +28,7 @@ const Addtest = () => {
                 method: "POST",
                 headers: {
                     "Content-Type": "application/json",
+                    'token': localStorage.getItem('token')
                 },
                 body: JSON.stringify({ Name: Name })
             }
@@ -41,6 +42,7 @@ const Addtest = () => {
             method: 'GET',
             headers: {
                 'Content-Type': 'application/json',
+                'token': localStorage.getItem('token')
             },
         });
 

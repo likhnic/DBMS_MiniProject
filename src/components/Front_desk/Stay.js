@@ -18,6 +18,7 @@ const Stay = () => {
                 method: 'PUT',
                 headers: {
                     'Content-Type': 'application/json',
+                    'token': localStorage.getItem('token')
                 },
                 body: JSON.stringify({ StartTime, RoomNo, PatientAadhar })
             })

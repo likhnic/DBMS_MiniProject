@@ -17,6 +17,7 @@ const RegisterPatient = () => {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
+                    'token': localStorage.getItem('token')
                 },  
                 body: JSON.stringify({Name, Aadhar, Address, Phone, InsuranceID, PCPDocID})  
             }
@@ -25,8 +26,10 @@ const RegisterPatient = () => {
         console.log(json);
         if (json.success) {
             // save the auth token and redirect
-            localStorage.setItem('token', json.authToken)
             navigate("/frontdesk", { replace: true })
+        }
+        else if(!json.success){
+            alert("Error")
         }
     }
 

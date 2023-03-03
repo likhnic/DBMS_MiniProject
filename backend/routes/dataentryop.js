@@ -1,12 +1,13 @@
 const express = require('express');
 const router = express.Router();
 const query = require('../dbConnection');
+const fetchuser = require('../public/js/fetchuser');
 
 router.use(express.urlencoded({extended: 'false'}))
 router.use(express.json())
 
 
-router.get('/',async(req,res) => {
+router.get('/',fetchuser,async(req,res) => {
     let sqlQuery = `Select * from Patient`;
     try {
         let patient = await query(sqlQuery);
@@ -20,19 +21,9 @@ router.get('/',async(req,res) => {
     }
 })
 
-router.get('/:patientId',async (req, res) => {
+router.get('/:patientId',fetchuser,async (req, res) => {
 
-    let sqlQuery //= `SELECT * FROM DataEntryOp WHERE DataEntryOpID = ${req.user.id};`
-    // try{
-    //     let operator = await query(sqlQuery);
-    //     if(operator.rows.length == 0){
-    //         return res.json({error: "No Data Entry Operator found!"});
-    //     }
-    // }
-    // catch(error){
-    //     console.log(error);
-    //     res.json({error: error});
-    // }
+    let sqlQuery;
 
     sqlQuery = `SELECT * FROM Patient WHERE Aadhar = ${req.params.patientId};`
     try{
@@ -47,7 +38,7 @@ router.get('/:patientId',async (req, res) => {
         res.json({error: error});
     }
 })
-router.get('/test/names/:patientID',async(req,res) =>{
+router.get('/test/names/:patientID',fetchuser,async(req,res) =>{
     console.log(req.params.patientID)
     let sqlQuery = `SELECT TestID,Name from Test,\`Procedure\` where Test.Code=\`Procedure\`.Code AND Result='NOT YET AVAILABLE' AND PatientAadhar='${req.params.patientID}'`;
     console.log(sqlQuery)
@@ -60,7 +51,7 @@ router.get('/test/names/:patientID',async(req,res) =>{
         res.json({error: error});
     }
 })
-router.get('/test/names',async(req,res) =>{
+router.get('/test/names',fetchuser,async(req,res) =>{
     let sqlQuery = `SELECT Name from \`Procedure\` WHERE Type=0`;
     try {
         let result = await query(sqlQuery)
@@ -70,7 +61,7 @@ router.get('/test/names',async(req,res) =>{
         res.json({error: error});
     }
 })
-router.get('/treatment/names',async(req,res) =>{
+router.get('/treatment/names',fetchuser,async(req,res) =>{
     let sqlQuery = `SELECT Name from \`Procedure\` WHERE Type=1`;
     try {
         let result = await query(sqlQuery)
@@ -81,23 +72,12 @@ router.get('/treatment/names',async(req,res) =>{
     }
 })
 // need to give Test Name
-router.post('/test/:patientId',async (req, res) => {
+router.post('/test/:patientId',fetchuser,async (req, res) => {
 
-    let sqlQuery //= `SELECT * FROM DataEntryOp WHERE DataEntryOpID = ${req.user.id};`
-    // try{
-    //     let operator = await query(sqlQuery);
-    //     if(operator.rows.length == 0){
-    //         return res.json({error: "No Data Entry Operator found!"});
-    //     }
-    // }
-    // catch(error){
-        // console.log(error);
-        // res.json({error: error});
-    // }
 
     const {Name} = req.body;
     console.log(Name)
-    sqlQuery = `SELECT Code FROM \`Procedure\` WHERE Name = '${Name}';`
+    let sqlQuery = `SELECT Code FROM \`Procedure\` WHERE Name = '${Name}';`
     let Code;
     console.log(sqlQuery)
     try{
@@ -127,19 +107,9 @@ router.post('/test/:patientId',async (req, res) => {
 
 
 // need to give TreatmentName and DocID
-router.post('/treatment/:patientId', async(req, res)=>{
+router.post('/treatment/:patientId', fetchuser,async(req, res)=>{
 
-    let sqlQuery //= `SELECT * FROM DataEntryOp WHERE DataEntryOpID = ${req.user.id};`
-    // try{
-    //     let operator = await query(sqlQuery);
-    //     if(operator.rows.length == 0){
-    //         return res.json({error: "No Data Entry Operator found!"});
-    //     }
-    // }
-    // catch(error){
-    //     console.log(error);
-    //     res.json({error: error});
-    // }
+    let sqlQuery;
 
     const {Name, DocID} = req.body;
     sqlQuery = `SELECT Code FROM \`Procedure\` WHERE Name = '${Name}';`
@@ -202,19 +172,9 @@ router.post('/treatment/:patientId', async(req, res)=>{
 
 // give Result in Body
 
-router.put('/test/:testId',async (req, res) => {
+router.put('/test/:testId',fetchuser,async (req, res) => {
 
-    let sqlQuery //= `SELECT * FROM DataEntryOp WHERE DataEntryOpID = ${req.user.id};`
-    // try{
-    //     let operator = await query(sqlQuery);
-    //     if(operator.rows.length == 0){
-    //         return res.json({error: "No Data Entry Operator found!"});
-    //     }
-    // }
-    // catch(error){
-    //     console.log(error);
-    //     res.json({error: error});
-    // }
+    let sqlQuery;
 
     const {testId} = req.params;
     const {Result} = req.body;

@@ -215,7 +215,7 @@ SET FOREIGN_KEY_CHECKS = 1;
 
 
 
-select * from user;
+select * from User;
 select * from Front_desk_operator;
 select * from Data_entry_operator;
 select * from Doctor;

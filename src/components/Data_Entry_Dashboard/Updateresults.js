@@ -29,6 +29,7 @@ const Updateresult = () => {
                 method: "PUT",
                 headers: {
                     "Content-Type": "application/json",
+                    'token': localStorage.getItem('token')
                 },
                 body: JSON.stringify({ Result: Result, testId: testId })
             }
@@ -41,6 +42,7 @@ const Updateresult = () => {
             method: "GET",
             headers: {
                 "Content-Type": "application/json",
+                'token': localStorage.getItem('token')
             },
 
         });

@@ -17,15 +17,17 @@ const Discharge = () => {
                 method: 'DELETE',
                 headers: {
                     'Content-Type': 'application/json',
+                    'token': localStorage.getItem('token')
                 },
                 body: JSON.stringify({ PatientAadhar })
             })
         const json = await response.json();
         console.log(json);
         if (json.success) {
-            // save the auth token and redirect
-            localStorage.setItem('token', json.authToken)
             navigate("/frontdesk", { replace: true })
+        }
+        else if(json.error){
+            alert(json.error)
         }
     }
 

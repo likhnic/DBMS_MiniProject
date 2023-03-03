@@ -33,6 +33,7 @@ const Addtreatment = () => {
                 method: "POST",
                 headers: {
                     "Content-Type": "application/json",
+                    'token': localStorage.getItem('token')
                 },
                 body: JSON.stringify({
                     Name: Name,
@@ -67,6 +68,7 @@ const Addtreatment = () => {
                 method: "GET",
                 headers: {
                     "Content-Type": "application/json",
+                    'token': localStorage.getItem('token')
                 },
             });
         const json_test = await res_test.json();

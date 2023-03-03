@@ -5,7 +5,6 @@ const Login = (props) => {
 
     const [credentials, setCredentials] = useState({ ID: "", Password: ""})
     let navigate = useNavigate()
-
     const onChange = (e) => {
         setCredentials({ ...credentials, [e.target.name]: e.target.value })
     }
@@ -44,7 +43,6 @@ const Login = (props) => {
     const onRender = ()=>{
 
         if(localStorage.getItem('token')){
-            localStorage.removeItem('token')
             navigate("/", { replace: true })
         }
     }
@@ -52,6 +50,11 @@ const Login = (props) => {
     useEffect(() => {
         onRender()
     }, [])
+
+    /*  useEffect(() => {
+    const unblock = navigate('/', { replace: true });
+    return unblock;
+  }, [navigate]);*/ 
 
 
     return (

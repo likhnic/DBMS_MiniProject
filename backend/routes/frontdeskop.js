@@ -8,7 +8,7 @@ router.use(express.urlencoded({ extended: 'false' }));
 
 
 // registering a new patient (using patient table)
-router.post("/register", fetchuser, async (req, res) => {
+router.post("/register", fetchuser,async (req, res) => {
 
     const { Aadhar, Name, Address, Phone, InsuranceID, PCPDocID } = req.body;
 

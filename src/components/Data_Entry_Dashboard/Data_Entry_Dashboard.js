@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useEffect, useState } from 'react'
 import { useNavigate } from 'react-router-dom';
 import Searchbar from '../Searchbar'
 import useFetch from '../useFetch';
@@ -6,25 +6,48 @@ import useFetch from '../useFetch';
 const Data_Entry_Dashboard = () => {
     let counter = 1
     let navigate = useNavigate()
-    const res = useFetch('http://localhost:5000/api/dataentryop/', {});
-    console.log('Recieved this : ', res.response)
-    if (!res.response.patient) {
-        return <div>Loading...</div>
+    const [data, setData] = useState([])
+    const [loading, setLoading] = useState(true)
+
+    const onRender = async()=>{
+        const token = localStorage.getItem('token')
+        let response = await fetch('http://localhost:5000/checkUser/1', { 
+            method: 'GET',
+            headers: {
+                'Content-Type': 'application/json',
+                'token': token
+            }
+        })  
+        let json = await response.json();
+        console.log(json);
+        if(json.error){
+            window.location.href = '/'
+        }
+        const res = await fetch('http://localhost:5000/api/dataentryop/', {
+            method: 'GET',
+            headers: {
+                'Content-Type': 'application/json',
+                'token': localStorage.getItem('token')
+            }
+        })
+        json = await res.json();
+        console.log(json);
+        setData(json.patient)
+        setLoading(false)
     }
+
     const sendToPage = (patientID) => {
-        // window.location.replace('http://localhost:3000/dataentryop/addtest');
         console.log(patientID)
-        // navigate(`/dataentryop/addtest?patientID=${patientID}`,{replace:true})
-        // navigate(`/dataentryop/treatment?patientID=${patientID}`,{replace:true})
         navigate(`/dataentryop/updateresult?patientID=${patientID}`, { replace: true })
 
     }
-    // const data = res.response.results;
-    const data = res.response.patient
-    console.log('DATA : ', data);
-    // console.log('DATA : ',d);
+
+    useEffect(() => {
+        onRender()
+    }, [])
 
     return (<div className='container'>
+        {!loading && <div>
         <Searchbar />
         <table className="table shadow rounded bg-body table-striped table-dark">
             <thead>
@@ -48,6 +71,7 @@ const Data_Entry_Dashboard = () => {
                 })}
             </tbody>
         </table>
+        </div>}
     </div>
     )
 }
