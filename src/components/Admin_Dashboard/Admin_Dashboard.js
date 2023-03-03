@@ -1,9 +1,13 @@
-import React from 'react'
+import React from "react";
+
+import SideBar from "./SideBar";
 
 const Admin_Dashboard = () => {
   return (
-    <div>Admin_Dashboard</div>
-  )
-}
+    <div>
+      <SideBar/>
+    </div>
+  );
+};
 
-export default Admin_Dashboard
+export default Admin_Dashboard;

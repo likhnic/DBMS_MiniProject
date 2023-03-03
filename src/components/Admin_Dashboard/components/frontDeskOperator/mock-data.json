@@ -1,0 +1,32 @@
+[
+  {
+    "FrontDeskOpID": 1,
+    "Name": "Jenny Chan",
+    "Phone": "333-962-7516",
+    "Address": "3 waterfoot road"
+  },
+  {
+    "FrontDeskOpID": 2,
+    "Name": "Jessica warren",
+    "Phone": "011-211-7516",
+    "Address": "4 tall town"
+  },
+  {
+    "FrontDeskOpID": 3,
+    "Name": "Tony Frank",
+    "Phone": "788-962-7516",
+    "Address": "11 lesly road"
+  },
+  {
+    "FrontDeskOpID": 4,
+    "Name": "Jeremy Clark",
+    "Phone": "011-962-111",
+    "Address": "333 miltown manor"
+  },
+  {
+    "FrontDeskOpID": 5,
+    "Name": "Raymond Edwards",
+    "Phone": "3231-962-7516",
+    "Address": "99 blue acres"
+  }
+]

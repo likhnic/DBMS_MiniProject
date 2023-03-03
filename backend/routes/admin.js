@@ -22,6 +22,51 @@ const type_IDs = {
     '3': 'AdminID'
 }
 
+// getting the doctors list
+// add fetchuser to the route to make it private later
+router.get("/getdoctors", async (req, res) => {
+    let sqlQuery = `Select * from Doctor`;
+    try {
+        let docs = await query(sqlQuery);
+        if(docs.length == 0){
+            return res.json({error: "No doctors found!"});
+        }
+        return res.json({dctrs: docs});
+    } catch (error) {
+        console.log(error);
+        res.json({error: "No doctors found!"});
+    }
+});
+
+// updating the doctor's data
+// add fetchuser to the route to make it private later
+router.put("/updatedoctor", async (req, res) => {
+    let sql = `UPDATE Doctor SET Name = '${req.body.Name}', Phone = '${req.body.Phone}', Address = '${req.body.Address}', Position = '${req.body.Position}', isWorking = ${req.body.isWorking} WHERE DocID = ${req.body.DocID}`;
+    try {
+        let result = await query(sql);
+        if (result.affectedRows == 0) {
+            return res.json({ error: "Cannot update the doctor's data!" })
+        }
+    } catch (error) {
+        console.log(error);
+        res.json({error: "Cannot update the doctor's data!"});
+    }
+});
+
+// delete the doctor
+// add fetchuser to the route to make it private later
+router.delete("/deletedoctor/", async (req, res) => {
+    let sql = `DELETE FROM Doctor WHERE DocID = ${req.body.id}`;
+    try {
+        let result = await query(sql);
+        if (result.affectedRows == 0) {
+            return res.json({ error: "Cannot delete the doctor!" })
+        }
+    } catch (error) {
+        console.log(error);
+        res.json({error: "Cannot delete the doctor!"});
+    }
+});
 
 router.delete("/user/:ID/:type", async (req, res) => {
     // if (req.user.ID != req.params.ID) {

@@ -1,9 +1,10 @@
 import React from 'react'
-import { useNavigate, Link } from 'react-router-dom';
+import { useNavigate, Link, useLocation } from 'react-router-dom';
 
 const Navbar = () => {
 
     let navigate = useNavigate()
+    let {pathname} = useLocation()
     const handleOnClick = (e) => {
         e.preventDefault();
         localStorage.removeItem('token');
@@ -12,7 +13,7 @@ const Navbar = () => {
     return (
         <div>
 
-            <nav className="navbar navbar-dark navbar-expand-lg bg-dark">
+            {!pathname.startsWith('/admin') && (<nav className="navbar navbar-dark navbar-expand-lg bg-dark">
                 <div className="container-fluid">
                     <Link className="navbar-brand" to="#">Hospital Management System</Link>
                     <button className="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
@@ -35,7 +36,7 @@ const Navbar = () => {
 
                     </div>
                 </div>
-            </nav>
+            </nav>)}
         </div>
     )
 }

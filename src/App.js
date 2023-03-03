@@ -6,7 +6,7 @@ import {
     Routes,
     Route,
 } from "react-router-dom";
-import Admin_Dashboard from './components/Admin_Dashboard/Admin_Dashboard';
+// import Admin_Dashboard from './components/Admin_Dashboard/Admin_Dashboard';
 import DoctorDashboard from './components/Doctor/DoctorDashboard';
 import RegisterPatient from './components/Front_desk/RegisterPatient';
 import FrontDeskUsr from './components/Front_desk/FrontDeskUsr';
@@ -19,6 +19,11 @@ import Addtreatment from './components/Data_Entry_Dashboard/Addtreatment'
 import Updateresult from './components/Data_Entry_Dashboard/Updateresults'
 import Data_Entry_Dashboard from './components/Data_Entry_Dashboard/Data_Entry_Dashboard'
 import Optionspage from './components/Data_Entry_Dashboard/Optionspage';
+import ShowDatabaseAdministrator from "./components/Admin_Dashboard/components/databaseAdministrator/ShowDatabaseAdministrator";
+import ShowDataEntryOperator from "./components/Admin_Dashboard/components/dataEntryOperator/ShowDataEntryOperator";
+import ShowDoctor from "./components/Admin_Dashboard/components/doctor/ShowDoctor";
+import ShowFrontDeskOperator from "./components/Admin_Dashboard/components/frontDeskOperator/ShowFrontDeskOperator";
+import NB from './components/Admin_Dashboard/components/NB';
 
 const App = () => {
     return (
@@ -27,7 +32,6 @@ const App = () => {
                 <Navbar />
                 <Routes>
                     <Route exact path="/" element={<Login />} />
-                    <Route exact path='/admin' element={<Admin_Dashboard/>}/>
                     <Route exact path="/doctor" element={<ProtectedRoute element={DoctorDashboard} />} />
                     <Route exact path='/frontdesk' element={<ProtectedRoute element={FrontDeskUsr} />}/>
                     <Route exact path='/frontdesk/register' element={<ProtectedRoute element={RegisterPatient} />}/>
@@ -39,6 +43,12 @@ const App = () => {
                     <Route exact path='/dataentryop/treatment' element={<Addtreatment />}/>
                     <Route exact path='/dataentryop/updateresult' element={<Updateresult />}/>
                     <Route exact path='/dataentryop/options' element={<Optionspage />}/>
+                    {/* <Route exact path='/admin' element={<ProtectedRoute element={Admin_Dashboard} />}/> */}
+                    <Route exact path="/admin" element={<NB />} />
+                    <Route exact path = '/admin/dbadmin' element={<><NB/><ShowDatabaseAdministrator/></>}/>
+                    <Route exact path = '/admin/dataentry' element={<><NB/><ShowDataEntryOperator/></>}/>
+                    <Route exact path = '/admin/doctor' element={<><NB/><ShowDoctor/></>}/>
+                    <Route exact path = '/admin/frontdesk' element={<><NB/><ShowFrontDeskOperator/></>}/>
                 
                 </Routes>
             </Router>
