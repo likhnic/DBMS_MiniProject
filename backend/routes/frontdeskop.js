@@ -44,9 +44,24 @@ router.post("/register", fetchuser,async (req, res) => {
 // add a new appointment to the appointment table
 router.post("/appointment", fetchuser, async (req, res) => {
 
-    const { StartTime, EndTime, ExaminationRoom, PatientAadhar, DocID } = req.body;
+    const { StartTime, EndTime, ExaminationRoom, PatientAadhar, DocID, Emergency } = req.body;
+    var today = new Date();
+    var date = today.getFullYear() + '-' + (today.getMonth() + 1) + '-' + today.getDate();
+    var time = today.getHours() + ":" + today.getMinutes() + ":" + today.getSeconds();
+    var dateTime = date + ' ' + time;
+    const curr_time = new Date(dateTime);
+    const start_time = new Date(StartTime);
+    const end_time = new Date(EndTime);
+    const emrgncy = Emergency ? 1 : 0;
+
+    if (start_time < curr_time || end_time < start_time) {
+        res.status(404).json({
+            error: "Invalid time"
+        });
+        return;
+    }
     try {
-        let sql = `INSERT INTO Appointment (StartTime, EndTime, ExaminationRoom, PatientAadhar, DocID) VALUES ('${StartTime}', '${EndTime}', '${ExaminationRoom}', '${PatientAadhar}', ${DocID})`
+        let sql = `INSERT INTO Appointment (StartTime, EndTime, ExaminationRoom, PatientAadhar, DocID, Emrgncy) VALUES ('${StartTime}', '${EndTime}', '${ExaminationRoom}', '${PatientAadhar}', ${DocID}, ${emrgncy})`
         result = await query(sql);
         console.log("Appointment created successfully");
         res.status(200).json({
@@ -74,7 +89,7 @@ router.put("/stay", fetchuser, async (req, res) => {
         result = await query(sql);
         console.log("Stay created successfully");
 
-        sql = `UPDATE Room SET Availability = '0' WHERE RoomNo = ${RoomNo}`;
+        sql = `UPDATE Room SET Availability = 0 WHERE RoomNo = ${RoomNo}`;
         result = await query(sql);
         console.log("Room availability updated successfully");
         res.status(200).json({
@@ -88,8 +103,7 @@ router.put("/stay", fetchuser, async (req, res) => {
     }
 });
 
-// removing the patient from the patient table and update the end time of patient (patient, stay tables)
-// change the end time in stay table for the patient
+// update the end time of patient (patient, stay tables)
 // change the availability status of the room
 // do not remove the patient from patient table
 router.delete("/discharge", fetchuser, async (req, res) => {

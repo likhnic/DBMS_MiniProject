@@ -4,13 +4,13 @@ import { useNavigate } from 'react-router';
 const Appointment = () => {
     const header_style = { textAlign: 'center' }
 
-    const [data, setCredentials] = useState({ StartTime: "", EndTime: "", ExaminationRoom: "", PatientAadhar: "", DocID: "" });
+    const [data, setCredentials] = useState({ StartTime: "", EndTime: "", ExaminationRoom: "", PatientAadhar: "", DocID: "", Emergency: false });
 
     let navigate = useNavigate();
 
     const handleOnClick = async (e) => {
         e.preventDefault();
-        let { StartTime, EndTime, ExaminationRoom, PatientAadhar, DocID } = data;
+        let { StartTime, EndTime, ExaminationRoom, PatientAadhar, DocID, Emergency } = data;
         console.log(data);
         StartTime = new Date(StartTime).toISOString().slice(0, 19).replace('T', ' ');
         EndTime = new Date(EndTime).toISOString().slice(0, 19).replace('T', ' ');
@@ -22,7 +22,7 @@ const Appointment = () => {
                     'Content-Type': 'application/json',
                     'token': localStorage.getItem('token')
                 },
-                body: JSON.stringify({ StartTime, EndTime, ExaminationRoom, PatientAadhar, DocID })
+                body: JSON.stringify({ StartTime, EndTime, ExaminationRoom, PatientAadhar, DocID, Emergency })
             })
         const json = await response.json();
         console.log(json);
@@ -36,6 +36,12 @@ const Appointment = () => {
 
     const handleOnChange = (e) => {
         setCredentials({ ...data, [e.target.name]: e.target.value })
+        console.log(data);
+    }
+
+    const handleOnCheck = (e) => {
+        setCredentials({ ...data, [e.target.name]: e.target.checked })
+        console.log(data);
     }
 
     const goBack = () => { 
@@ -70,6 +76,10 @@ const Appointment = () => {
                     <div className="form-outline mb-4">
                         <input type="number" name="DocID" className="form-control" placeholder="Doctor ID" onChange={handleOnChange} />
                     </div>
+
+                    <input type="checkbox" className="btn-check" id="btncheck1" autocomplete="off" onClick={handleOnCheck} name="Emergency"/>
+                    <label className="btn btn-outline-danger mb-4" for="btncheck1">Emergency</label>
+                    <br/>
 
                     {/* <!-- Submit button --> */}
                     <button type="submit" className="btn btn-primary btn-block mb-4" onClick={handleOnClick}>Give Appointment</button>
