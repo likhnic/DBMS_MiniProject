@@ -82,6 +82,19 @@ router.post("/appointment", fetchuser, async (req, res) => {
 router.put("/stay", fetchuser, async (req, res) => {
 
     const { StartTime, RoomNo, PatientAadhar } = req.body;
+    var today = new Date();
+    var date = today.getFullYear() + '-' + (today.getMonth() + 1) + '-' + today.getDate();
+    var time = today.getHours() + ":" + today.getMinutes() + ":" + today.getSeconds();
+    var dateTime = date + ' ' + time;
+    const curr_time = new Date(dateTime);
+    const start_time = new Date(StartTime);
+
+    if (start_time < curr_time) {
+        res.status(404).json({
+            error: "Invalid time"
+        });
+        return;
+    }
 
     try {
 
