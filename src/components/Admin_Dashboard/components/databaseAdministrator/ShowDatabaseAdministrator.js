@@ -1,15 +1,17 @@
-import React, { useState, Fragment } from "react";
-import { nanoid } from "nanoid";
-import data from "./mock-data.json";
+import React, { useState, Fragment, useEffect } from "react";
 import ReadOnlyRow from "./ReadOnlyRow";
 import EditableRow from "./EditableRow";
+import RegistrationForm from "./RegistrationForm";
 
 const ShowDatabaseAdministrator = () => {
-  const [databaseAdministrators, setDatabaseAdministrators] = useState(data);
+  const [databaseAdministrators, setDatabaseAdministrators] = useState([]);
   const [addFormData, setAddFormData] = useState({
     Name: "",
     Phone: "",
     Address: "",
+    Aadhar: "",
+    Password: "",
+    rePassword: "",
   });
 
   const [editFormData, setEditFormData] = useState({
@@ -44,18 +46,105 @@ const ShowDatabaseAdministrator = () => {
     setEditFormData(newFormData);
   };
 
-  const handleAddFormSubmit = (event) => {
-    event.preventDefault();
+  const addUser = async (newUser) => {
+    const res = await fetch("http://localhost:5000/api/admin/adduser", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+        // 'token': localStorage.getItem('token')
+      },
 
+      body: JSON.stringify(newUser),
+    });
+
+    const jsonData = await res.json();
+
+    return jsonData;
+  };
+
+  const addDatabaseAdministrator = async (newDatabaseAdministrator) => {
+    const res = await fetch("http://localhost:5000/api/admin/adddbadmin", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+        // 'token': localStorage.getItem('token')
+      },
+
+      body: JSON.stringify(newDatabaseAdministrator),
+    });
+
+    const jsonData = await res.json();
+
+    return jsonData;
+  };
+
+  const handleAddFormSubmit = async (event) => {
+    event.preventDefault();
+    if (addFormData.Password !== addFormData.rePassword) {
+      alert("Password mismatch");
+      return;
+    }
+    const newUser = {
+      Aadhar: addFormData.Aadhar,
+      Password: addFormData.Password,
+      Type: 3,
+      Status: 1,
+    };
+    var jsonData = await addUser(newUser);
+    if (jsonData.error) {
+      console.log(jsonData.error);
+      alert("Error adding database administrator");
+      return;
+    }
     const newDatabaseAdministrator = {
-      AdminID: nanoid(),
+      AdminID: jsonData.ID,
       Name: addFormData.Name,
       Phone: addFormData.Phone,
       Address: addFormData.Address,
     };
-
-    const newDatabaseAdministrators = [...databaseAdministrators, newDatabaseAdministrator];
+    jsonData = await addDatabaseAdministrator(newDatabaseAdministrator);
+    if (jsonData.error) {
+      console.log(jsonData.error);
+      alert("Error adding database administrator");
+      return;
+    }
+    alert("Added " + newDatabaseAdministrator.Name + " with Employee ID: " + newDatabaseAdministrator.AdminID);
+    const newDatabaseAdministrators = [
+      ...databaseAdministrators,
+      newDatabaseAdministrator,
+    ];
     setDatabaseAdministrators(newDatabaseAdministrators);
+  };
+
+  const update_dbadmin = async (editedDatabaseAdministrator) => {
+    const res = await fetch("http://localhost:5000/api/admin/updatedbadmin", {
+      method: "PUT",
+      headers: {
+        "Content-Type": "application/json",
+        // 'token': localStorage.getItem('token')
+      },
+
+      body: JSON.stringify(editedDatabaseAdministrator),
+    });
+
+    const jsonData = await res.json();
+
+    return jsonData;
+  };
+
+  const delete_dbadmin = async (id) => {
+    const res = await fetch(`http://localhost:5000/api/admin/deletedbadmin`, {
+      method: "DELETE",
+      headers: {
+        "Content-Type": "application/json",
+        // 'token': localStorage.getItem('token')
+      },
+      body: JSON.stringify({ AdminID: id }),
+    });
+
+    const jsonData = await res.json();
+
+    return jsonData;
   };
 
   const handleEditFormSubmit = (event) => {
@@ -68,13 +157,22 @@ const ShowDatabaseAdministrator = () => {
       Address: editFormData.Address,
     };
 
-    const newDatabaseAdministrators = [...databaseAdministrators];
+    const jsonData = update_dbadmin(editedDatabaseAdministrator);
+    if (jsonData.error) {
+      console.log(jsonData.error);
+      alert("Error updating database administrator");
+    } else {
+      const newDatabaseAdministrators = [...databaseAdministrators];
 
-    const index = databaseAdministrators.findIndex((databaseAdministrator) => databaseAdministrator.AdminID === editDatabaseAdministratorId);
+      const index = databaseAdministrators.findIndex(
+        (databaseAdministrator) =>
+          databaseAdministrator.AdminID === editDatabaseAdministratorId
+      );
 
-    newDatabaseAdministrators[index] = editedDatabaseAdministrator;
+      newDatabaseAdministrators[index] = editedDatabaseAdministrator;
 
-    setDatabaseAdministrators(newDatabaseAdministrators);
+      setDatabaseAdministrators(newDatabaseAdministrators);
+    }
     setEditDatabaseAdministratorId(null);
   };
 
@@ -96,22 +194,56 @@ const ShowDatabaseAdministrator = () => {
   };
 
   const handleDeleteClick = (databaseAdministratorId) => {
-    const newDatabaseAdministrators = [...databaseAdministrators];
+    const jsonData = delete_dbadmin(databaseAdministratorId);
+    if (jsonData.error) {
+      console.log(jsonData.error);
+      alert("Error deleting database administrator");
+    } else {
+      const newDatabaseAdministrators = [...databaseAdministrators];
 
-    const index = databaseAdministrators.findIndex((databaseAdministrator) => databaseAdministrator.AdminID === databaseAdministratorId);
+      const index = databaseAdministrators.findIndex((databaseAdministrator) => databaseAdministrator.AdminID === databaseAdministratorId);
 
-    newDatabaseAdministrators.splice(index, 1);
+      newDatabaseAdministrators.splice(index, 1);
 
-    setDatabaseAdministrators(newDatabaseAdministrators);
+      setDatabaseAdministrators(newDatabaseAdministrators);
+    }
   };
 
+  const get_all_dbadmins = async () => {
+    const response = await fetch(
+      `http://localhost:5000/api/admin/getdbadmins`,
+      {
+        method: "GET",
+        headers: {
+          "Content-Type": "application/json",
+          // 'token': localStorage.getItem('token')
+        },
+      }
+    );
+
+    const jsonData = await response.json();
+    if (jsonData.error) {
+      console.log(jsonData.error);
+      alert("Error getting database administrators");
+    } else if (jsonData.empty) {
+      console.log(jsonData.empty);
+      alert("No database administrators found");
+    } else {
+      setDatabaseAdministrators(jsonData.dbadmins);
+    }
+  };
+
+  useEffect(() => {
+    get_all_dbadmins();
+  }, []);
+
   return (
-    <div>
-      <h1>Database Administrators</h1>
+    <div className="container">
+      <h1 className="text-center container mt-3">Database Administrators</h1>
       <form onSubmit={handleEditFormSubmit}>
         <table className="table table-hover">
           <thead>
-            <tr>
+            <tr style={{ backgroundColor: "#060b26", color: "white" }}>
               <th>Name</th>
               <th>Phone</th>
               <th>Address</th>
@@ -120,7 +252,7 @@ const ShowDatabaseAdministrator = () => {
           </thead>
           <tbody>
             {databaseAdministrators.map((databaseAdministrator) => (
-              <Fragment>
+              <Fragment key={databaseAdministrator.AdminID}>
                 {editDatabaseAdministratorId === databaseAdministrator.AdminID ? (
                   <EditableRow
                     editFormData={editFormData}
@@ -139,33 +271,10 @@ const ShowDatabaseAdministrator = () => {
           </tbody>
         </table>
       </form>
-      <h2>Add a Database Administrator</h2>
-      <form onSubmit={handleAddFormSubmit}>
-        <input
-          type="text"
-          name="Name"
-          required="required"
-          placeholder="Enter a name..."
-          onChange={handleAddFormChange}
-        />
-        <input
-          type="text"
-          name="Phone"
-          required="required"
-          placeholder="Enter a phone number..."
-          onChange={handleAddFormChange}
-        />
-        <input
-          type="text"
-          name="Address"
-          required="required"
-          placeholder="Enter an address..."
-          onChange={handleAddFormChange}
-        />
-        <button className="btn btn-primary" type="submit">
-          Add
-        </button>
-      </form>
+      <RegistrationForm
+        onSubmit={handleAddFormSubmit}
+        onChange={handleAddFormChange}
+      />
     </div>
   );
 };

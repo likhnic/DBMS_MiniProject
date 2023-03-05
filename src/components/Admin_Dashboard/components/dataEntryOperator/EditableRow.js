@@ -38,11 +38,11 @@ const EditableRow = ({
         ></input>
       </td>
       <td>
-        <button className="btn btn-success" type="submit">
+        <button className="btn btn-success me-1" type="submit">
           Save
         </button>
         <button
-          className="btn btn-warning"
+          className="btn btn-danger ms-1"
           type="button"
           onClick={handleCancelClick}
         >

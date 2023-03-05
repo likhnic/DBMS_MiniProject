@@ -1,43 +1,46 @@
-import React from 'react';
-import * as FaIcons from 'react-icons/fa';
-import * as AiIcons from 'react-icons/ai';
-import * as IoIcons from 'react-icons/io';
+import React from "react";
+import { RiAdminFill } from "react-icons/ri";
+import { FaDesktop } from "react-icons/fa";
+import { AiFillHome } from "react-icons/ai";
+import { GiDoctorFace } from "react-icons/gi";
+import { CgLogOut } from "react-icons/cg";
+import { RiDatabaseFill } from "react-icons/ri";
 
 export const SideBarData = [
   {
-    title: 'Home',
-    path: '/admin',
-    icon: <AiIcons.AiFillHome />,
-    cName: 'nav-text'
+    title: "Home",
+    path: "/admin",
+    icon: <AiFillHome />,
+    cName: "nav-text",
   },
   {
-    title: 'Database Administrator',
-    path: '/admin/dbadmin',
-    icon: <IoIcons.IoIosPaper />,
-    cName: 'nav-text'
+    title: "Database Administrators",
+    path: "/admin/dbadmin",
+    icon: <RiAdminFill />,
+    cName: "nav-text",
   },
   {
-    title: 'Data Entry Operator',
-    path: '/admin/dataentry',
-    icon: <FaIcons.FaCartPlus />,
-    cName: 'nav-text'
+    title: "Data Entry Operators",
+    path: "/admin/dataentry",
+    icon: <RiDatabaseFill />,
+    cName: "nav-text",
   },
   {
-    title: 'Doctor',
-    path: '/admin/doctor',
-    icon: <IoIcons.IoMdPeople />,
-    cName: 'nav-text'
+    title: "Doctors",
+    path: "/admin/doctor",
+    icon: <GiDoctorFace />,
+    cName: "nav-text",
   },
   {
-    title: 'Front Desk Operator',
-    path: '/admin/frontdesk',
-    icon: <FaIcons.FaEnvelopeOpenText />,
-    cName: 'nav-text'
+    title: "Front Desk Operators",
+    path: "/admin/frontdesk",
+    icon: <FaDesktop />,
+    cName: "nav-text",
   },
   {
-    title: 'Logout',
-    path: '/',
-    icon: <IoIcons.IoMdHelpCircle />,
-    cName: 'nav-text'
-  }
+    title: "Logout",
+    path: "/",
+    icon: <CgLogOut />,
+    cName: "nav-text",
+  },
 ];
