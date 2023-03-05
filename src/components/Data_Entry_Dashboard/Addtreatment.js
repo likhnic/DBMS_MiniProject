@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { useNavigate } from 'react-router-dom';
+import Alert from "../Alert";
 import backImage from './back.png'
 const Addtreatment = () => {
     const queryParameters = new URLSearchParams(window.location.search);
@@ -8,6 +9,17 @@ const Addtreatment = () => {
     const [datatest, setDatatest] = useState([]);
     const [datadoc, setDatadoc] = useState([]);
     let navigate = useNavigate()
+    const [alert, setAlert] = useState(null);
+
+    const showAlert = (message, type) => {
+      setAlert({
+        message,
+        type
+      })
+      setTimeout(() => {
+        setAlert(null)
+      }, 4000);
+    }
     const onChange = (e) => {
         setCredentials({ ...credentials, [e.target.name]: e.target.value });
         console.log("credentials : ", credentials);
@@ -25,7 +37,7 @@ const Addtreatment = () => {
 
         if (!Name || !DocID || Name === "" || DocID === "") {
             setCredentials({ ...credentials, [e.target.name]: e.target.value });
-            console.log("Please select a value!!!");
+            showAlert("Please select a Treatment and a Doctor!!!", "danger")
             return;
         }
 
@@ -85,6 +97,7 @@ const Addtreatment = () => {
     return (
         <>
             <button style={mystyle} className="prev" onClick={() => goBack()} color="red" border="none"><img src={backImage} width='50rem'></img></button>
+        <Alert alert={alert} />
             <div className="container mt-3">
                 <form
                     className="form-control"
@@ -94,7 +107,7 @@ const Addtreatment = () => {
 
 
                     <select
-                        className="form-select"
+                        className="form-select mb-3"
                         aria-label="Default select example"
                         defaultValue={"Treatment"}
                         onChange={onChange}
@@ -108,7 +121,7 @@ const Addtreatment = () => {
                     </select>
 
                     <select
-                        className="form-select"
+                        className="form-select mb-3"
                         aria-label="Default select example"
                         onChange={onChange}
                         defaultValue={"Doctor"}

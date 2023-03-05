@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from 'react'
+import Alert from '../Alert'
 import PatientDetailsCard from './PatientDetailsCard'
 
 const DoctorDashboard = () => {
@@ -12,6 +13,17 @@ const DoctorDashboard = () => {
     const [currTime, setCurrTime] = useState(new Date().toISOString())
     const [loading, setLoading] = useState(true)
     const [medications, setMedications] = useState([])
+    const [alert, setAlert] = useState(null);
+
+    const showAlert = (message, type) => {
+      setAlert({
+        message,
+        type
+      })
+      setTimeout(() => {
+        setAlert(null)
+      }, 4000);
+    }
 
     const presChange = (e) => {
         setPatientPrescribe({ ...patientPrescribe, [e.target.name]: e.target.value })
@@ -23,7 +35,7 @@ const DoctorDashboard = () => {
         const { medicationcode, dose } = patientPrescribe
         console.log(medicationcode, dose, appointmentId)
         if (!dose || dose === '') {
-            alert("Please enter a dose")
+            showAlert("Please enter a dose", "danger")
             return;
         }
         const response = await fetch(`http://localhost:5000/api/doctor/${appointmentId}`, {
@@ -37,10 +49,11 @@ const DoctorDashboard = () => {
         const json = await response.json();
         console.log(json);
         if (json.error) {
-            alert(json.error)
+            showAlert(json.error, "danger")
             return;
         }
         await getAccordingType('prescribes')
+        showAlert("Prescribed Successfully", "success")
 
 
     }
@@ -144,7 +157,7 @@ const DoctorDashboard = () => {
         const json = await response.json();
         console.log(json);
         if (json.error) {
-            alert(json.error)
+            showAlert(json.error, 'danger')
             setPatientPres({ tests: [], undergoes: [], prescribes: [] })
         }
         else setPatientPres(json)
@@ -180,6 +193,7 @@ const DoctorDashboard = () => {
         <>
 
             <div className="container">
+                <Alert alert={alert}/>
 
                 {!loading && showDetails === 0 && searchResult.length > 0 && 
                     (

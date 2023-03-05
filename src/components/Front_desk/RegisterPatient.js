@@ -1,11 +1,22 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router';
+import Alert from '../Alert';
 
 const RegisterPatient = () => {
     const header_style = { textAlign: 'center' }
 
     const [data, setCredentials] = useState({ Name: "", Aadhar: "", Address: "", Phone: "", InsuranceID: "", PCPDocID: "" });
+    const [alert, setAlert] = useState(null);
 
+    const showAlert = (message, type) => {
+      setAlert({
+        message,
+        type
+      })
+      setTimeout(() => {
+        setAlert(null)
+      }, 4000);
+    }
     let navigate = useNavigate();
 
     const handleOnClick = async (e) => {
@@ -27,10 +38,10 @@ const RegisterPatient = () => {
         if (json.success) {
             // save the auth token and redirect
             navigate("/frontdesk", { replace: true })
-            alert("Patient registered successfully")
+            showAlert("Patient registered successfully", "success")
         }
         else if(!json.success){
-            alert(json.error)
+            showAlert(json.error, "danger")
         }
     }
 
@@ -43,9 +54,10 @@ const RegisterPatient = () => {
     return (
         <>
             <div className='container mt-3'>
+                <Alert alert={alert} />
             <button className="btn btn-outline-primary m-3" onClick={goBack} type="submit">Go Back</button>
 
-                <form className='form-control shadow bg-body p-3 mb-5 '>
+                <form className='form-control shadow bg-body p-3 mb-5'>
             <h1 style={header_style} className="mt-3">Registration form</h1>
                     <div className="form-outline mb-4">
                         <input type="text" name="Name" className="form-control" placeholder="Name" onChange={handleOnChange} />
