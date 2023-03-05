@@ -1,14 +1,15 @@
 import React, { useState } from "react";
+import { CgLogOut } from "react-icons/cg";
 import { FaBars } from "react-icons/fa";
 import { AiOutlineClose } from "react-icons/ai";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { SideBarData } from "./SideBarData";
 import "./NB.css";
 import { IconContext } from "react-icons";
 
-const NB = () => {
+const NB = (props) => {
   const [sidebar, setSidebar] = useState(false);
-
+  const navigate = useNavigate();
   return (
     <>
       <IconContext.Provider value={{ color: "#fff" }}>
@@ -34,6 +35,19 @@ const NB = () => {
                 </li>
               );
             })}
+            <li key={SideBarData.length+1} className="nav-text">
+              <Link
+                onClick={(e) => {
+                  e.preventDefault();
+                  localStorage.removeItem("token");
+                  navigate("/");
+                  // props.alert("Logged out successfully", "success");
+                }}
+              >
+                {<CgLogOut />}
+                <span>Logout</span>
+              </Link>
+            </li>
           </ul>
         </nav>
       </IconContext.Provider>

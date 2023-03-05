@@ -3,7 +3,6 @@ import { RiAdminFill } from "react-icons/ri";
 import { FaDesktop } from "react-icons/fa";
 import { AiFillHome } from "react-icons/ai";
 import { GiDoctorFace } from "react-icons/gi";
-import { CgLogOut } from "react-icons/cg";
 import { RiDatabaseFill } from "react-icons/ri";
 
 export const SideBarData = [
@@ -36,11 +35,5 @@ export const SideBarData = [
     path: "/admin/frontdesk",
     icon: <FaDesktop />,
     cName: "nav-text",
-  },
-  {
-    title: "Logout",
-    path: "/",
-    icon: <CgLogOut />,
-    cName: "nav-text",
-  },
+  }
 ];
