@@ -113,7 +113,12 @@ const ShowFrontDeskOperator = () => {
       alert("Error adding front desk operator");
       return;
     }
-    alert("Added " + newFrontDeskOperator.Name + " with Employee ID: " + newFrontDeskOperator.FrontDeskOpID);
+    alert(
+      "Added " +
+        newFrontDeskOperator.Name +
+        " with Employee ID: " +
+        newFrontDeskOperator.FrontDeskOpID
+    );
 
     const newFrontDeskOperators = [...frontDeskOperators, newFrontDeskOperator];
     setFrontDeskOperators(newFrontDeskOperators);
@@ -248,15 +253,53 @@ const ShowFrontDeskOperator = () => {
     get_all_frontdeskoperators();
   }, [frontDeskOperators]);
 
+  const handleSearch = async (event) => {
+    event.preventDefault();
+    let searchKey = event.target.value;
+    if (searchKey) {
+      let result = await fetch(
+        `http://localhost:5000/api/admin/getfrontdeskoperators/${searchKey}`,
+        {
+          method: "GET",
+          headers: {
+            "Content-Type": "application/json",
+            // 'token': localStorage.getItem('token')
+          },
+        }
+      );
+      result = await result.json();
+      if (result.error || result.empty) {
+        // alert("No doctors found");
+        setFrontDeskOperators([]);
+      }
+      else{
+        setFrontDeskOperators(result.frontdeskoperators);
+      }
+    } else {
+      get_all_frontdeskoperators();
+    }
+  };
+
   return (
     <>
     <NB/>
     <div className="container">
       <h1 className="text-center container mt-3">Front Desk Operators</h1>
+
+      <div className="form-outline mb-4">
+        <input
+          className="form-control-sm"
+          type="text"
+          placeholder="Search by name..."
+          onChange={handleSearch}
+        />
+      </div>
+
       <form onSubmit={handleEditFormSubmit}>
         <table className="table table-hover">
           <thead>
             <tr style={{ backgroundColor: "#060b26", color: "white" }}>
+              <th>Employee ID</th>
               <th>Name</th>
               <th>Phone</th>
               <th>Address</th>
@@ -268,6 +311,7 @@ const ShowFrontDeskOperator = () => {
               <Fragment key={frontDeskOperator.FrontDeskOpID}>
                 {editFrontDeskOperatorId === frontDeskOperator.FrontDeskOpID ? (
                   <EditableRow
+                    id={editFrontDeskOperatorId}
                     editFormData={editFormData}
                     handleEditFormChange={handleEditFormChange}
                     handleCancelClick={handleCancelClick}

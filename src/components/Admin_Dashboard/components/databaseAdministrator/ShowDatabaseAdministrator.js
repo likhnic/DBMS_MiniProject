@@ -21,7 +21,8 @@ const ShowDatabaseAdministrator = () => {
     Address: "",
   });
 
-  const [editDatabaseAdministratorId, setEditDatabaseAdministratorId] = useState(null);
+  const [editDatabaseAdministratorId, setEditDatabaseAdministratorId] =
+    useState(null);
 
   const handleAddFormChange = (event) => {
     event.preventDefault();
@@ -110,7 +111,6 @@ const ShowDatabaseAdministrator = () => {
       return;
     }
     alert("Added " + newDatabaseAdministrator.Name + " with Employee ID: " + newDatabaseAdministrator.AdminID);
-    // update state with new database administrator
 
     const newDatabaseAdministrators = [
       ...databaseAdministrators,
@@ -205,7 +205,10 @@ const ShowDatabaseAdministrator = () => {
     } else {
       const newDatabaseAdministrators = [...databaseAdministrators];
 
-      const index = databaseAdministrators.findIndex((databaseAdministrator) => databaseAdministrator.AdminID === databaseAdministratorId);
+      const index = databaseAdministrators.findIndex(
+        (databaseAdministrator) =>
+          databaseAdministrator.AdminID === databaseAdministratorId
+      );
 
       newDatabaseAdministrators.splice(index, 1);
 
@@ -241,16 +244,53 @@ const ShowDatabaseAdministrator = () => {
     get_all_dbadmins();
   }, [databaseAdministrators]);
 
+  const handleSearch = async (event) => {
+    event.preventDefault();
+    let searchKey = event.target.value;
+    if (searchKey) {
+      let result = await fetch(
+        `http://localhost:5000/api/admin/getdbadmins/${searchKey}`,
+        {
+          method: "GET",
+          headers: {
+            "Content-Type": "application/json",
+            // 'token': localStorage.getItem('token')
+          },
+        }
+      );
+      result = await result.json();
+      if (result.error || result.empty) {
+        setDatabaseAdministrators([]);
+      }
+      else{
+        setDatabaseAdministrators(result.dbadmins);
+      }
+    } else {
+      get_all_dbadmins();
+    }
+  };
+
   return (
     <>
     <NB/>
 
     <div className="container">
       <h1 className="text-center container mt-3">Database Administrators</h1>
+
+      <div className="form-outline mb-4">
+        <input
+          className="form-control-sm"
+          type="text"
+          placeholder="Search by name..."
+          onChange={handleSearch}
+        />
+      </div>
+
       <form onSubmit={handleEditFormSubmit}>
         <table className="table table-hover">
           <thead>
             <tr style={{ backgroundColor: "#060b26", color: "white" }}>
+              <th>Employee ID</th>
               <th>Name</th>
               <th>Phone</th>
               <th>Address</th>
@@ -260,8 +300,10 @@ const ShowDatabaseAdministrator = () => {
           <tbody>
             {databaseAdministrators.map((databaseAdministrator) => (
               <Fragment key={databaseAdministrator.AdminID}>
-                {editDatabaseAdministratorId === databaseAdministrator.AdminID ? (
+                {editDatabaseAdministratorId ===
+                databaseAdministrator.AdminID ? (
                   <EditableRow
+                    id={editDatabaseAdministratorId}
                     editFormData={editFormData}
                     handleEditFormChange={handleEditFormChange}
                     handleCancelClick={handleCancelClick}

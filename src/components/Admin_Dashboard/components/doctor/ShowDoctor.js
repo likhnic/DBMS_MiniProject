@@ -118,7 +118,7 @@ const ShowDoctor = () => {
       return;
     }
     alert("Added " + newDoctor.Name + " with Employee ID: " + newDoctor.DocID);
-    
+
     const newDoctors = [...doctors, newDoctor];
     setDoctors(newDoctors);
   };
@@ -246,17 +246,53 @@ const ShowDoctor = () => {
     get_all_docs();
   }, [doctors]);
 
+  const handleSearch = async (event) => {
+    event.preventDefault();
+    let searchKey = event.target.value;
+    if (searchKey) {
+      let result = await fetch(
+        `http://localhost:5000/api/admin/getdoctors/${searchKey}`,
+        {
+          method: "GET",
+          headers: {
+            "Content-Type": "application/json",
+            // 'token': localStorage.getItem('token')
+          },
+        }
+      );
+      result = await result.json();
+      if (result.error || result.empty) {
+        // alert("No doctors found");
+        setDoctors([]);
+      }
+      else{
+        setDoctors(result.doctors);
+      }
+    } else {
+      get_all_docs();
+    }
+  };
+
   return (
     <>
     <NB/>
     <div className="container">
-      <h1 className="text-center container mt-3">
-        Doctors
-      </h1>
+      <h1 className="text-center container mt-3">Doctors</h1>
+
+      <div className="form-outline mb-4">
+        <input
+          className="form-control-sm"
+          type="text"
+          placeholder="Search by name..."
+          onChange={handleSearch}
+        />
+      </div>
+
       <form onSubmit={handleEditFormSubmit}>
         <table className="table table-hover">
           <thead>
-            <tr style={{backgroundColor:"#060b26", color:"white"}} >
+            <tr style={{ backgroundColor: "#060b26", color: "white" }}>
+              <th>Employee ID</th>
               <th>Position</th>
               <th>Name</th>
               <th>Phone</th>
@@ -271,6 +307,7 @@ const ShowDoctor = () => {
               <Fragment key={doctor.DocID}>
                 {editDoctorId === doctor.DocID ? (
                   <EditableRow
+                    id={editDoctorId}
                     editFormData={editFormData}
                     handleEditFormChange={handleEditFormChange}
                     handleCancelClick={handleCancelClick}

@@ -3,6 +3,7 @@ import React from "react";
 const ReadOnlyRow = ({ databaseAdministrator, handleEditClick, handleDeleteClick }) => {
   return (
     <tr>
+      <td>{databaseAdministrator.AdminID}</td>
       <td>{databaseAdministrator.Name}</td>
       <td>{databaseAdministrator.Phone}</td>
       <td>{databaseAdministrator.Address}</td>

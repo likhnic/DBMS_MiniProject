@@ -3,6 +3,7 @@ import React from "react";
 const ReadOnlyRow = ({ frontDeskOperator, handleEditClick, handleDeleteClick }) => {
   return (
     <tr>
+      <td>{frontDeskOperator.FrontDeskOpID}</td>
       <td>{frontDeskOperator.Name}</td>
       <td>{frontDeskOperator.Phone}</td>
       <td>{frontDeskOperator.Address}</td>

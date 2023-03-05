@@ -112,7 +112,12 @@ const ShowDataEntryOperator = () => {
       alert("Error adding data entry operator");
       return;
     }
-    alert("Added " + newDataEntryOperator.Name + " with Employee ID: " + newDataEntryOperator.DataEntryOpID);
+    alert(
+      "Added " +
+        newDataEntryOperator.Name +
+        " with Employee ID: " +
+        newDataEntryOperator.DataEntryOpID
+    );
 
     const newDataEntryOperators = [...dataEntryOperators, newDataEntryOperator];
     setDataEntryOperators(newDataEntryOperators);
@@ -249,15 +254,53 @@ const ShowDataEntryOperator = () => {
     get_all_dataentryoperators();
   }, [dataEntryOperators]);
 
+  const handleSearch = async (event) => {
+    event.preventDefault();
+    let searchKey = event.target.value;
+    if (searchKey) {
+      let result = await fetch(
+        `http://localhost:5000/api/admin/getdataentryoperators/${searchKey}`,
+        {
+          method: "GET",
+          headers: {
+            "Content-Type": "application/json",
+            // 'token': localStorage.getItem('token')
+          },
+        }
+      );
+      result = await result.json();
+      if (result.error || result.empty) {
+        // alert("No doctors found");
+        setDataEntryOperators([]);
+      }
+      else{
+        setDataEntryOperators(result.dataentryoperators);
+      }
+    } else {
+      get_all_dataentryoperators();
+    }
+  };
+
   return (
     <>
     <NB/>
     <div className="container">
       <h1 className="text-center container mt-3">Data Entry Operators</h1>
+
+      <div className="form-outline mb-4">
+        <input
+          className="form-control-sm"
+          type="text"
+          placeholder="Search by name..."
+          onChange={handleSearch}
+        />
+      </div>
+
       <form onSubmit={handleEditFormSubmit}>
         <table className="table table-hover">
           <thead>
             <tr style={{ backgroundColor: "#060b26", color: "white" }}>
+              <th>Employee ID</th>
               <th>Name</th>
               <th>Phone</th>
               <th>Address</th>
@@ -269,6 +312,7 @@ const ShowDataEntryOperator = () => {
               <Fragment key={dataEntryOperator.DataEntryOpID}>
                 {editDataEntryOperatorId === dataEntryOperator.DataEntryOpID ? (
                   <EditableRow
+                    id={editDataEntryOperatorId}
                     editFormData={editFormData}
                     handleEditFormChange={handleEditFormChange}
                     handleCancelClick={handleCancelClick}

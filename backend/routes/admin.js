@@ -70,6 +70,22 @@ router.get("/getdoctors", async (req, res) => {
   }
 });
 
+// getting the doctors list using pattern match
+// add fetchuser to the route to make it private later
+router.get("/getdoctors/:search", async (req, res) => {
+  let sqlQuery = `Select * from Doctor WHERE 1=(SELECT Status FROM User WHERE ID=DocID) AND Name regexp '${req.params.search}'`;
+  try {
+    let result = await query(sqlQuery);
+    if (result.length == 0) {
+      return res.json({ empty: "No doctors found!" });
+    }
+    return res.json({ doctors: result });
+  } catch (error) {
+    console.log(error);
+    res.json({ error: "Error getting doctors" });
+  }
+});
+
 // updating the doctor's data
 // add fetchuser to the route to make it private later
 router.put("/updatedoctor", async (req, res) => {
@@ -124,6 +140,22 @@ router.post("/adddataentryoperator", async (req, res) => {
 // add fetchuser to the route to make it private later
 router.get("/getdataentryoperators", async (req, res) => {
   let sqlQuery = `Select * from Data_entry_operator WHERE 1=(SELECT Status FROM User WHERE ID=DataEntryOpID)`;
+  try {
+    let result = await query(sqlQuery);
+    if (result.length == 0) {
+      return res.json({ empty: "No dataentryoperators found!" });
+    }
+    return res.json({ dataentryoperators: result });
+  } catch (error) {
+    console.log(error);
+    res.json({ error: "Error getting dataentryoperators!" });
+  }
+});
+
+// getting the dataentryoperators list
+// add fetchuser to the route to make it private later
+router.get("/getdataentryoperators/:search", async (req, res) => {
+  let sqlQuery = `Select * from Data_entry_operator WHERE 1=(SELECT Status FROM User WHERE ID=DataEntryOpID) AND Name regexp '${req.params.search}'`;
   try {
     let result = await query(sqlQuery);
     if (result.length == 0) {
@@ -199,6 +231,22 @@ router.get("/getdbadmins", async (req, res) => {
   }
 });
 
+// getting the dbadmins list
+// add fetchuser to the route to make it private later
+router.get("/getdbadmins/:search", async (req, res) => {
+  let sqlQuery = `Select * from Database_administrator WHERE 1=(SELECT Status FROM User WHERE ID=AdminID) AND Name regexp '${req.params.search}'`;
+  try {
+    let result = await query(sqlQuery);
+    if (result.length == 0) {
+      return res.json({ empty: "No dbadmins found!" });
+    }
+    return res.json({ dbadmins: result });
+  } catch (error) {
+    console.log(error);
+    res.json({ error: "Error getting dbadmins!" });
+  }
+});
+
 // updating the dbadmin's data
 // add fetchuser to the route to make it private later
 router.put("/updatedbadmin", async (req, res) => {
@@ -248,6 +296,22 @@ router.post("/addfrontdeskoperator", async (req, res) => {
 // add fetchuser to the route to make it private later
 router.get("/getfrontdeskoperators", async (req, res) => {
   let sqlQuery = `Select * from Front_desk_operator WHERE 1=(SELECT Status FROM User WHERE ID=FrontDeskOpID)`;
+  try {
+    let result = await query(sqlQuery);
+    if (result.length == 0) {
+      return res.json({ empty: "No frontdeskoperators found!" });
+    }
+    return res.json({ frontdeskoperators: result });
+  } catch (error) {
+    console.log(error);
+    res.json({ error: "Error getting frontdeskoperators!" });
+  }
+});
+
+// getting the frontdeskoperators list
+// add fetchuser to the route to make it private later
+router.get("/getfrontdeskoperators/:search", async (req, res) => {
+  let sqlQuery = `Select * from Front_desk_operator WHERE 1=(SELECT Status FROM User WHERE ID=FrontDeskOpID) AND Name regexp '${req.params.search}'`;
   try {
     let result = await query(sqlQuery);
     if (result.length == 0) {

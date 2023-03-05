@@ -1,12 +1,14 @@
 import React from "react";
 
 const EditableRow = ({
+  id,
   editFormData,
   handleEditFormChange,
   handleCancelClick,
 }) => {
   return (
     <tr>
+      <td>{id}</td>
       <td>
         <input
           type="text"
@@ -38,8 +40,14 @@ const EditableRow = ({
         ></input>
       </td>
       <td>
-        <button className="btn btn-success me-1" type="submit">Save</button>
-        <button className="btn btn-danger ms-1" type="button" onClick={handleCancelClick}>
+        <button className="btn btn-success me-1" type="submit">
+          Save
+        </button>
+        <button
+          className="btn btn-danger ms-1"
+          type="button"
+          onClick={handleCancelClick}
+        >
           Cancel
         </button>
       </td>

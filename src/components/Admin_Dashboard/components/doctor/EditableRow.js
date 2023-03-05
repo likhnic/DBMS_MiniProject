@@ -1,12 +1,14 @@
 import React from "react";
 
 const EditableRow = ({
+  id,
   editFormData,
   handleEditFormChange,
   handleCancelClick,
 }) => {
   return (
     <tr>
+      <td>{id}</td>
       <td>
         <input
           type="text"
