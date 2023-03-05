@@ -24,6 +24,7 @@ import ShowDataEntryOperator from "./components/Admin_Dashboard/components/dataE
 import ShowDoctor from "./components/Admin_Dashboard/components/doctor/ShowDoctor";
 import ShowFrontDeskOperator from "./components/Admin_Dashboard/components/frontDeskOperator/ShowFrontDeskOperator";
 import NB from './components/Admin_Dashboard/components/NB';
+import AdminHome from './components/Admin_Dashboard/AdminHome';
 
 const App = () => {
     return (
@@ -44,7 +45,7 @@ const App = () => {
                     <Route exact path='/dataentryop/updateresult' element={<Updateresult />}/>
                     <Route exact path='/dataentryop/options' element={<Optionspage />}/>
                     {/* <Route exact path='/admin' element={<ProtectedRoute element={Admin_Dashboard} />}/> */}
-                    <Route exact path="/admin" element={<NB />} />
+                    <Route exact path="/admin" element={<><NB /><AdminHome/></>} />
                     <Route exact path = '/admin/dbadmin' element={<><NB/><ShowDatabaseAdministrator/></>}/>
                     <Route exact path = '/admin/dataentry' element={<><NB/><ShowDataEntryOperator/></>}/>
                     <Route exact path = '/admin/doctor' element={<><NB/><ShowDoctor/></>}/>

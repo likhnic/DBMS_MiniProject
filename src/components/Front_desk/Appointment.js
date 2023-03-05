@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { useNavigate } from 'react-router';
+import { useNavigate } from 'react-router'; 
 
 const Appointment = () => {
     const header_style = { textAlign: 'center' }

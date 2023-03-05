@@ -1,56 +1,25 @@
 import React from "react";
 
-const EditableRow = ({
-  editFormData,
-  handleEditFormChange,
-  handleCancelClick,
-}) => {
+const ReadOnlyRow = ({ dataEntryOperator, handleEditClick, handleDeleteClick }) => {
   return (
     <tr>
+      <td>{dataEntryOperator.Name}</td>
+      <td>{dataEntryOperator.Phone}</td>
+      <td>{dataEntryOperator.Address}</td>
       <td>
-        <input
-          type="text"
-          required="required"
-          placeholder="Enter a name..."
-          name="Name"
-          value={editFormData.Name}
-          onChange={handleEditFormChange}
-        ></input>
-      </td>
-      <td>
-        <input
-          type="text"
-          required="required"
-          placeholder="Enter a phone number..."
-          name="Phone"
-          value={editFormData.Phone}
-          onChange={handleEditFormChange}
-        ></input>
-      </td>
-      <td>
-        <input
-          type="text"
-          required="required"
-          placeholder="Enter an address..."
-          name="Address"
-          value={editFormData.Address}
-          onChange={handleEditFormChange}
-        ></input>
-      </td>
-      <td>
-        <button className="btn btn-success" type="submit">
-          Save
-        </button>
         <button
-          className="btn btn-warning"
+          className="btn btn-primary"
           type="button"
-          onClick={handleCancelClick}
+          onClick={(event) => handleEditClick(event, dataEntryOperator)}
         >
-          Cancel
+          Edit
+        </button>
+        <button className="btn btn-danger mx-3" type="button" onClick={() => handleDeleteClick(dataEntryOperator.DataEntryOpID)}>
+          Delete
         </button>
       </td>
     </tr>
   );
 };
 
-export default EditableRow;
+export default ReadOnlyRow;

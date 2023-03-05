@@ -14,7 +14,7 @@ const ReadOnlyRow = ({ databaseAdministrator, handleEditClick, handleDeleteClick
         >
           Edit
         </button>
-        <button className="btn btn-danger" type="button" onClick={() => handleDeleteClick(databaseAdministrator.AdminID)}>
+        <button className="btn btn-danger mx-3" type="button" onClick={() => handleDeleteClick(databaseAdministrator.AdminID)}>
           Delete
         </button>
       </td>

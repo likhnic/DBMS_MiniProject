@@ -20,7 +20,7 @@ router.get('/', fetchuser, async(req, res)=>{
     }
     const docId = req.user.id;
 
-    let sqlQuery = `SELECT Patient.Name as patientname, Patient.Aadhar as patientaadhar, Appointment.AppointmentID as appointmentid, Appointment.StartTime as starttime, Appointment.EndTime as endtime, Patient.Phone as phone, Patient.Address as address 
+    let sqlQuery = `SELECT Patient.Name as patientname, Patient.Aadhar as patientaadhar, Appointment.AppointmentID as appointmentid, Appointment.StartTime as starttime, Appointment.StartDate as startdate, Patient.Phone as phone, Patient.Address as address, Appointment.Emrgncy as Emrgncy 
                 FROM Patient
                 JOIN Appointment ON Patient.Aadhar = Appointment.PatientAadhar
                 WHERE Appointment.DocID = ${docId}
@@ -35,7 +35,20 @@ router.get('/', fetchuser, async(req, res)=>{
     }
 })
 
-router.get('/names',async(req,res) =>{
+router.get('/getMedications', fetchuser, async(req, res)=>{
+
+    let sqlQuery = `SELECT Code, Name FROM Medication;`
+    try{
+        const medications = await query(sqlQuery);
+        return res.json({medications: medications});    
+    }
+    catch(error){
+        console.log(error);
+        return res.json({error: "Cannot fetch medications"});
+    }
+})
+
+router.get('/names',fetchuser,async(req,res) =>{
     let sqlQuery = `SELECT DocID,Name from Doctor where isWorking=1`;
     try {
         let result = await query(sqlQuery)
@@ -112,6 +125,9 @@ router.post('/:appointmentId', fetchuser,async(req, res)=>{
     }
     const appointmentId = req.params.appointmentId;
     const {MedicationCode, Dose} = req.body;
+    if(!MedicationCode || !Dose || MedicationCode.length === 0 || Dose.length === 0){
+        return res.json({error: "Please enter all the fields"});
+    }
     let patientId, DocId;
     let sqlQuery = `SELECT PatientAadhar, DocID FROM Appointment WHERE AppointmentID = ${appointmentId};`
      
@@ -130,7 +146,7 @@ router.post('/:appointmentId', fetchuser,async(req, res)=>{
         console.log(error);
         return res.json({error: "Cannot fetch patient details"});
     }
-
+    
     let DateN = new Date().toISOString().slice(0, 19).replace('T', ' ');
     sqlQuery = `INSERT INTO Prescribes(MedicationCode, Dose, DocID, AppointmentID, PatientAadhar, Date) VALUES(${MedicationCode}, '${Dose}', ${DocId}, ${appointmentId}, '${patientId}', '${DateN}');`
 

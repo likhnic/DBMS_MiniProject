@@ -38,8 +38,8 @@ const EditableRow = ({
         ></input>
       </td>
       <td>
-        <button className="btn btn-success" type="submit">Save</button>
-        <button className="btn btn-warning" type="button" onClick={handleCancelClick}>
+        <button className="btn btn-success me-1" type="submit">Save</button>
+        <button className="btn btn-danger ms-1" type="button" onClick={handleCancelClick}>
           Cancel
         </button>
       </td>
@@ -48,3 +48,4 @@ const EditableRow = ({
 };
 
 export default EditableRow;
+Footer

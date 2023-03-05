@@ -46,12 +46,14 @@ router.post("/appointment", fetchuser, async (req, res) => {
 
     const { StartTime, EndTime, ExaminationRoom, PatientAadhar, DocID, Emergency } = req.body;
     var today = new Date();
-    var date = today.getFullYear() + '-' + (today.getMonth() + 1) + '-' + today.getDate();
-    var time = today.getHours() + ":" + today.getMinutes() + ":" + today.getSeconds();
+    var date = today.getUTCHours() + '-' + (today.getUTCMonth() + 1) + '-' + today.getUTCDate();
+    var time = today.getUTCHours() + ":" + today.getUTCMinutes() + ":" + today.getUTCSeconds();
     var dateTime = date + ' ' + time;
     const curr_time = new Date(dateTime);
     const start_time = new Date(StartTime);
     const end_time = new Date(EndTime);
+    console.log(curr_time)
+    console.log(curr_time, start_time, end_time);
     const emrgncy = Emergency ? 1 : 0;
 
     if (start_time < curr_time || end_time < start_time) {

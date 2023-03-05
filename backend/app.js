@@ -47,10 +47,10 @@ app.post('/login', async (req, res) => {
         if(result.length == 0){
             return res.json({error: "Invalid Credentials"});
         }
-        const comPass = bcrypt.compare(Password, result[0].Password)
-        if(!comPass){
-            return res.json({error: "Invalid Credentials"});
-        }
+        // const comPass = bcrypt.compare(Password, result[0].Password)
+        // if(!comPass){
+        //     return res.json({error: "Invalid Credentials"});
+        // }
         const token = jwt.sign({user: {id: result[0].ID}}, "secrethaha")
         return res.json({user: token, type: result[0].Type})
     } catch (error) {

@@ -1,15 +1,17 @@
-import React, { useState, Fragment } from "react";
-import { nanoid } from "nanoid";
-import data from "./mock-data.json";
+import React, { useState, Fragment, useEffect } from "react";
 import ReadOnlyRow from "./ReadOnlyRow";
 import EditableRow from "./EditableRow";
+import RegistrationForm from "./RegistrationForm";
 
 const ShowDataEntryOperator = () => {
-  const [dataEntryOperators, setDataEntryOperators] = useState(data);
+  const [dataEntryOperators, setDataEntryOperators] = useState([]);
   const [addFormData, setAddFormData] = useState({
     Name: "",
     Phone: "",
     Address: "",
+    Aadhar: "",
+    Password: "",
+    rePassword: "",
   });
 
   const [editFormData, setEditFormData] = useState({
@@ -32,6 +34,41 @@ const ShowDataEntryOperator = () => {
     setAddFormData(newFormData);
   };
 
+  const addUser = async (newUser) => {
+    const res = await fetch("http://localhost:5000/api/admin/adduser", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+        // 'token': localStorage.getItem('token')
+      },
+
+      body: JSON.stringify(newUser),
+    });
+
+    const jsonData = await res.json();
+
+    return jsonData;
+  };
+
+  const addDataEntryOperator = async (newDataEntryOperator) => {
+    const res = await fetch(
+      "http://localhost:5000/api/admin/adddataentryoperator",
+      {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          // 'token': localStorage.getItem('token')
+        },
+
+        body: JSON.stringify(newDataEntryOperator),
+      }
+    );
+
+    const jsonData = await res.json();
+
+    return jsonData;
+  };
+
   const handleEditFormChange = (event) => {
     event.preventDefault();
 
@@ -44,18 +81,77 @@ const ShowDataEntryOperator = () => {
     setEditFormData(newFormData);
   };
 
-  const handleAddFormSubmit = (event) => {
+  const handleAddFormSubmit = async (event) => {
     event.preventDefault();
-
+    if (addFormData.Password !== addFormData.rePassword) {
+      alert("Password mismatch");
+      return;
+    }
+    const newUser = {
+      Aadhar: addFormData.Aadhar,
+      Password: addFormData.Password,
+      Type: 1,
+      Status: 1,
+    };
+    var jsonData = await addUser(newUser);
+    if (jsonData.error) {
+      console.log(jsonData.error);
+      alert("Error adding data entry operator");
+      return;
+    }
     const newDataEntryOperator = {
-      DataEntryOpID: nanoid(),
+      DataEntryOpID: jsonData.ID,
       Name: addFormData.Name,
       Phone: addFormData.Phone,
       Address: addFormData.Address,
     };
+    jsonData = await addDataEntryOperator(newDataEntryOperator);
+    if (jsonData.error) {
+      console.log(jsonData.error);
+      alert("Error adding data entry operator");
+      return;
+    }
+    alert("Added " + newDataEntryOperator.Name + " with Employee ID: " + newDataEntryOperator.DataEntryOpID);
 
     const newDataEntryOperators = [...dataEntryOperators, newDataEntryOperator];
     setDataEntryOperators(newDataEntryOperators);
+  };
+
+  const update_dataentryoperator = async (editedDataEntryOperator) => {
+    const res = await fetch(
+      "http://localhost:5000/api/admin/updatedataentryoperator",
+      {
+        method: "PUT",
+        headers: {
+          "Content-Type": "application/json",
+          // 'token': localStorage.getItem('token')
+        },
+
+        body: JSON.stringify(editedDataEntryOperator),
+      }
+    );
+
+    const jsonData = await res.json();
+
+    return jsonData;
+  };
+
+  const delete_dataentryoperator = async (id) => {
+    const res = await fetch(
+      `http://localhost:5000/api/admin/deletedataentryoperator`,
+      {
+        method: "DELETE",
+        headers: {
+          "Content-Type": "application/json",
+          // 'token': localStorage.getItem('token')
+        },
+        body: JSON.stringify({ DataEntryOpID: id }),
+      }
+    );
+
+    const jsonData = await res.json();
+
+    return jsonData;
   };
 
   const handleEditFormSubmit = (event) => {
@@ -68,13 +164,23 @@ const ShowDataEntryOperator = () => {
       Address: editFormData.Address,
     };
 
-    const newDataEntryOperators = [...dataEntryOperators];
+    const jsonData = update_dataentryoperator(editedDataEntryOperator);
+    if (jsonData.error) {
+      console.log(jsonData.error);
+      alert("Error updating data entry operator");
+    } else {
+      const newDataEntryOperators = [...dataEntryOperators];
 
-    const index = dataEntryOperators.findIndex((dataEntryOperator) => dataEntryOperator.DataEntryOpID === editDataEntryOperatorId);
+      const index = dataEntryOperators.findIndex(
+        (dataEntryOperator) =>
+          dataEntryOperator.DataEntryOpID === editDataEntryOperatorId
+      );
 
-    newDataEntryOperators[index] = editedDataEntryOperator;
+      newDataEntryOperators[index] = editedDataEntryOperator;
 
-    setDataEntryOperators(newDataEntryOperators);
+      setDataEntryOperators(newDataEntryOperators);
+    }
+
     setEditDataEntryOperatorId(null);
   };
 
@@ -96,22 +202,59 @@ const ShowDataEntryOperator = () => {
   };
 
   const handleDeleteClick = (dataEntryOperatorId) => {
-    const newDataEntryOperators = [...dataEntryOperators];
+    const jsonData = delete_dataentryoperator(dataEntryOperatorId);
+    if (jsonData.error) {
+      console.log(jsonData.error);
+      alert("Error deleting data entry operator");
+    } else {
+      const newDataEntryOperators = [...dataEntryOperators];
 
-    const index = dataEntryOperators.findIndex((dataEntryOperator) => dataEntryOperator.DataEntryOpID === dataEntryOperatorId);
+      const index = dataEntryOperators.findIndex(
+        (dataEntryOperator) =>
+          dataEntryOperator.DataEntryOpID === dataEntryOperatorId
+      );
 
-    newDataEntryOperators.splice(index, 1);
+      newDataEntryOperators.splice(index, 1);
 
-    setDataEntryOperators(newDataEntryOperators);
+      setDataEntryOperators(newDataEntryOperators);
+    }
   };
 
+  const get_all_dataentryoperators = async () => {
+    const response = await fetch(
+      `http://localhost:5000/api/admin/getdataentryoperators`,
+      {
+        method: "GET",
+        headers: {
+          "Content-Type": "application/json",
+          // 'token': localStorage.getItem('token')
+        },
+      }
+    );
+
+    const jsonData = await response.json();
+    if (jsonData.error) {
+      console.log(jsonData.error);
+      alert("Error getting data entry operators");
+    } else if (jsonData.empty) {
+      console.log(jsonData.empty);
+      alert("No data entry operators found");
+    } else {
+      setDataEntryOperators(jsonData.dataentryoperators);
+    }
+  };
+
+  useEffect(() => {
+    get_all_dataentryoperators();
+  }, []);
+
   return (
-    <div>
-      <h1>Data Entry Operators</h1>
+    <div className="container">
+      <h1 className="text-center container mt-3">Data Entry Operators</h1>
       <form onSubmit={handleEditFormSubmit}>
         <table className="table table-hover">
           <thead>
-            <tr>
+            <tr style={{ backgroundColor: "#060b26", color: "white" }}>
               <th>Name</th>
               <th>Phone</th>
               <th>Address</th>
@@ -120,7 +263,7 @@ const ShowDataEntryOperator = () => {
           </thead>
           <tbody>
             {dataEntryOperators.map((dataEntryOperator) => (
-              <Fragment>
+              <Fragment key={dataEntryOperator.DataEntryOpID}>
                 {editDataEntryOperatorId === dataEntryOperator.DataEntryOpID ? (
                   <EditableRow
                     editFormData={editFormData}
@@ -139,33 +282,10 @@ const ShowDataEntryOperator = () => {
           </tbody>
         </table>
       </form>
-      <h2>Add a Data Entry Operator</h2>
-      <form onSubmit={handleAddFormSubmit}>
-        <input
-          type="text"
-          name="Name"
-          required="required"
-          placeholder="Enter a name..."
-          onChange={handleAddFormChange}
-        />
-        <input
-          type="text"
-          name="Phone"
-          required="required"
-          placeholder="Enter a phone number..."
-          onChange={handleAddFormChange}
-        />
-        <input
-          type="text"
-          name="Address"
-          required="required"
-          placeholder="Enter an address..."
-          onChange={handleAddFormChange}
-        />
-        <button className="btn btn-primary" type="submit">
-          Add
-        </button>
-      </form>
+      <RegistrationForm
+        onSubmit={handleAddFormSubmit}
+        onChange={handleAddFormChange}
+      />
     </div>
   );
 };
