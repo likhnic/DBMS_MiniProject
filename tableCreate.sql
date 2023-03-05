@@ -216,6 +216,12 @@ CREATE TABLE TimeSlot
 );
 SET FOREIGN_KEY_CHECKS = 1;
 
+DROP TABLE IF EXISTS news;
+Create TABLE news
+(
+    body TEXT
+);
+
 
 insert into User (ID, Aadhar, Password, Type, Status) values (1, '194-77-0729', '4eFPFK3ggMpP', 0, true);
 insert into User (ID, Aadhar, Password, Type, Status) values (2, '248-52-3360', 'q4j1yaoPU', 0, false);
