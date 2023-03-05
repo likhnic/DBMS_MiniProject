@@ -47,7 +47,6 @@ const Addtreatment = (props) => {
         );
         console.log(response)
         const json = await response.json();
-		console.log('Response : ', json)
 		if (json.success) {
 			// alert("Test Added Successfully")
             props.alert("Treatment Added Successfully", "success")

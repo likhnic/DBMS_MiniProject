@@ -33,10 +33,15 @@ const Updateresult = (props) => {
             return;
         }
         const { testId } = credentials;
+        const config = {
+            headers: {
+              'Content-Type': 'multipart/form-data',
+              'token': localStorage.getItem('token')
+            }
+          };
         try {
             const res = await axios.put(
-                `http://localhost:5000/api/dataentryop/test/${testId}`,
-                formData
+                `http://localhost:5000/api/dataentryop/test/${testId}`,formData, config
             );
             console.log('got data', res);
             json = res.data;

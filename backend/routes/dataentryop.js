@@ -199,10 +199,11 @@ router.post("/upload", fetchuser, (req, res) => {
 
 // give Result in Body
 
-router.put('/test/:testId', fetchuser, async (req, res) => {
+router.put('/test/:testId',fetchuser, async (req, res) => {
     const { testId } = req.params;
 
     const newpath = __dirname + "/testresults/";
+    console.log(req.files); 
     const file = req.files.file;
     const filename = file.name;
     let sqlQuery = `SELECT * FROM Test WHERE TestID = ${testId};`

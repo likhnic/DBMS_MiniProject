@@ -33,7 +33,6 @@ const actualSlots = [
 router.post("/getslots", fetchuser, async (req, res) => {
     const { StartDate, DocID, Emergency } = req.body;
     console.log(StartDate);
-
     let sql = `SELECT StartTime from Appointment WHERE StartDate = '${StartDate}' and DocID = ${DocID}`;
     if (Emergency === true) {
         sql = `SELECT StartTime from Appointment WHERE StartDate = '${StartDate}' and DocID = ${DocID} and Emrgncy = 1`;
@@ -139,11 +138,9 @@ router.post("/appointment", fetchuser, async (req, res) => {
     var date = getDate();
     var time = getTime();
     var dateTime = date + ' ' + time;
-    const curr_time = new Date(dateTime);
-    const start_time = new Date(StartDate+" "+StartTime);
     const emrgncy = Emergency ? 1 : 0;
-
-    if (start_time < curr_time) {
+    console.log(date, time, StartDate+" "+StartTime);
+    if (StartDate+" "+StartTime < dateTime) {
         res.status(404).json({
             error: "Invalid time"
         });
@@ -152,7 +149,6 @@ router.post("/appointment", fetchuser, async (req, res) => {
     try {
         let sql = `INSERT INTO Appointment (StartTime, StartDate, ExaminationRoom, PatientAadhar, DocID, Emrgncy) VALUES ('${StartTime}', '${StartDate}', '${ExaminationRoom}', '${PatientAadhar}', ${DocID}, ${emrgncy})`
         result = await query(sql);
-        console.log("Appointment created successfully");
         if (Emergency) {
             sql = `SELECT Email, Name from Doctor WHERE DocID = ${DocID}`
             try {

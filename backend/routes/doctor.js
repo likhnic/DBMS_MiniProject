@@ -5,7 +5,25 @@ const query = require('../dbConnection');
 
 router.use(express.urlencoded({extended: 'false'}))
 router.use(express.json())
+var path = require('path');
 
+
+router.get('/result/:fileName',  async(req, res,next)=>{
+    
+    var options = {
+        root: path.join(__dirname+'/testresults')
+    };
+
+    var fileName = req.params.fileName;
+    console.log(options)
+    res.sendFile(fileName, options, function (err) {
+        if (err) {
+            next(err);
+        } else {
+            console.log('Sent:', fileName);
+        }
+    });
+})
 
 router.get('/', fetchuser, async(req, res)=>{
     let checkquery = `SELECT * FROM Doctor WHERE DocID = ${req.user.id}`
@@ -13,7 +31,7 @@ router.get('/', fetchuser, async(req, res)=>{
         const checkdoc = await query(checkquery)
         if(!checkdoc){
             return res.json({error:"Not Authorised"})
-        }
+        } 
     }
     catch(error){
         return res.json({error:error})
@@ -24,7 +42,7 @@ router.get('/', fetchuser, async(req, res)=>{
                 FROM Patient
                 JOIN Appointment ON Patient.Aadhar = Appointment.PatientAadhar
                 WHERE Appointment.DocID = ${docId}
-                ORDER BY Appointment.StartTime DESC;`
+                ORDER BY Appointment.StartDate DESC,Appointment.StartTime DESC;`
 
     try{
         const patients = await query(sqlQuery);

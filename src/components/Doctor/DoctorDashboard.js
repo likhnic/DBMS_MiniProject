@@ -23,7 +23,6 @@ const DoctorDashboard = (props) => {
         e.preventDefault();
         let appointmentId = patientDetails.appointmentid
         const { medicationcode, dose } = patientPrescribe
-        console.log(medicationcode, dose, appointmentId)
         if (!dose || dose === '') {
             props.alert("Please enter a dose", "danger")
             return;
@@ -37,15 +36,13 @@ const DoctorDashboard = (props) => {
             body: JSON.stringify({ MedicationCode: medicationcode, Dose: dose })
         })
         const json = await response.json();
-        console.log(json);
+        // console.log(json);
         if (json.error) {
             props.alert(json.error, "danger")
             return;
         }
         await getAccordingType('prescribes')
         props.alert("Prescribed Successfully", "success")
-
-
     }
 
     const getMedications = async () => {
@@ -57,7 +54,7 @@ const DoctorDashboard = (props) => {
             }
         })
         const json = await response.json();
-        console.log(json);
+        // console.log(json);
         if (json.error) {
             alert(json.error)
             return;
@@ -96,7 +93,7 @@ const DoctorDashboard = (props) => {
 
         })
         let json = await response.json();
-        console.log(json);
+        // console.log(json);
         if (json.error) {
             window.location.href = '/'
         }
@@ -108,7 +105,7 @@ const DoctorDashboard = (props) => {
             },
         })
         json = await response.json();
-        console.log(json);
+        // console.log(json);
         if (json.error) {
             alert(json.error)
             setSearchResult([])
@@ -129,9 +126,9 @@ const DoctorDashboard = (props) => {
     const patientClick = async (e) => {
 
         setShowDetails(1)
-        console.log(e.target.name, searchResult[e.target.name])
+        // console.log(e.target.name, searchResult[e.target.name])
         setPatientDetails(searchResult[e.target.name])
-        console.log("Show details ", showDetails)
+        // console.log("Show details ", showDetails)
     }
 
     const getAccordingType = async (type) => {
@@ -143,9 +140,9 @@ const DoctorDashboard = (props) => {
                 'token': localStorage.getItem('token')
             },
         })
-        console.log(response);
+        // console.log(response);
         const json = await response.json();
-        console.log(json);
+        // console.log(json);
         if (json.error) {
             props.alert(json.error, 'danger')
             setPatientPres({ tests: [], undergoes: [], prescribes: [] })
@@ -172,6 +169,31 @@ const DoctorDashboard = (props) => {
         return ans;
     }
 
+    const downloadResult = async (filename) => {
+        let resultName = filename
+
+        let response = await fetch(`http://localhost:5000/api/doctor/result/${resultName}`, {
+            method: 'GET',
+            headers: {
+                'token': localStorage.getItem('token')
+            },
+        })
+
+        response.blob().then(blob => {
+            let url = window.URL.createObjectURL(blob);
+            let a = document.createElement('a');
+            a.href = url;
+            a.download = resultName;
+            a.click();
+        });
+    }
+
+    const handledownloadFile = async (e) => {
+        let fileName = e.target.getAttribute("name")
+        console.log(fileName)
+        await downloadResult(fileName)
+    }
+
     useEffect(() => {
         if (showDetails === 0) onRenderPage()
         // get curr YYYY-MM-DD+" "+HH:MM:SS
@@ -191,7 +213,7 @@ const DoctorDashboard = (props) => {
                             {
                                 searchResult.map((result, i) => {
                                     return (
-                                        <div className='col-md-6'>
+                                        <div key={i} className='col-md-6'>
                                             <div className={`card position-relative shadow mt-3 p-3 mb-3 rounded bg-${result.startdate.slice(0,10)+" "+result.starttime >= currTime ? 'light' : 'secondary bg-gradient bg-opacity-25'} text-${result.starttime >= currTime ? 'dark' : 'dark'}`} key={result}>
                                                 <PatientDetailsCard result={result} />
                                                 <button className="btn btn-primary mt-3" name={i} onClick={patientClick}>View</button>
@@ -273,7 +295,7 @@ const DoctorDashboard = (props) => {
                                                                     <div className='row'><b className='col-md-6'>Test Id:</b> {test.testid}</div>
                                                                     <div className='row'><b className='col-md-6'>Procedure Name:</b> {test.procedurename}</div>
                                                                     <div className='row'><b className='col-md-6'>Date:</b> {changeDate(test.date)}</div>
-                                                                    <div className='row'><b className='col-md-6'>Result:</b> {test.result}</div>
+                                                                    <div className='row'><div className='mt-3 btn btn-primary' name={test.result} onClick={handledownloadFile}>Get Result!</div> </div>
                                                                 </div>
                                                             </div>
                                                         </div>

@@ -10,14 +10,14 @@ const Data_Entry_Dashboard = () => {
     },[]);
 
     const getPatients = async () =>{
-        let result = await fetch(`http://localhost:5001/api/dataentryop/`);
+        let result = await fetch(`http://localhost:5000/api/dataentryop/`);
         result = await result.json();
         setPatient(result);
     }
     const searchHandle = async (event)=>{
         let key = event.target.value;
         if(key){
-            let result = await fetch(`http://localhost:5001/api/dataentryop/${key}`,
+            let result = await fetch(`http://localhost:5000/api/dataentryop/${key}`,
             {
                 method: 'GET',
                 headers: {

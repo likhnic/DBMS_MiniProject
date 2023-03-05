@@ -43,7 +43,7 @@ const ViewPrescribes = async() => {
     // },[]);
     let navigate = useNavigate()
     // const getPrescription = async () =>{
-        let result = await fetch(`http://localhost:5001/api/dataentryop/precribes/${patientID}`,{
+        let result = await fetch(`http://localhost:5000/api/dataentryop/precribes/${patientID}`,{
             method: 'GET',
             headers: {
                 'Content-Type': 'application/json',

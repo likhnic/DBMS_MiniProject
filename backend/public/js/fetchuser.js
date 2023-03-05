@@ -5,7 +5,7 @@ const SECRET = 'secrethaha';
 const fetchuser=async (req,res,next)=>{
 
     const token=req.header('token')
-    console.log(token)
+    console.log('token',token) 
     if(!token){
         return res.status(401).json({error:"Please authenticate using a valid token"})
     }
