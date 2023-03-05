@@ -3,19 +3,46 @@ import React from "react";
 const ReadOnlyRow = ({ dataEntryOperator, handleEditClick, handleDeleteClick }) => {
   return (
     <tr>
-      <td>{dataEntryOperator.Name}</td>
-      <td>{dataEntryOperator.Phone}</td>
-      <td>{dataEntryOperator.Address}</td>
       <td>
+        <input
+          type="text"
+          required="required"
+          placeholder="Enter a name..."
+          name="Name"
+          value={editFormData.Name}
+          onChange={handleEditFormChange}
+        ></input>
+      </td>
+      <td>
+        <input
+          type="text"
+          required="required"
+          placeholder="Enter a phone number..."
+          name="Phone"
+          value={editFormData.Phone}
+          onChange={handleEditFormChange}
+        ></input>
+      </td>
+      <td>
+        <input
+          type="text"
+          required="required"
+          placeholder="Enter an address..."
+          name="Address"
+          value={editFormData.Address}
+          onChange={handleEditFormChange}
+        ></input>
+      </td>
+      <td>
+        <button className="btn btn-success me-1" type="submit">
+          Save
+        </button>
         <button
-          className="btn btn-primary"
+          className="btn btn-danger ms-1"
           type="button"
           onClick={(event) => handleEditClick(event, dataEntryOperator)}
         >
           Edit
-        </button>
-        <button className="btn btn-danger mx-3" type="button" onClick={() => handleDeleteClick(dataEntryOperator.DataEntryOpID)}>
-          Delete
         </button>
       </td>
     </tr>

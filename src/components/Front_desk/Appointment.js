@@ -70,7 +70,7 @@ const Appointment = () => {
                     </div>
 
                     <div className="form-outline mb-4">
-                        <input type="text" name="PatientAadhar" className="form-control" placeholder="Patient Aadhar" onChange={handleOnChange} />
+                        <input type="text" name="PatientAadhar" className="form-control" placeholder="Patient Aadhar" maxLength={12} minLength={12} onChange={handleOnChange} />
                     </div>
 
                     <div className="form-outline mb-4">
