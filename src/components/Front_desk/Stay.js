@@ -27,6 +27,7 @@ const Stay = () => {
         if (json.success) {
             // save the auth token and redirect
             navigate("/frontdesk", { replace: true })
+            alert("Stay created successfully")
         }
         else{
             alert(json.error)
@@ -61,7 +62,9 @@ const Stay = () => {
                         <input type="text" name="PatientAadhar" className="form-control" placeholder="Patient Aadhar" maxLength={12} minLength={12} onChange={handleOnChange} />
                     </div>
 
-                    <button type="submit" className="btn btn-primary btn-block mb-4" onClick={handleOnClick}> Add Stay </button>
+                    <div className="text-center">
+                        <button type="submit" className="btn btn-primary btn-block mb-4" onClick={handleOnClick}> Add Stay </button>
+                    </div>
                 </form>
             </div>
         </>

@@ -26,7 +26,7 @@ const PatientDetailsCard = (props) => {
                             Appointment Time
                         </div>
                         <div className="col-md-7">
-                        {result.startdate} {result.starttime}
+                        {result.startdate.slice(0,10)} {result.starttime}
                         </div>
                         <div className="col-md-4">
                             Phone Number

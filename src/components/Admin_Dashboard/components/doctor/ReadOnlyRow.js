@@ -8,6 +8,7 @@ const ReadOnlyRow = ({ doctor, handleEditClick, handleDeleteClick }) => {
       <td>{doctor.Phone}</td>
       <td>{doctor.Address}</td>
       <td>{doctor.isWorking}</td>
+        <td>{doctor.Email}</td>
       <td>
         <button
           className="btn btn-primary"

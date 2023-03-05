@@ -105,8 +105,8 @@ DROP TABLE IF EXISTS Appointment;
 CREATE TABLE Appointment
 (
     AppointmentID INTEGER NOT NULL AUTO_INCREMENT,
-    StartTime DATETIME,
-    StartDate DATETIME,
+    StartTime TIME,
+    StartDate DATE,
     ExaminationRoom VARCHAR(50),
     PatientAadhar VARCHAR(12),
     DocID INTEGER,

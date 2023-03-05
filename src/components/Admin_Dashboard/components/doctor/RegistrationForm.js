@@ -31,6 +31,16 @@ const RegistrationForm = ({ onSubmit, onChange }) => {
           />
         </div>
         <div className="form-outline mb-4">
+            <input
+                className="form-control"
+                type="email"
+                name="Email"
+                required="required"
+                placeholder="Enter Email..."
+                onChange={onChange}
+            />
+        </div>
+        <div className="form-outline mb-4">
           <input
             className="form-control"
             type="text"

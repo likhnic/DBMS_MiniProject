@@ -1,9 +1,10 @@
 import React from "react";
-import { Container, Row, Col, Button } from "react-bootstrap";
+import NB from "./components/NB";
 
 const AdminHome = () => {
   return (
     <div>
+        <NB/>
       <div className="text-center">
         <h1 style={{ textAlign: "center" }} className="mt-3">
           Hospital Management System<br></br> Database Administrator Homepage

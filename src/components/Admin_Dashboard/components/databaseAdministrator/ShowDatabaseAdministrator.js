@@ -2,6 +2,7 @@ import React, { useState, Fragment, useEffect } from "react";
 import ReadOnlyRow from "./ReadOnlyRow";
 import EditableRow from "./EditableRow";
 import RegistrationForm from "./RegistrationForm";
+import NB from "../NB";
 
 const ShowDatabaseAdministrator = () => {
   const [databaseAdministrators, setDatabaseAdministrators] = useState([]);
@@ -51,7 +52,7 @@ const ShowDatabaseAdministrator = () => {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
-        // 'token': localStorage.getItem('token')
+        'token': localStorage.getItem('token')
       },
 
       body: JSON.stringify(newUser),
@@ -67,7 +68,7 @@ const ShowDatabaseAdministrator = () => {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
-        // 'token': localStorage.getItem('token')
+        'token': localStorage.getItem('token')
       },
 
       body: JSON.stringify(newDatabaseAdministrator),
@@ -109,10 +110,13 @@ const ShowDatabaseAdministrator = () => {
       return;
     }
     alert("Added " + newDatabaseAdministrator.Name + " with Employee ID: " + newDatabaseAdministrator.AdminID);
+    // update state with new database administrator
+
     const newDatabaseAdministrators = [
       ...databaseAdministrators,
       newDatabaseAdministrator,
     ];
+
     setDatabaseAdministrators(newDatabaseAdministrators);
   };
 
@@ -121,7 +125,7 @@ const ShowDatabaseAdministrator = () => {
       method: "PUT",
       headers: {
         "Content-Type": "application/json",
-        // 'token': localStorage.getItem('token')
+        'token': localStorage.getItem('token')
       },
 
       body: JSON.stringify(editedDatabaseAdministrator),
@@ -137,7 +141,7 @@ const ShowDatabaseAdministrator = () => {
       method: "DELETE",
       headers: {
         "Content-Type": "application/json",
-        // 'token': localStorage.getItem('token')
+        'token': localStorage.getItem('token')
       },
       body: JSON.stringify({ AdminID: id }),
     });
@@ -216,7 +220,7 @@ const ShowDatabaseAdministrator = () => {
         method: "GET",
         headers: {
           "Content-Type": "application/json",
-          // 'token': localStorage.getItem('token')
+          'token': localStorage.getItem('token')
         },
       }
     );
@@ -235,9 +239,12 @@ const ShowDatabaseAdministrator = () => {
 
   useEffect(() => {
     get_all_dbadmins();
-  }, []);
+  }, [databaseAdministrators]);
 
   return (
+    <>
+    <NB/>
+
     <div className="container">
       <h1 className="text-center container mt-3">Database Administrators</h1>
       <form onSubmit={handleEditFormSubmit}>
@@ -276,6 +283,7 @@ const ShowDatabaseAdministrator = () => {
         onChange={handleAddFormChange}
       />
     </div>
+    </>
   );
 };
 

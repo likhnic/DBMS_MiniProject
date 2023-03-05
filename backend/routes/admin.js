@@ -42,7 +42,7 @@ router.post("/adduser", async (req, res) => {
 // add a doctor
 // add fetchuser to the route to make it private later
 router.post("/adddoctor", async (req, res) => {
-  let sqlQuery = `INSERT INTO Doctor(DocID, Position, Name, Phone, Address, isWorking) VALUES(${req.body.DocID}, '${req.body.Position}', '${req.body.Name}', '${req.body.Phone}', '${req.body.Address}', ${req.body.isWorking})`;
+  let sqlQuery = `INSERT INTO Doctor(DocID, Position, Name, Phone, Address, isWorking, Email) VALUES(${req.body.DocID}, '${req.body.Position}', '${req.body.Name}', '${req.body.Phone}', '${req.body.Address}', ${req.body.isWorking}, '${req.body.Email}')`;
   try {
     let result = await query(sqlQuery);
     if (result.affectedRows == 0) {
@@ -73,7 +73,7 @@ router.get("/getdoctors", async (req, res) => {
 // updating the doctor's data
 // add fetchuser to the route to make it private later
 router.put("/updatedoctor", async (req, res) => {
-  let sql = `UPDATE Doctor SET Name = '${req.body.Name}', Phone = '${req.body.Phone}', Address = '${req.body.Address}', Position = '${req.body.Position}', isWorking = ${req.body.isWorking} WHERE DocID = ${req.body.DocID}`;
+  let sql = `UPDATE Doctor SET Name = '${req.body.Name}', Phone = '${req.body.Phone}', Address = '${req.body.Address}', Position = '${req.body.Position}', isWorking = ${req.body.isWorking}, Email = '${req.body.Email}' WHERE DocID = ${req.body.DocID}`;
   try {
     let result = await query(sql);
     if (result.affectedRows == 0) {

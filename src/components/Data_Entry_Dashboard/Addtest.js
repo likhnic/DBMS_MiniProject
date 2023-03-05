@@ -1,99 +1,113 @@
-import React, { useEffect, useState } from "react";
-import { useNavigate } from 'react-router-dom';
+// export default Addtest;
+import React, { useState } from "react";
+import { useNavigate } from "react-router";
+import useFetch from "../useFetch";
+import backImage from './back.png'
 const Addtest = () => {
 
-    const queryParameters = new URLSearchParams(window.location.search)
-    const patientID = queryParameters.get("patientID")
-    const [credentials, setCredentials] = useState({ Name: "" });
-    const [data, setData] = useState([]);
-    let navigate = useNavigate()
-    const onChange = (e) => {
-        console.log("Hello");
-        setCredentials({"Name":[e.target.value]})
-        console.log("credentials : ", credentials);
-    };
-    const goBack = () => {
-        // window.location.replace('http://localhost:3000/dataentryop/addtest');
-        navigate(`/dataentryop/options?patientID=${patientID}`, { replace: true })
-    }
-    const handleOnClick = async (e) => {
-        const { Name } = credentials;
-        console.log(Name);
-        if (!Name || Name === "") {
-            setCredentials({ ...credentials, "Name": e.target.value });
-            console.log('Please select a value!!!')
-            return;
-        }
+	const queryParameters = new URLSearchParams(window.location.search)
+	const patientID = queryParameters.get("patientID")
+	console.log('patient ID is here: ', patientID)
+	const [credentials, setCredentials] = useState({ Name: "" });
+	let navigate = useNavigate();
 
-        const response = await fetch(
-            `http://localhost:5000/api/dataentryop/test/${patientID}`,
-            {
-                method: "POST",
-                headers: {
-                    "Content-Type": "application/json",
-                    'token': localStorage.getItem('token')
-                },
-                body: JSON.stringify({ Name: Name })
-            }
-        );
-        console.log(response)
-    };
+	const onChange = (e) => {
+		setCredentials({ ...credentials, [e.target.name]: e.target.value });
+		console.log("credentials : ", credentials);
+	};
+    
+	console.log("Hemlo");
 
-    const onRender = async()=>{
+	const handleOnClick = async (e) => {
+		// e.preventDefault();
+		console.log("cred: ", credentials)
+		const { Name } = credentials;
+		console.log(Name);
 
-        const response = await fetch('http://localhost:5000/api/dataentryop/test/names', {
-            method: 'GET',
-            headers: {
-                'Content-Type': 'application/json',
-                'token': localStorage.getItem('token')
-            },
-        });
+		if (Name === null || Name === undefined || Name === "") {
 
-        const json = await response.json();
-        setData(json.test);
-    }
+			alert("Please select a Test!!!")
+			return;
+		}
 
-    useEffect(()=>{
-        onRender();
-    }, [])
+		const response = await fetch(
+			`http://localhost:5000/api/dataentryop/test/${patientID}`,
+			{
+				method: "POST",
+				headers: {
+					"Content-Type": "application/json",
+					'token': localStorage.getItem('token')
+				},
+				body: JSON.stringify({ Name: Name })
+			}
+		);
+		const json = await response.json();
+		console.log('Response : ', json)
+		if (json.success) {
+			alert("Test Added Successfully")
+		}
+		if (json.error)
+			alert(json.error)
+	};
 
-    const header_style = { textAlign: "center" };
-    return (
-        <>
-        <button className='btn btn-outline-primary m-2 text-center' onClick={()=>goBack()}>Go Back</button>
-            <div className="container mt-3">
-                <form className="form-control" onSubmit={(event) => event.preventDefault()} >
-                    <h1 style={header_style}>Add test</h1>
-                    {/* <!-- 2 column grid layout with text inputs for the first and last names --> */}
 
-                    <select
-                        className="form-select mb-3"
-                        aria-label="Default select example"
-                        onChange={onChange}
-                        defaultValue="Test"
-                        name="Name"
-                    >
-                        <option disabled >Test</option>
-                        {data &&
-                            data.map((row, i) => {
-                                return (
-                                    <option key={i} value={row.Name}>
-                                        {row.Name}
-                                    </option>
-                                );
-                            })}
-                    </select>
-                    <button
-                        type="submit"
-                        className="btn btn-primary btn-block mb-3"
-                        onClick={handleOnClick}
-                    >
-                        Add Test
-                    </button>
-                </form>
-            </div>
-        </>
-    );
+	const res = useFetch("http://localhost:5000/api/dataentryop/test/names", {
+		method: "GET",
+		headers: {
+			"Content-Type": "application/json",
+			'token': localStorage.getItem('token')
+		},
+	});
+	console.log("Recieved  : ", res.response);
+
+	let data = res.response.test;
+	console.log("DATA : ", data);
+	const goBack = () => {
+		navigate(`/dataentryop/options?patientID=${patientID}`, { replace: true })
+	}
+	const mystyle = {
+		background: 'transparent',
+		border: 'none',
+		outline: 'none',
+		cursor: 'pointer'
+	}
+	const header_style = { textAlign: "center" };
+	return (
+		<>
+			<button style={mystyle} className="prev" onClick={() => goBack()} color="red" border="none"><img src={backImage} width='50rem' alt=""></img></button>
+			<div className="container mt-3">
+				<form className="form-control" onSubmit={(event) => event.preventDefault()} >
+					<h1 style={header_style}>Add test</h1>
+					{/* <!-- 2 column grid layout with text inputs for the first and last names --> */}
+
+					<select
+						className="form-select"
+						aria-label="Default select example"
+						onChange={onChange}
+						defaultValue="--- select test ---"
+						name="Name"
+					>
+						<option disabled selected >Test</option>
+						{data &&
+							data.map((row, i) => {
+								return (
+									<option key={i} value={row.Name}>
+										{row.Name}
+									</option>
+								);
+							})}
+					</select>
+					<button
+						type="submit"
+						className="btn btn-primary btn-block mb-4"
+						onClick={() => handleOnClick()}
+					>
+						Add Test
+					</button>
+				</form>
+			</div>
+		</>
+	);
 };
 
 export default Addtest;

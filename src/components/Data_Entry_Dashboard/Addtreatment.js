@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { useNavigate } from 'react-router-dom';
-
+import backImage from './back.png'
 const Addtreatment = () => {
     const queryParameters = new URLSearchParams(window.location.search);
     const patientID = queryParameters.get("patientID");
@@ -10,9 +10,12 @@ const Addtreatment = () => {
     let navigate = useNavigate()
     const onChange = (e) => {
         setCredentials({ ...credentials, [e.target.name]: e.target.value });
+        console.log("credentials : ", credentials);
+
     };
 
     const goBack = () => {
+        // window.location.replace('http://localhost:3000/dataentryop/addtest');
         navigate(`/dataentryop/options?patientID=${patientID}`, { replace: true })
     }
     const handleOnClick = async (e) => {
@@ -61,20 +64,27 @@ const Addtreatment = () => {
                 method: "GET",
                 headers: {
                     "Content-Type": "application/json",
+                    'token': localStorage.getItem('token')
                 },
             });
         const json_doc = await res_doc.json();
         setDatadoc(json_doc.test);
+        console.log("DATA : ", datadoc);
     }
 
     useEffect(() => {
         onRender();
     }, []);
-
+    const mystyle = {
+        background: 'transparent',
+        border: 'none',
+        outline: 'none',
+        cursor: 'pointer'
+    }
     const header_style = { textAlign: "center" };
     return (
         <>
-        <button className='btn btn-outline-primary m-2 text-center' onClick={()=>goBack()}>Go Back</button>
+            <button style={mystyle} className="prev" onClick={() => goBack()} color="red" border="none"><img src={backImage} width='50rem'></img></button>
             <div className="container mt-3">
                 <form
                     className="form-control"
@@ -84,7 +94,7 @@ const Addtreatment = () => {
 
 
                     <select
-                        className="form-select mb-3"
+                        className="form-select"
                         aria-label="Default select example"
                         defaultValue={"Treatment"}
                         onChange={onChange}
@@ -98,7 +108,7 @@ const Addtreatment = () => {
                     </select>
 
                     <select
-                        className="form-select mb-3"
+                        className="form-select"
                         aria-label="Default select example"
                         onChange={onChange}
                         defaultValue={"Doctor"}
@@ -106,13 +116,13 @@ const Addtreatment = () => {
                     >
                         <option disabled>Doctor</option>
                         {datadoc &&
-                            datadoc.map((row,i) => {
+                            datadoc.map((row, i) => {
                                 return <option key={i} value={row.DocID}>{row.Name}</option>;
                             })}
                     </select>
                     <button
                         type="submit"
-                        className="btn btn-primary btn-block mb-3"
+                        className="btn btn-primary btn-block mb-4"
                         onClick={handleOnClick}
                     >
                         Add Treatment

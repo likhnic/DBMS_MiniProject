@@ -37,7 +37,7 @@ router.get('/', fetchuser, async(req, res)=>{
 
 router.get('/getMedications', fetchuser, async(req, res)=>{
 
-    let sqlQuery = `SELECT Code, Name FROM Medication;`
+    let sqlQuery = `SELECT Code, Name, Brand FROM Medication;`
     try{
         const medications = await query(sqlQuery);
         return res.json({medications: medications});    

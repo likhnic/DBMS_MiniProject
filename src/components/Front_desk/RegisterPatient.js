@@ -27,6 +27,7 @@ const RegisterPatient = () => {
         if (json.success) {
             // save the auth token and redirect
             navigate("/frontdesk", { replace: true })
+            alert("Patient registered successfully")
         }
         else if(!json.success){
             alert(json.error)
@@ -71,7 +72,9 @@ const RegisterPatient = () => {
                     </div>
 
                     {/* <!-- Submit button --> */}
-                    <button type="submit" className="btn btn-primary btn-block mb-4" onClick={handleOnClick}>Register Patient</button>
+                    <div className="text-center">
+                        <button type="submit" className="btn btn-primary btn-block mb-4" onClick={handleOnClick}>Register Patient</button>
+                    </div>
                 </form>
             </div>
         </>

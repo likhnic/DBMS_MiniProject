@@ -1,10 +1,54 @@
 import React, { useEffect, useState } from "react";
 import { useNavigate } from 'react-router-dom';
+import backImage from './back.png'
+import axios from 'axios';
+
 const Updateresult = () => {
     const queryParameters = new URLSearchParams(window.location.search)
     const patientID = queryParameters.get("patientID")
-    const [credentials, setCredentials] = useState({ Result: "", testId: "" });
+    const [credentials, setCredentials] = useState({ testId: "" });
     const [data, setData] = useState([]);
+    const [file, setFile] = useState();
+    const [fileName, setFileName] = useState("");
+    const saveFile = (e) => {
+        setFile(e.target.files[0]);
+        setFileName(e.target.files[0].name);
+        console.log('file name is changed')
+    };
+
+    const uploadFile = async (e) => {
+        const formData = new FormData();
+        formData.append("file", file);
+        formData.append("fileName", fileName);
+        let json
+
+        if (!credentials || credentials.testId === "") {
+            alert('Please select a Test');
+            return;
+        }
+        if (!file) {
+            return;
+        }
+        const { testId } = credentials;
+        try {
+            const res = await axios.put(
+                `http://localhost:5000/api/dataentryop/test/${testId}`,
+                formData
+            );
+            console.log('got data', res);
+            json = res.data;
+        } catch (ex) {
+            console.log(ex);
+        }
+        console.log('Response : ', json)
+        if (json.success) {
+
+            alert("Result Updated Successfully")
+        }
+        if (json.error)
+            alert(json.error)
+    };
+
     let navigate = useNavigate()
     const onChange = (e) => {
         setCredentials({ ...credentials, [e.target.name]: e.target.value });
@@ -17,11 +61,10 @@ const Updateresult = () => {
     }
     const handleOnClick = async (e) => {
         console.log("cred: ", credentials)
-        const { Result, testId } = credentials;
-        console.log(Result, testId);
-        if (!Result || !testId || Result === '' || testId === '') {
-            setCredentials({ ...credentials, [e.target.name]: e.target.value });
-            console.log('Please select a value!!!')
+        const { testId } = credentials;
+        console.log(testId);
+        if (!testId || testId === "") {
+            alert('Please Select a Test !!!')
             return;
         }
 
@@ -34,15 +77,18 @@ const Updateresult = () => {
                     "Content-Type": "application/json",
                     'token': localStorage.getItem('token')
                 },
-                body: JSON.stringify({ Result: Result, testId: testId })
+                body: JSON.stringify({ testId: testId })
             }
         );
-        console.log(response)
-        let json = await response.json();
-        if(json.error){
-            console.log(json.error)
-            alert(json.error)
+        const json = await response.json();
+        console.log('Response : ', json)
+        if (json.success) {
+            // onRender()
+            alert("Result Updated Successfully")
+            // window.location.reload(true);
         }
+        if (json.error)
+            alert(json.error)
     };
 
     const onRender = async () => {
@@ -57,22 +103,24 @@ const Updateresult = () => {
 
         const json = await res.json();
         console.log("json: ", json)
-        if(json.error){
-            console.log(json.error)
-            alert(json.error)
-            setData([])
-        }
-        else setData(json.test);
+        setData(json.test);
     }
 
     useEffect(() => {
         onRender();
     }, []);
-
+    const mystyle = {
+        background: 'transparent',
+        border: 'none',
+        outline: 'none',
+        cursor: 'pointer'
+    }
     const header_style = { textAlign: "center" };
     return (
         <>
-        <button className='btn btn-outline-primary m-2 text-center' onClick={()=>goBack()}>Go Back</button>
+
+            <button style={mystyle} className="prev" onClick={() => goBack()} color="red" border="none"><img src={backImage} width='50rem'></img></button>
+
             <div className="container mt-3">
                 <form className="form-control" onSubmit={(event) => event.preventDefault()} >
                     <h1 style={header_style}>Update Result</h1>
@@ -82,26 +130,25 @@ const Updateresult = () => {
                         aria-label="Default select example"
                         onChange={onChange}
                         defaultValue="Test"
-
                         name="testId"
                     >
-                        <option disabled >Test</option>
+                        <option disabled value="Test" >Test</option>
                         {data &&
                             data.map((row, i) => {
                                 return (
-                                    <option key={i} value={row.TestID}>
+                                    <option key={row.TestID} value={row.TestID}>
                                         {row.Name}
                                     </option>
                                 );
                             })}
                     </select>
-                    <div className="form-outline mb-4">
-                        <input type="text" name="Result" className="form-control" placeholder="Result" onChange={onChange} />
+                    <div className="form-outline mb-4 form-group">
+                        <input type="file" id="myFile" className="form-control" name="filename" padding-top="10rem" onChange={saveFile} required></input>
                     </div>
                     <button
                         type="submit"
                         className="btn btn-primary btn-block mb-4"
-                        onClick={() => handleOnClick()}
+                        onClick={() => uploadFile()}
                     >
                         Update Result
                     </button>

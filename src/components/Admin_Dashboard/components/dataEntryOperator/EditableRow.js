@@ -1,6 +1,10 @@
 import React from "react";
 
-const ReadOnlyRow = ({ dataEntryOperator, handleEditClick, handleDeleteClick }) => {
+const EditableRow = ({
+  editFormData,
+  handleEditFormChange,
+  handleCancelClick,
+}) => {
   return (
     <tr>
       <td>
@@ -40,13 +44,13 @@ const ReadOnlyRow = ({ dataEntryOperator, handleEditClick, handleDeleteClick }) 
         <button
           className="btn btn-danger ms-1"
           type="button"
-          onClick={(event) => handleEditClick(event, dataEntryOperator)}
+          onClick={handleCancelClick}
         >
-          Edit
+          Cancel
         </button>
       </td>
     </tr>
   );
 };
 
-export default ReadOnlyRow;
+export default EditableRow;

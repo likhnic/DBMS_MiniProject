@@ -2,6 +2,7 @@ import React, { useState, Fragment, useEffect } from "react";
 import ReadOnlyRow from "./ReadOnlyRow";
 import EditableRow from "./EditableRow";
 import RegistrationForm from "./RegistrationForm";
+import NB from "../NB";
 
 const ShowDoctor = () => {
   const [doctors, setDoctors] = useState([]);
@@ -11,6 +12,7 @@ const ShowDoctor = () => {
     Phone: "",
     Address: "",
     Aadhar: "",
+    Email:"",
     Password: "",
     rePassword: "",
   });
@@ -20,6 +22,7 @@ const ShowDoctor = () => {
     Name: "",
     Phone: "",
     Address: "",
+    Email:"",
     isWorking: null,
   });
 
@@ -54,7 +57,7 @@ const ShowDoctor = () => {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
-        // 'token': localStorage.getItem('token')
+        'token': localStorage.getItem('token')
       },
 
       body: JSON.stringify(newUser),
@@ -70,7 +73,7 @@ const ShowDoctor = () => {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
-        // 'token': localStorage.getItem('token')
+        'token': localStorage.getItem('token')
       },
 
       body: JSON.stringify(newDoctor),
@@ -105,6 +108,7 @@ const ShowDoctor = () => {
       Name: addFormData.Name,
       Phone: addFormData.Phone,
       Address: addFormData.Address,
+        Email: addFormData.Email,
       isWorking: 1,
     };
     jsonData = await addDoctor(newDoctor);
@@ -140,7 +144,7 @@ const ShowDoctor = () => {
       method: "DELETE",
       headers: {
         "Content-Type": "application/json",
-        // 'token': localStorage.getItem('token')
+        'token': localStorage.getItem('token')
       },
       body: JSON.stringify({ DocID: id }),
     });
@@ -160,6 +164,7 @@ const ShowDoctor = () => {
       Phone: editFormData.Phone,
       Address: editFormData.Address,
       isWorking: editFormData.isWorking,
+      Email: editFormData.Email,
     };
 
     const jsonData = update_docs(editedDoctor);
@@ -190,6 +195,7 @@ const ShowDoctor = () => {
       Phone: doctor.Phone,
       Address: doctor.Address,
       isWorking: doctor.isWorking,
+        Email: doctor.Email,
     };
 
     setEditFormData(formValues);
@@ -220,7 +226,7 @@ const ShowDoctor = () => {
       method: "GET",
       headers: {
         "Content-Type": "application/json",
-        // 'token': localStorage.getItem('token')
+        'token': localStorage.getItem('token')
       },
     });
 
@@ -238,9 +244,11 @@ const ShowDoctor = () => {
 
   useEffect(() => {
     get_all_docs();
-  }, []);
+  }, [doctors]);
 
   return (
+    <>
+    <NB/>
     <div className="container">
       <h1 className="text-center container mt-3">
         Doctors
@@ -254,6 +262,7 @@ const ShowDoctor = () => {
               <th>Phone</th>
               <th>Address</th>
               <th>Present</th>
+                <th>Email</th>
               <th>Actions</th>
             </tr>
           </thead>
@@ -283,6 +292,7 @@ const ShowDoctor = () => {
         onChange={handleAddFormChange}
       />
     </div>
+    </>
   );
 };
 

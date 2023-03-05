@@ -23,8 +23,8 @@ import ShowDatabaseAdministrator from "./components/Admin_Dashboard/components/d
 import ShowDataEntryOperator from "./components/Admin_Dashboard/components/dataEntryOperator/ShowDataEntryOperator";
 import ShowDoctor from "./components/Admin_Dashboard/components/doctor/ShowDoctor";
 import ShowFrontDeskOperator from "./components/Admin_Dashboard/components/frontDeskOperator/ShowFrontDeskOperator";
-import NB from './components/Admin_Dashboard/components/NB';
 import AdminHome from './components/Admin_Dashboard/AdminHome';
+import ViewPrescribes from './components/Data_Entry_Dashboard/ViewPrescribes';
 
 const App = () => {
     return (
@@ -39,17 +39,18 @@ const App = () => {
                     <Route exact path='/frontdesk/appointment' element={<ProtectedRoute element={Appointment} />}/>
                     <Route exact path='/frontdesk/room' element={<ProtectedRoute element={Stay} />}/>
                     <Route exact path='/frontdesk/discharge' element={<ProtectedRoute element={Discharge} />}/>
-                    <Route exact path='/dataentryop' element={<Data_Entry_Dashboard />}/>
-                    <Route exact path='/dataentryop/addtest' element={<Addtest />}/>
-                    <Route exact path='/dataentryop/treatment' element={<Addtreatment />}/>
-                    <Route exact path='/dataentryop/updateresult' element={<Updateresult />}/>
-                    <Route exact path='/dataentryop/options' element={<Optionspage />}/>
-                    {/* <Route exact path='/admin' element={<ProtectedRoute element={Admin_Dashboard} />}/> */}
-                    <Route exact path="/admin" element={<><NB /><AdminHome/></>} />
-                    <Route exact path = '/admin/dbadmin' element={<><NB/><ShowDatabaseAdministrator/></>}/>
-                    <Route exact path = '/admin/dataentry' element={<><NB/><ShowDataEntryOperator/></>}/>
-                    <Route exact path = '/admin/doctor' element={<><NB/><ShowDoctor/></>}/>
-                    <Route exact path = '/admin/frontdesk' element={<><NB/><ShowFrontDeskOperator/></>}/>
+                    <Route exact path='/dataentryop' element={<ProtectedRoute element={Data_Entry_Dashboard} />}/>
+                    <Route exact path='/dataentryop/addtest' element={<ProtectedRoute element={Addtest} />}/>
+                    <Route exact path='/dataentryop/treatment' element={<ProtectedRoute element={Addtreatment} />}/>
+                    <Route exact path='/dataentryop/updateresult' element={<ProtectedRoute element={Updateresult} />}/>
+                    <Route exact path='/dataentryop/options' element={<ProtectedRoute element={Optionspage} />}/>
+                    <Route exact path='/dataentryop/viewprescribes' element={<ProtectedRoute element={ViewPrescribes}/>}/>
+
+                    <Route exact path="/admin" element={<ProtectedRoute element={AdminHome}/>} />
+                    <Route exact path = '/admin/dbadmin' element={<ProtectedRoute element={ShowDatabaseAdministrator}/>}/>
+                    <Route exact path = '/admin/dataentry' element={<ProtectedRoute element={ShowDataEntryOperator}/>}/>
+                    <Route exact path = '/admin/doctor' element={<ProtectedRoute element={ShowDoctor}/>}/>
+                    <Route exact path = '/admin/frontdesk' element={<ProtectedRoute  element={ShowFrontDeskOperator}/>}/>
                 
                 </Routes>
             </Router>

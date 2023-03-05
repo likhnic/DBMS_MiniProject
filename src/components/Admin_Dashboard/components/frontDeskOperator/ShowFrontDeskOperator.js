@@ -2,6 +2,7 @@ import React, { useState, Fragment, useEffect } from "react";
 import ReadOnlyRow from "./ReadOnlyRow";
 import EditableRow from "./EditableRow";
 import RegistrationForm from "./RegistrationForm";
+import NB from "../NB";
 
 const ShowFrontDeskOperator = () => {
   const [frontDeskOperators, setFrontDeskOperators] = useState([]);
@@ -39,7 +40,7 @@ const ShowFrontDeskOperator = () => {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
-        // 'token': localStorage.getItem('token')
+        'token': localStorage.getItem('token')
       },
 
       body: JSON.stringify(newUser),
@@ -57,7 +58,7 @@ const ShowFrontDeskOperator = () => {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
-          // 'token': localStorage.getItem('token')
+          'token': localStorage.getItem('token')
         },
 
         body: JSON.stringify(newFrontDeskOperator),
@@ -125,7 +126,7 @@ const ShowFrontDeskOperator = () => {
         method: "PUT",
         headers: {
           "Content-Type": "application/json",
-          // 'token': localStorage.getItem('token')
+          'token': localStorage.getItem('token')
         },
 
         body: JSON.stringify(editedFrontDeskOperator),
@@ -144,7 +145,7 @@ const ShowFrontDeskOperator = () => {
         method: "DELETE",
         headers: {
           "Content-Type": "application/json",
-          // 'token': localStorage.getItem('token')
+          'token': localStorage.getItem('token')
         },
         body: JSON.stringify({ FrontDeskOpID: id }),
       }
@@ -226,7 +227,7 @@ const ShowFrontDeskOperator = () => {
         method: "GET",
         headers: {
           "Content-Type": "application/json",
-          // 'token': localStorage.getItem('token')
+          'token': localStorage.getItem('token')
         },
       }
     );
@@ -245,9 +246,11 @@ const ShowFrontDeskOperator = () => {
 
   useEffect(() => {
     get_all_frontdeskoperators();
-  }, []);
+  }, [frontDeskOperators]);
 
   return (
+    <>
+    <NB/>
     <div className="container">
       <h1 className="text-center container mt-3">Front Desk Operators</h1>
       <form onSubmit={handleEditFormSubmit}>
@@ -286,6 +289,7 @@ const ShowFrontDeskOperator = () => {
         onChange={handleAddFormChange}
       />
     </div>
+    </>
   );
 };
 

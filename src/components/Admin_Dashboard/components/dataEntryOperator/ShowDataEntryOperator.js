@@ -2,6 +2,7 @@ import React, { useState, Fragment, useEffect } from "react";
 import ReadOnlyRow from "./ReadOnlyRow";
 import EditableRow from "./EditableRow";
 import RegistrationForm from "./RegistrationForm";
+import NB from "../NB";
 
 const ShowDataEntryOperator = () => {
   const [dataEntryOperators, setDataEntryOperators] = useState([]);
@@ -39,7 +40,7 @@ const ShowDataEntryOperator = () => {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
-        // 'token': localStorage.getItem('token')
+        'token': localStorage.getItem('token')
       },
 
       body: JSON.stringify(newUser),
@@ -57,7 +58,7 @@ const ShowDataEntryOperator = () => {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
-          // 'token': localStorage.getItem('token')
+          'token': localStorage.getItem('token')
         },
 
         body: JSON.stringify(newDataEntryOperator),
@@ -124,7 +125,7 @@ const ShowDataEntryOperator = () => {
         method: "PUT",
         headers: {
           "Content-Type": "application/json",
-          // 'token': localStorage.getItem('token')
+          'token': localStorage.getItem('token')
         },
 
         body: JSON.stringify(editedDataEntryOperator),
@@ -143,7 +144,7 @@ const ShowDataEntryOperator = () => {
         method: "DELETE",
         headers: {
           "Content-Type": "application/json",
-          // 'token': localStorage.getItem('token')
+          'token': localStorage.getItem('token')
         },
         body: JSON.stringify({ DataEntryOpID: id }),
       }
@@ -227,7 +228,7 @@ const ShowDataEntryOperator = () => {
         method: "GET",
         headers: {
           "Content-Type": "application/json",
-          // 'token': localStorage.getItem('token')
+          'token': localStorage.getItem('token')
         },
       }
     );
@@ -246,9 +247,11 @@ const ShowDataEntryOperator = () => {
 
   useEffect(() => {
     get_all_dataentryoperators();
-  }, []);
+  }, [dataEntryOperators]);
 
   return (
+    <>
+    <NB/>
     <div className="container">
       <h1 className="text-center container mt-3">Data Entry Operators</h1>
       <form onSubmit={handleEditFormSubmit}>
@@ -287,6 +290,7 @@ const ShowDataEntryOperator = () => {
         onChange={handleAddFormChange}
       />
     </div>
+    </>
   );
 };
 

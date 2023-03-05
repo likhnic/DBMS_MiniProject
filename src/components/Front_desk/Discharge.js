@@ -25,6 +25,7 @@ const Discharge = () => {
         console.log(json);
         if (json.success) {
             navigate("/frontdesk", { replace: true })
+            alert("Patient discharged successfully")
         }
         else if(json.error){
             alert(json.error)
@@ -51,7 +52,10 @@ const Discharge = () => {
                         <input type="text" name="PatientAadhar" className="form-control" placeholder="Patient Aadhar" maxLength={12} minLength={12} onChange={handleOnChange} />
                     </div>
 
-                    <button type="submit" className="btn btn-primary btn-block mb-4" onClick={handleOnClick}> Discharge Patient </button>
+                    <div className="text-center">
+                        <button type="submit" className="btn btn-primary btn-block mb-4" onClick={handleOnClick}> Discharge Patient </button>
+                    </div>
+
                 </form>
             </div>
         </>

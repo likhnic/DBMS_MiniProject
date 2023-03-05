@@ -2,7 +2,13 @@ import React from 'react'
 import useFetch from './useFetch';
 function UserList() {
     let counter = 1
-    const res = useFetch('http://localhost:5000/api/dataentryop/', {});
+    const res = useFetch('http://localhost:5000/api/dataentryop/', {
+        method: 'GET',
+        headers: {
+            'Content-Type': 'application/json',
+            'token': localStorage.getItem('token')
+        },
+    });
     console.log('Recieved this : ',res.response)
     if(!res.response.patient) {
         return <div>Loading...</div>

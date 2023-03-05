@@ -153,10 +153,26 @@ const DoctorDashboard = () => {
     const changeMed = (e) => {
         setPatientPrescribe({ ...patientPrescribe, medicationcode: e.target.value })
     }
+    const getTime = () => {
+        let time = new Date()
+        let ans = ("0" + time.getHours()).slice(-2)   + ":" + 
+        ("0" + time.getMinutes()).slice(-2) + ":" + 
+        ("0" + time.getSeconds()).slice(-2)
+        return ans;
+    }
+
+    const getDate = () => {
+        let time = new Date()
+        let ans = (time.getFullYear())   + "-" + 
+        ("0" + (time.getMonth()+1)).slice(-2) + "-" + 
+        ("0" + time.getDate()).slice(-2)
+        return ans;
+    }
 
     useEffect(() => {
         if (showDetails === 0) onRenderPage()
-        setCurrTime(new Date().toISOString())
+        // get curr YYYY-MM-DD+" "+HH:MM:SS
+        setCurrTime(getDate() + " " + getTime())
         if (showDetails === 1) getMedications()
     }, [showDetails])
 
@@ -165,14 +181,14 @@ const DoctorDashboard = () => {
 
             <div className="container">
 
-                {!loading && showDetails === 0 && searchResult.length > 0 &&
+                {!loading && showDetails === 0 && searchResult.length > 0 && 
                     (
                         <div className="row">
                             {
                                 searchResult.map((result, i) => {
                                     return (
                                         <div className='col-md-6'>
-                                            <div className={`card position-relative shadow mt-3 p-3 mb-3 rounded bg-${result.starttime >= currTime ? 'light' : 'secondary bg-gradient bg-opacity-25'} text-${result.starttime >= currTime ? 'dark' : 'dark'}`} key={result}>
+                                            <div className={`card position-relative shadow mt-3 p-3 mb-3 rounded bg-${result.startdate.slice(0,10)+" "+result.starttime >= currTime ? 'light' : 'secondary bg-gradient bg-opacity-25'} text-${result.starttime >= currTime ? 'dark' : 'dark'}`} key={result}>
                                                 <PatientDetailsCard result={result} />
                                                 <button className="btn btn-primary mt-3" name={i} onClick={patientClick}>View</button>
                                             </div>
@@ -210,7 +226,7 @@ const DoctorDashboard = () => {
                                                     Appointment Time
                                                 </div>
                                                 <div className="col-md-8">
-                                                    {patientDetails.startdate} {patientDetails.starttime}
+                                                    {patientDetails.startdate.slice(0,10)} {patientDetails.starttime}
                                                 </div>
                                                 <div className="col-md-4 text-muted">
                                                     Phone Number
@@ -298,7 +314,7 @@ const DoctorDashboard = () => {
                                 {showType === 2 && (
 
                                     <div className="container mt-3">
-                                        {patientDetails.starttime >= currTime && <div className="card shadow p-3 mb-5 bg-body rounded">
+                                        {patientDetails.startdate.slice(0,10)+" "+patientDetails.starttime >= currTime && <div className="card shadow p-3 mb-5 bg-body rounded">
                                             <div className="card-body">
                                                 <form>
                                                     <select className='form-control mb-3' defaultValue={"Medication"} onChange={changeMed}>
@@ -306,7 +322,7 @@ const DoctorDashboard = () => {
                                                         {
                                                             medications.map((medication, i) => {
                                                                 return (
-                                                                    <option key={i} value={medication.Code}>{medication.Name}</option>
+                                                                    <option key={i} value={medication.Code}>{medication.Name} {medication.Brand}</option>
                                                                 )
                                                             }
                                                             )

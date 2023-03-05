@@ -59,6 +59,16 @@ const EditableRow = ({
           onChange={handleEditFormChange}
         ></input>
       </td>
+      <td> 
+        <input
+            type="email"
+            required="required"
+            placeholder="Enter a email..."
+            name="Email"
+            value={editFormData.Email}
+            onChange={handleEditFormChange}
+        ></input>
+      </td>
       <td>
         <button className="btn btn-success me-1" type="submit">Save</button>
         <button className="btn btn-danger ms-1" type="button" onClick={handleCancelClick}>
