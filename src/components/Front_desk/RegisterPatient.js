@@ -1,6 +1,5 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router';
-;
 
 const RegisterPatient = (props) => {
     const header_style = { textAlign: 'center' }
@@ -66,11 +65,11 @@ const RegisterPatient = (props) => {
                     </div>
 
                     <div className="form-outline mb-4">
-                        <input type="number" name="InsuranceID" className="form-control" placeholder="InsuranceID" onChange={handleOnChange} />
+                        <input type="number" name="InsuranceID" className="form-control" placeholder="InsuranceID" onChange={handleOnChange} min={1}/>
                     </div>
 
                     <div className="form-outline mb-4">
-                        <input type="number" name="PCPDocID" className="form-control" placeholder="PCPDocID" onChange={handleOnChange} />
+                        <input type="number" name="PCPDocID" className="form-control" placeholder="PCPDocID" onChange={handleOnChange} min={1}/>
                     </div>
 
                     {/* <!-- Submit button --> */}
