@@ -39,6 +39,23 @@ router.post("/adduser", fetchuser, async (req, res) => {
   }
 });
 
+router.post('/addnews', fetchuser, async (req, res) => {
+    // console.log(sqlQuery, news);
+    const { news } = req.body;
+    let sqlQuery = `INSERT INTO news VALUES('${news}')`;
+    try {
+        const result = await query(sqlQuery);
+        if(result.affectedRows == 0){
+            return res.json({error: "Couldn't add news!"});
+        }
+        console.log(result);
+        return res.json({success: "News added successfully!"});
+    } catch (error) {
+        console.log(error);
+        res.json({error: "Error adding news"});
+    }
+})
+
 // add a doctor
 // add fetchuser to the route to make it private later
 router.post("/adddoctor", fetchuser, async (req, res) => {
@@ -366,7 +383,10 @@ router.delete("/user/:ID/:type", fetchuser, async (req, res) => {
     if (result.length == 0) {
       return res.json({ error: "There is no such user!!!" });
     }
-  } catch (error) {}
+  } catch (error) { 
+    console.log(error);
+    return res.json({ error: error });
+  }
   if (type_index == 2) {
     let sqlQuery1 = `UPDATE User SET Status = 0 where ID = ${ID}`;
     let sqlQuery2 = `UPDATE Doctor SET isWorking = 0 where ${type_IDs[type_index]} = ${ID}`;

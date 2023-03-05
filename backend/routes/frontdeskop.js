@@ -29,6 +29,21 @@ const actualSlots = [
     "19:00:00",
     "19:30:00"]
 
+router.get("/getnews", async (req, res) => {
+    let sql = `SELECT * from news`;
+    try {
+        let result = await query(sql);
+        res.status(200).json({
+            news : result
+        });
+        console.log(result);
+    } catch (error) {
+        res.status(404).json({
+            error: "Cannot get news"
+        });
+    }
+})
+
 // add the fetuser middleware this route
 router.post("/getslots", fetchuser, async (req, res) => {
     const { StartDate, DocID, Emergency } = req.body;
