@@ -219,7 +219,7 @@ router.put('/test/:testId', fetchuser, async (req, res) => {
             }
             // return res.json({success:"Successfully uploaded result"})
         });
-        sqlQuery = `UPDATE Test SET Result = '/testresults/${filename}' WHERE TestID = ${testId};`
+        sqlQuery = `UPDATE Test SET Result = '${filename}' WHERE TestID = ${testId};`
         await query(sqlQuery);
         return res.json({ success: "Test Result Updated Successfully!" });
     }

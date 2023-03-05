@@ -4,7 +4,7 @@ import EditableRow from "./EditableRow";
 import RegistrationForm from "./RegistrationForm";
 import NB from "../NB";
 
-const ShowDoctor = () => {
+const ShowDoctor = (props) => {
   const [doctors, setDoctors] = useState([]);
   const [addFormData, setAddFormData] = useState({
     Position: "",
@@ -87,7 +87,7 @@ const ShowDoctor = () => {
   const handleAddFormSubmit = async (event) => {
     event.preventDefault();
     if (addFormData.Password !== addFormData.rePassword) {
-      alert("Password mismatch");
+      props.alert("Password mismatch", "danger");
       return;
     }
     const newUser = {
@@ -99,7 +99,7 @@ const ShowDoctor = () => {
     var jsonData = await addUser(newUser);
     if (jsonData.error) {
       console.log(jsonData.error);
-      alert("Error adding doctor");
+      props.alert("Error adding doctor", "danger");
       return;
     }
     const newDoctor = {
@@ -114,10 +114,10 @@ const ShowDoctor = () => {
     jsonData = await addDoctor(newDoctor);
     if (jsonData.error) {
       console.log(jsonData.error);
-      alert("Error adding doctor");
+      props.alert("Error adding doctor", "danger");
       return;
     }
-    alert("Added " + newDoctor.Name + " with Employee ID: " + newDoctor.DocID);
+    props.alert("Added " + newDoctor.Name + " with Employee ID: " + newDoctor.DocID, "success");
 
     const newDoctors = [...doctors, newDoctor];
     setDoctors(newDoctors);
@@ -128,7 +128,7 @@ const ShowDoctor = () => {
       method: "PUT",
       headers: {
         "Content-Type": "application/json",
-        // 'token': localStorage.getItem('token')
+        'token': localStorage.getItem('token')
       },
 
       body: JSON.stringify(editedDoctor),
@@ -170,7 +170,7 @@ const ShowDoctor = () => {
     const jsonData = update_docs(editedDoctor);
     if (jsonData.error) {
       console.log(jsonData.error);
-      alert("Error updating doctor");
+      props.alert("Error updating doctor", "danger");
     } else {
       const newDoctors = [...doctors];
 
@@ -209,7 +209,7 @@ const ShowDoctor = () => {
     const jsonData = delete_doc(doctorId);
     if (jsonData.error) {
       console.log(jsonData.error);
-      alert("Error deleting doctor");
+      props.alert("Error deleting doctor", "danger");
     } else {
       const newDoctors = [...doctors];
 
@@ -233,10 +233,10 @@ const ShowDoctor = () => {
     const jsonData = await response.json();
     if (jsonData.error) {
       console.log(jsonData.error);
-      alert("Error getting doctors");
+      props.alert("Error getting doctors", "danger");
     } else if (jsonData.empty) {
       console.log(jsonData.empty);
-      alert("No doctors found");
+      props.alert("No doctors found", "danger");
     } else {
       setDoctors(jsonData.doctors);
     }
@@ -256,7 +256,7 @@ const ShowDoctor = () => {
           method: "GET",
           headers: {
             "Content-Type": "application/json",
-            // 'token': localStorage.getItem('token')
+            'token': localStorage.getItem('token')
           },
         }
       );

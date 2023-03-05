@@ -23,7 +23,7 @@ const type_IDs = {
 
 // adding a user
 // add fetchuser to the route to make it private later
-router.post("/adduser", async (req, res) => {
+router.post("/adduser", fetchuser, async (req, res) => {
   let sqlQuery = `INSERT INTO User(Aadhar, Password, Type, Status) VALUES('${req.body.Aadhar}', '${req.body.Password}', ${req.body.Type}, ${req.body.Status})`;
   try {
     let result = await query(sqlQuery);
@@ -41,7 +41,7 @@ router.post("/adduser", async (req, res) => {
 
 // add a doctor
 // add fetchuser to the route to make it private later
-router.post("/adddoctor", async (req, res) => {
+router.post("/adddoctor", fetchuser, async (req, res) => {
   let sqlQuery = `INSERT INTO Doctor(DocID, Position, Name, Phone, Address, isWorking, Email) VALUES(${req.body.DocID}, '${req.body.Position}', '${req.body.Name}', '${req.body.Phone}', '${req.body.Address}', ${req.body.isWorking}, '${req.body.Email}')`;
   try {
     let result = await query(sqlQuery);
@@ -56,7 +56,7 @@ router.post("/adddoctor", async (req, res) => {
 
 // getting the doctors list
 // add fetchuser to the route to make it private later
-router.get("/getdoctors", async (req, res) => {
+router.get("/getdoctors", fetchuser, async (req, res) => {
   let sqlQuery = `Select * from Doctor WHERE 1=(SELECT Status FROM User WHERE ID=DocID)`;
   try {
     let result = await query(sqlQuery);
@@ -72,7 +72,7 @@ router.get("/getdoctors", async (req, res) => {
 
 // getting the doctors list using pattern match
 // add fetchuser to the route to make it private later
-router.get("/getdoctors/:search", async (req, res) => {
+router.get("/getdoctors/:search", fetchuser, async (req, res) => {
   let sqlQuery = `Select * from Doctor WHERE 1=(SELECT Status FROM User WHERE ID=DocID) AND Name regexp '${req.params.search}'`;
   try {
     let result = await query(sqlQuery);
@@ -88,7 +88,7 @@ router.get("/getdoctors/:search", async (req, res) => {
 
 // updating the doctor's data
 // add fetchuser to the route to make it private later
-router.put("/updatedoctor", async (req, res) => {
+router.put("/updatedoctor", fetchuser, async (req, res) => {
   let sql = `UPDATE Doctor SET Name = '${req.body.Name}', Phone = '${req.body.Phone}', Address = '${req.body.Address}', Position = '${req.body.Position}', isWorking = ${req.body.isWorking}, Email = '${req.body.Email}' WHERE DocID = ${req.body.DocID}`;
   try {
     let result = await query(sql);
@@ -103,7 +103,7 @@ router.put("/updatedoctor", async (req, res) => {
 
 // delete the doctor
 // add fetchuser to the route to make it private later
-router.delete("/deletedoctor/", async (req, res) => {
+router.delete("/deletedoctor/", fetchuser, async (req, res) => {
   let sql = `UPDATE User SET Status=0 WHERE ID = ${req.body.DocID}`;
   try {
     let result = await query(sql);
@@ -123,7 +123,7 @@ router.delete("/deletedoctor/", async (req, res) => {
 
 // add a dataentryoperator
 // add fetchuser to the route to make it private later
-router.post("/adddataentryoperator", async (req, res) => {
+router.post("/adddataentryoperator", fetchuser, async (req, res) => {
   let sqlQuery = `INSERT INTO Data_entry_operator(DataEntryOpID, Name, Phone, Address) VALUES(${req.body.DataEntryOpID}, '${req.body.Name}', '${req.body.Phone}', '${req.body.Address}')`;
   try {
     let result = await query(sqlQuery);
@@ -138,7 +138,7 @@ router.post("/adddataentryoperator", async (req, res) => {
 
 // getting the dataentryoperators list
 // add fetchuser to the route to make it private later
-router.get("/getdataentryoperators", async (req, res) => {
+router.get("/getdataentryoperators", fetchuser, async (req, res) => {
   let sqlQuery = `Select * from Data_entry_operator WHERE 1=(SELECT Status FROM User WHERE ID=DataEntryOpID)`;
   try {
     let result = await query(sqlQuery);
@@ -154,7 +154,7 @@ router.get("/getdataentryoperators", async (req, res) => {
 
 // getting the dataentryoperators list
 // add fetchuser to the route to make it private later
-router.get("/getdataentryoperators/:search", async (req, res) => {
+router.get("/getdataentryoperators/:search", fetchuser, async (req, res) => {
   let sqlQuery = `Select * from Data_entry_operator WHERE 1=(SELECT Status FROM User WHERE ID=DataEntryOpID) AND Name regexp '${req.params.search}'`;
   try {
     let result = await query(sqlQuery);
@@ -170,7 +170,7 @@ router.get("/getdataentryoperators/:search", async (req, res) => {
 
 // updating the dataentryoperators's data
 // add fetchuser to the route to make it private later
-router.put("/updatedataentryoperator", async (req, res) => {
+router.put("/updatedataentryoperator", fetchuser, async (req, res) => {
   let sql = `UPDATE Data_entry_operator SET Name = '${req.body.Name}', Phone = '${req.body.Phone}', Address = '${req.body.Address}' WHERE DataEntryOpID = ${req.body.DataEntryOpID}`;
   try {
     let result = await query(sql);
@@ -187,7 +187,7 @@ router.put("/updatedataentryoperator", async (req, res) => {
 
 // delete the dataentryoperators
 // add fetchuser to the route to make it private later
-router.delete("/deletedataentryoperator/", async (req, res) => {
+router.delete("/deletedataentryoperator/", fetchuser, async (req, res) => {
   let sql = `UPDATE User SET Status=0 WHERE ID = ${req.body.DataEntryOpID}`;
   try {
     let result = await query(sql);
@@ -202,7 +202,7 @@ router.delete("/deletedataentryoperator/", async (req, res) => {
 
 // add a dbadmin
 // add fetchuser to the route to make it private later
-router.post("/adddbadmin", async (req, res) => {
+router.post("/adddbadmin", fetchuser, async (req, res) => {
   let sqlQuery = `INSERT INTO Database_administrator(AdminID, Name, Phone, Address) VALUES(${req.body.AdminID}, '${req.body.Name}', '${req.body.Phone}', '${req.body.Address}')`;
   try {
     let result = await query(sqlQuery);
@@ -217,7 +217,7 @@ router.post("/adddbadmin", async (req, res) => {
 
 // getting the dbadmins list
 // add fetchuser to the route to make it private later
-router.get("/getdbadmins", async (req, res) => {
+router.get("/getdbadmins", fetchuser, async (req, res) => {
   let sqlQuery = `Select * from Database_administrator WHERE 1=(SELECT Status FROM User WHERE ID=AdminID)`;
   try {
     let result = await query(sqlQuery);
@@ -233,7 +233,7 @@ router.get("/getdbadmins", async (req, res) => {
 
 // getting the dbadmins list
 // add fetchuser to the route to make it private later
-router.get("/getdbadmins/:search", async (req, res) => {
+router.get("/getdbadmins/:search", fetchuser, async (req, res) => {
   let sqlQuery = `Select * from Database_administrator WHERE 1=(SELECT Status FROM User WHERE ID=AdminID) AND Name regexp '${req.params.search}'`;
   try {
     let result = await query(sqlQuery);
@@ -249,7 +249,7 @@ router.get("/getdbadmins/:search", async (req, res) => {
 
 // updating the dbadmin's data
 // add fetchuser to the route to make it private later
-router.put("/updatedbadmin", async (req, res) => {
+router.put("/updatedbadmin", fetchuser, async (req, res) => {
   let sql = `UPDATE Database_administrator SET Name = '${req.body.Name}', Phone = '${req.body.Phone}', Address = '${req.body.Address}' WHERE AdminID = ${req.body.AdminID}`;
   try {
     let result = await query(sql);
@@ -264,7 +264,7 @@ router.put("/updatedbadmin", async (req, res) => {
 
 // delete the dbadmin
 // add fetchuser to the route to make it private later
-router.delete("/deletedbadmin/", async (req, res) => {
+router.delete("/deletedbadmin/", fetchuser, async (req, res) => {
   let sql = `UPDATE User SET Status=0 WHERE ID = ${req.body.AdminID}`;
   try {
     let result = await query(sql);
@@ -279,7 +279,7 @@ router.delete("/deletedbadmin/", async (req, res) => {
 
 // add a frontdeskoperator
 // add fetchuser to the route to make it private later
-router.post("/addfrontdeskoperator", async (req, res) => {
+router.post("/addfrontdeskoperator", fetchuser, async (req, res) => {
   let sqlQuery = `INSERT INTO Front_desk_operator(FrontDeskOpID, Name, Phone, Address) VALUES(${req.body.FrontDeskOpID}, '${req.body.Name}', '${req.body.Phone}', '${req.body.Address}')`;
   try {
     let result = await query(sqlQuery);
@@ -294,7 +294,7 @@ router.post("/addfrontdeskoperator", async (req, res) => {
 
 // getting the frontdeskoperators list
 // add fetchuser to the route to make it private later
-router.get("/getfrontdeskoperators", async (req, res) => {
+router.get("/getfrontdeskoperators", fetchuser, async (req, res) => {
   let sqlQuery = `Select * from Front_desk_operator WHERE 1=(SELECT Status FROM User WHERE ID=FrontDeskOpID)`;
   try {
     let result = await query(sqlQuery);
@@ -310,7 +310,7 @@ router.get("/getfrontdeskoperators", async (req, res) => {
 
 // getting the frontdeskoperators list
 // add fetchuser to the route to make it private later
-router.get("/getfrontdeskoperators/:search", async (req, res) => {
+router.get("/getfrontdeskoperators/:search", fetchuser, async (req, res) => {
   let sqlQuery = `Select * from Front_desk_operator WHERE 1=(SELECT Status FROM User WHERE ID=FrontDeskOpID) AND Name regexp '${req.params.search}'`;
   try {
     let result = await query(sqlQuery);
@@ -326,7 +326,7 @@ router.get("/getfrontdeskoperators/:search", async (req, res) => {
 
 // updating the frontdeskoperator's data
 // add fetchuser to the route to make it private later
-router.put("/updatefrontdeskoperator", async (req, res) => {
+router.put("/updatefrontdeskoperator", fetchuser, async (req, res) => {
   let sql = `UPDATE Front_desk_operator SET Name = '${req.body.Name}', Phone = '${req.body.Phone}', Address = '${req.body.Address}' WHERE FrontDeskOpID = ${req.body.FrontDeskOpID}`;
   try {
     let result = await query(sql);
@@ -341,7 +341,7 @@ router.put("/updatefrontdeskoperator", async (req, res) => {
 
 // delete the frontdeskoperator
 // add fetchuser to the route to make it private later
-router.delete("/deletefrontdeskoperator/", async (req, res) => {
+router.delete("/deletefrontdeskoperator/", fetchuser, async (req, res) => {
   let sql = `UPDATE User SET Status=0 WHERE ID = ${req.body.FrontDeskOpID}`;
   try {
     let result = await query(sql);
@@ -354,7 +354,7 @@ router.delete("/deletefrontdeskoperator/", async (req, res) => {
   }
 });
 
-router.delete("/user/:ID/:type", async (req, res) => {
+router.delete("/user/:ID/:type", fetchuser, async (req, res) => {
   // if (req.user.ID != req.params.ID) {
   //     return res.json({ error: "You are not authorized to do this operation!" })
   // }
@@ -406,7 +406,7 @@ router.delete("/user/:ID/:type", async (req, res) => {
   }
 });
 
-router.post("/user", async (req, res) => {
+router.post("/user", fetchuser, async (req, res) => {
   // if (req.user.ID != req.params.ID) {
   //     return res.json({ error: "You are not authorized to do this operation!" })
   // }
@@ -473,7 +473,7 @@ router.post("/user", async (req, res) => {
   }
 });
 
-router.post("/login", async (req, res) => {
+router.post("/login", fetchuser, async (req, res) => {
   const { ID, Password } = req.body;
 
   let sqlQuery = `SELECT * FROM User WHERE ID = ${ID} AND Status=1;`;

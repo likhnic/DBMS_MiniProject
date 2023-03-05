@@ -4,7 +4,7 @@ import EditableRow from "./EditableRow";
 import RegistrationForm from "./RegistrationForm";
 import NB from "../NB";
 
-const ShowDatabaseAdministrator = () => {
+const ShowDatabaseAdministrator = (props) => {
   const [databaseAdministrators, setDatabaseAdministrators] = useState([]);
   const [addFormData, setAddFormData] = useState({
     Name: "",
@@ -83,7 +83,7 @@ const ShowDatabaseAdministrator = () => {
   const handleAddFormSubmit = async (event) => {
     event.preventDefault();
     if (addFormData.Password !== addFormData.rePassword) {
-      alert("Password mismatch");
+      props.alert("Password mismatch", "danger");
       return;
     }
     const newUser = {
@@ -95,7 +95,7 @@ const ShowDatabaseAdministrator = () => {
     var jsonData = await addUser(newUser);
     if (jsonData.error) {
       console.log(jsonData.error);
-      alert("Error adding database administrator");
+      props.alert("Error adding database administrator", "danger");
       return;
     }
     const newDatabaseAdministrator = {
@@ -107,10 +107,10 @@ const ShowDatabaseAdministrator = () => {
     jsonData = await addDatabaseAdministrator(newDatabaseAdministrator);
     if (jsonData.error) {
       console.log(jsonData.error);
-      alert("Error adding database administrator");
+      props.alert("Error adding database administrator", "danger");
       return;
     }
-    alert("Added " + newDatabaseAdministrator.Name + " with Employee ID: " + newDatabaseAdministrator.AdminID);
+    props.alert("Added " + newDatabaseAdministrator.Name + " with Employee ID: " + newDatabaseAdministrator.AdminID, "success");
 
     const newDatabaseAdministrators = [
       ...databaseAdministrators,
@@ -164,7 +164,7 @@ const ShowDatabaseAdministrator = () => {
     const jsonData = update_dbadmin(editedDatabaseAdministrator);
     if (jsonData.error) {
       console.log(jsonData.error);
-      alert("Error updating database administrator");
+      props.alert("Error updating database administrator", "danger");
     } else {
       const newDatabaseAdministrators = [...databaseAdministrators];
 
@@ -201,7 +201,7 @@ const ShowDatabaseAdministrator = () => {
     const jsonData = delete_dbadmin(databaseAdministratorId);
     if (jsonData.error) {
       console.log(jsonData.error);
-      alert("Error deleting database administrator");
+      props.alert("Error deleting database administrator", "danger");
     } else {
       const newDatabaseAdministrators = [...databaseAdministrators];
 
@@ -231,10 +231,10 @@ const ShowDatabaseAdministrator = () => {
     const jsonData = await response.json();
     if (jsonData.error) {
       console.log(jsonData.error);
-      alert("Error getting database administrators");
+      props.alert("Error getting database administrators", "danger");
     } else if (jsonData.empty) {
       console.log(jsonData.empty);
-      alert("No database administrators found");
+      props.alert("No database administrators found", "danger");
     } else {
       setDatabaseAdministrators(jsonData.dbadmins);
     }
@@ -254,7 +254,7 @@ const ShowDatabaseAdministrator = () => {
           method: "GET",
           headers: {
             "Content-Type": "application/json",
-            // 'token': localStorage.getItem('token')
+            'token': localStorage.getItem('token')
           },
         }
       );

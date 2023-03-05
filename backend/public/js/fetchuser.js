@@ -13,6 +13,8 @@ const fetchuser=async (req,res,next)=>{
         // here user is the employeeId
         const data=jwt.verify(token,SECRET)
         req.user = data.user
+        // req.user.type == data.user.type
+        
         return next()
     } catch (error) {
         return res.status(401).json({error:"Authenicate using valid token"})

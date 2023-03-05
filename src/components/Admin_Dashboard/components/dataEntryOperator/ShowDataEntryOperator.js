@@ -4,7 +4,7 @@ import EditableRow from "./EditableRow";
 import RegistrationForm from "./RegistrationForm";
 import NB from "../NB";
 
-const ShowDataEntryOperator = () => {
+const ShowDataEntryOperator = (props) => {
   const [dataEntryOperators, setDataEntryOperators] = useState([]);
   const [addFormData, setAddFormData] = useState({
     Name: "",
@@ -85,7 +85,7 @@ const ShowDataEntryOperator = () => {
   const handleAddFormSubmit = async (event) => {
     event.preventDefault();
     if (addFormData.Password !== addFormData.rePassword) {
-      alert("Password mismatch");
+      props.alert("Password mismatch", "danger");
       return;
     }
     const newUser = {
@@ -97,7 +97,7 @@ const ShowDataEntryOperator = () => {
     var jsonData = await addUser(newUser);
     if (jsonData.error) {
       console.log(jsonData.error);
-      alert("Error adding data entry operator");
+      props.alert("Error adding data entry operator", "danger");
       return;
     }
     const newDataEntryOperator = {
@@ -109,14 +109,14 @@ const ShowDataEntryOperator = () => {
     jsonData = await addDataEntryOperator(newDataEntryOperator);
     if (jsonData.error) {
       console.log(jsonData.error);
-      alert("Error adding data entry operator");
+      props.alert("Error adding data entry operator", "danger");
       return;
     }
-    alert(
+    props.alert(
       "Added " +
         newDataEntryOperator.Name +
         " with Employee ID: " +
-        newDataEntryOperator.DataEntryOpID
+        newDataEntryOperator.DataEntryOpID, "success"
     );
 
     const newDataEntryOperators = [...dataEntryOperators, newDataEntryOperator];
@@ -173,7 +173,7 @@ const ShowDataEntryOperator = () => {
     const jsonData = update_dataentryoperator(editedDataEntryOperator);
     if (jsonData.error) {
       console.log(jsonData.error);
-      alert("Error updating data entry operator");
+      props.alert("Error updating data entry operator", "danger");
     } else {
       const newDataEntryOperators = [...dataEntryOperators];
 
@@ -211,7 +211,7 @@ const ShowDataEntryOperator = () => {
     const jsonData = delete_dataentryoperator(dataEntryOperatorId);
     if (jsonData.error) {
       console.log(jsonData.error);
-      alert("Error deleting data entry operator");
+      props.alert("Error deleting data entry operator", "danger");
     } else {
       const newDataEntryOperators = [...dataEntryOperators];
 
@@ -241,10 +241,10 @@ const ShowDataEntryOperator = () => {
     const jsonData = await response.json();
     if (jsonData.error) {
       console.log(jsonData.error);
-      alert("Error getting data entry operators");
+      props.alert("Error getting data entry operators", "danger");
     } else if (jsonData.empty) {
       console.log(jsonData.empty);
-      alert("No data entry operators found");
+      props.alert("No data entry operators found", "danger");
     } else {
       setDataEntryOperators(jsonData.dataentryoperators);
     }
@@ -264,7 +264,7 @@ const ShowDataEntryOperator = () => {
           method: "GET",
           headers: {
             "Content-Type": "application/json",
-            // 'token': localStorage.getItem('token')
+            'token': localStorage.getItem('token')
           },
         }
       );

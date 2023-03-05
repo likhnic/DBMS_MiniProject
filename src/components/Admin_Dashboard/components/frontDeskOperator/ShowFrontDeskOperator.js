@@ -4,7 +4,7 @@ import EditableRow from "./EditableRow";
 import RegistrationForm from "./RegistrationForm";
 import NB from "../NB";
 
-const ShowFrontDeskOperator = () => {
+const ShowFrontDeskOperator = (props) => {
   const [frontDeskOperators, setFrontDeskOperators] = useState([]);
   const [addFormData, setAddFormData] = useState({
     Name: "",
@@ -85,7 +85,7 @@ const ShowFrontDeskOperator = () => {
   const handleAddFormSubmit = async (event) => {
     event.preventDefault();
     if (addFormData.Password !== addFormData.rePassword) {
-      alert("Password mismatch");
+      props.alert("Password mismatch", "danger");
       return;
     }
     const newUser = {
@@ -97,7 +97,7 @@ const ShowFrontDeskOperator = () => {
     var jsonData = await addUser(newUser);
     if (jsonData.error) {
       console.log(jsonData.error);
-      alert("Error adding front desk operator");
+      props.alert("Error adding front desk operator", "danger");
       return;
     }
 
@@ -110,14 +110,14 @@ const ShowFrontDeskOperator = () => {
     jsonData = await addFrontDeskOperator(newFrontDeskOperator);
     if (jsonData.error) {
       console.log(jsonData.error);
-      alert("Error adding front desk operator");
+      props.alert("Error adding front desk operator", "danger");
       return;
     }
-    alert(
+    props.alert(
       "Added " +
         newFrontDeskOperator.Name +
         " with Employee ID: " +
-        newFrontDeskOperator.FrontDeskOpID
+        newFrontDeskOperator.FrontDeskOpID, "success"
     );
 
     const newFrontDeskOperators = [...frontDeskOperators, newFrontDeskOperator];
@@ -173,7 +173,7 @@ const ShowFrontDeskOperator = () => {
     const jsonData = update_frontdeskoperator(editedFrontDeskOperator);
     if (jsonData.error) {
       console.log(jsonData.error);
-      alert("Error updating frontdeskoperator");
+      props.alert("Error updating frontdeskoperator", "danger");
     } else {
       const newFrontDeskOperators = [...frontDeskOperators];
 
@@ -210,7 +210,7 @@ const ShowFrontDeskOperator = () => {
     const jsonData = delete_frontdeskoperator(frontDeskOperatorId);
     if (jsonData.error) {
       console.log(jsonData.error);
-      alert("Error deleting frontdeskoperator");
+      props.alert("Error deleting frontdeskoperator", "danger");
     } else {
       const newFrontDeskOperators = [...frontDeskOperators];
 
@@ -240,10 +240,10 @@ const ShowFrontDeskOperator = () => {
     const jsonData = await response.json();
     if (jsonData.error) {
       console.log(jsonData.error);
-      alert("Error getting frontdeskoperators");
+      props.alert("Error getting frontdeskoperators", "danger");
     } else if (jsonData.empty) {
       console.log(jsonData.empty);
-      alert("No front desk operators found");
+      props.alert("No front desk operators found", "danger");
     } else {
       setFrontDeskOperators(jsonData.frontdeskoperators);
     }
@@ -263,7 +263,7 @@ const ShowFrontDeskOperator = () => {
           method: "GET",
           headers: {
             "Content-Type": "application/json",
-            // 'token': localStorage.getItem('token')
+            'token': localStorage.getItem('token')
           },
         }
       );
