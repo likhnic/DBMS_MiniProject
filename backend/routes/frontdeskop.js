@@ -205,6 +205,14 @@ router.put("/stay", fetchuser, async (req, res) => {
             });
             return;
         }
+        sql = `SELECT * from Stay WHERE PatientAadhar = '${PatientAadhar}' and EndTime is NULL`;
+        result = await query(sql);
+        if (result.length > 0) {
+            res.status(404).json({
+                error: "Patient already admitted"
+            });
+            return;
+        }
         sql = `INSERT INTO Stay (StartTime, RoomNo, PatientAadhar) VALUES ('${StartTime}', ${RoomNo}, '${PatientAadhar}')`
         result = await query(sql);
         console.log("Stay created successfully");
