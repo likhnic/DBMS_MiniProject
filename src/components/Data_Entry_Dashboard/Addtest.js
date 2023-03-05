@@ -1,27 +1,17 @@
 // export default Addtest;
 import React, { useState } from "react";
 import { useNavigate } from "react-router";
-import Alert from "../Alert";
+
 import useFetch from "../useFetch";
 import backImage from './back.png'
-const Addtest = () => {
+const Addtest = (props) => {
 
 	const queryParameters = new URLSearchParams(window.location.search)
 	const patientID = queryParameters.get("patientID")
 	console.log('patient ID is here: ', patientID)
 	const [credentials, setCredentials] = useState({ Name: "" });
 	let navigate = useNavigate();
-    const [alert, setAlert] = useState(null);
 
-    const showAlert = (message, type) => {
-      setAlert({
-        message,
-        type
-      })
-      setTimeout(() => {
-        setAlert(null)
-      }, 4000);
-    }
 	const onChange = (e) => {
 		setCredentials({ ...credentials, [e.target.name]: e.target.value });
 		console.log("credentials : ", credentials);
@@ -38,7 +28,7 @@ const Addtest = () => {
 		if (Name === null || Name === undefined || Name === "") {
 
 			// alert("Please select a Test!!!")
-            showAlert("Please select a Test!!!", "danger")
+            props.alert("Please select a Test!!!", "danger")
 			return;
 		}
 
@@ -57,11 +47,11 @@ const Addtest = () => {
 		console.log('Response : ', json)
 		if (json.success) {
 			// alert("Test Added Successfully")
-            showAlert("Test Added Successfully", "success")
+            props.alert("Test Added Successfully", "success")
 		}
 		if (json.error)
 			// alert(json.error)
-            showAlert(json.error, "danger")
+            props.alert(json.error, "danger")
 	};
 
 
@@ -88,7 +78,7 @@ const Addtest = () => {
 	const header_style = { textAlign: "center" };
 	return (
 		<>
-        <Alert alert={alert} />
+        
 			<button style={mystyle} className="prev" onClick={() => goBack()} color="red" border="none"><img src={backImage} width='50rem' alt=""></img></button>
 			<div className="container mt-3">
 				<form className="form-control" onSubmit={(event) => event.preventDefault()} >

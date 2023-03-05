@@ -1,24 +1,14 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router';
-import Alert from '../Alert';
+;
 
-const Appointment = () => {
+const Appointment = (props) => {
     const header_style = { textAlign: 'center' }
     const [slots, setSlots] = useState([]);
     const [data, setCredentials] = useState({ StartDate: "", ExaminationRoom: "", PatientAadhar: "", DocID: "", Emergency: false });
     const [sentReq, setSentReq] = useState(false);
     let navigate = useNavigate();
-    const [alert, setAlert] = useState(null);
 
-    const showAlert = (message, type) => {
-      setAlert({
-        message,
-        type
-      })
-      setTimeout(() => {
-        setAlert(null)
-      }, 4000);
-    }
     const handleOnClick = async (e) => {
         e.preventDefault();
         let { StartDate, ExaminationRoom, PatientAadhar, DocID, Emergency } = data;
@@ -44,11 +34,11 @@ const Appointment = () => {
         if (json.success) {
             navigate("/frontdesk", { replace: true })
             // alert("Appointment created successfully")
-            showAlert("Appointment created successfully", "success")
+            props.alert("Appointment created successfully", "success")
         }
         else if (json.error) {
             // alert(json.error)
-            showAlert(json.error, "danger")
+            props.alert(json.error, "danger")
         }
     }
 
@@ -57,7 +47,7 @@ const Appointment = () => {
         let {StartDate, DocID, Emergency} = data;
         if(StartDate === "" || DocID === "" || Emergency === ""){
             // alert("Please fill all the fields")
-            showAlert("Please fill all the fields", "danger")
+            props.alert("Please fill all the fields", "danger")
             return;
         }
         console.log(data);
@@ -74,7 +64,7 @@ const Appointment = () => {
         console.log(jsonData);
         if (jsonData.error) {
             // alert(jsonData.error)
-            showAlert(jsonData.error, "danger")
+            props.alert(jsonData.error, "danger")
         }
         setSlots(jsonData.slots);
         setSentReq(true);
@@ -115,7 +105,7 @@ const Appointment = () => {
     return (
         <>
             <div className='container mt-3'>
-                <Alert alert={alert} />
+                
                 <button className="btn btn-outline-primary m-3" onClick={goBack} type="submit">Go Back</button>
 
                 <form className='form-control shadow bg-body p-3 mb-5 '>

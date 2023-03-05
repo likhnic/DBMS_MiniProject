@@ -37,9 +37,11 @@ const Login = (props) => {
             else if(json.type === 3){
                 navigate("/admin", { replace: true })
             }
+            props.alert("Login Successful", "success")
         }
         else{
-            alert(json.error)
+            // alert(json.error)
+            props.alert(json.error, "danger")
         }
     }
 

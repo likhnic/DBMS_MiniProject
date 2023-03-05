@@ -1,25 +1,15 @@
 import React, { useEffect, useState } from "react";
 import { useNavigate } from 'react-router-dom';
-import Alert from "../Alert";
+
 import backImage from './back.png'
-const Addtreatment = () => {
+const Addtreatment = (props) => {
     const queryParameters = new URLSearchParams(window.location.search);
     const patientID = queryParameters.get("patientID");
     const [credentials, setCredentials] = useState({ Name: "", DocID: "" });
     const [datatest, setDatatest] = useState([]);
     const [datadoc, setDatadoc] = useState([]);
     let navigate = useNavigate()
-    const [alert, setAlert] = useState(null);
 
-    const showAlert = (message, type) => {
-      setAlert({
-        message,
-        type
-      })
-      setTimeout(() => {
-        setAlert(null)
-      }, 4000);
-    }
     const onChange = (e) => {
         setCredentials({ ...credentials, [e.target.name]: e.target.value });
         console.log("credentials : ", credentials);
@@ -37,7 +27,7 @@ const Addtreatment = () => {
 
         if (!Name || !DocID || Name === "" || DocID === "") {
             setCredentials({ ...credentials, [e.target.name]: e.target.value });
-            showAlert("Please select a Treatment and a Doctor!!!", "danger")
+            props.alert("Please select a Treatment and a Doctor!!!", "danger")
             return;
         }
 
@@ -97,7 +87,7 @@ const Addtreatment = () => {
     return (
         <>
             <button style={mystyle} className="prev" onClick={() => goBack()} color="red" border="none"><img src={backImage} width='50rem'></img></button>
-        <Alert alert={alert} />
+        
             <div className="container mt-3">
                 <form
                     className="form-control"

@@ -1,22 +1,12 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router';
-import Alert from '../Alert';
+;
 
-const RegisterPatient = () => {
+const RegisterPatient = (props) => {
     const header_style = { textAlign: 'center' }
 
     const [data, setCredentials] = useState({ Name: "", Aadhar: "", Address: "", Phone: "", InsuranceID: "", PCPDocID: "" });
-    const [alert, setAlert] = useState(null);
 
-    const showAlert = (message, type) => {
-      setAlert({
-        message,
-        type
-      })
-      setTimeout(() => {
-        setAlert(null)
-      }, 4000);
-    }
     let navigate = useNavigate();
 
     const handleOnClick = async (e) => {
@@ -37,11 +27,11 @@ const RegisterPatient = () => {
         console.log(json);
         if (json.success) {
             // save the auth token and redirect
+            props.alert("Patient registered successfully", "success")
             navigate("/frontdesk", { replace: true })
-            showAlert("Patient registered successfully", "success")
         }
         else if(!json.success){
-            showAlert(json.error, "danger")
+            props.alert(json.error, "danger")
         }
     }
 
@@ -54,7 +44,7 @@ const RegisterPatient = () => {
     return (
         <>
             <div className='container mt-3'>
-                <Alert alert={alert} />
+                
             <button className="btn btn-outline-primary m-3" onClick={goBack} type="submit">Go Back</button>
 
                 <form className='form-control shadow bg-body p-3 mb-5'>

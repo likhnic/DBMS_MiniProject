@@ -2,9 +2,9 @@ import React, { useEffect, useState } from "react";
 import { useNavigate } from 'react-router-dom';
 import backImage from './back.png'
 import axios from 'axios';
-import Alert from "../Alert";
 
-const Updateresult = () => {
+
+const Updateresult = (props) => {
     const queryParameters = new URLSearchParams(window.location.search)
     const patientID = queryParameters.get("patientID")
     const [credentials, setCredentials] = useState({ testId: "" });
@@ -16,17 +16,7 @@ const Updateresult = () => {
         setFileName(e.target.files[0].name);
         console.log('file name is changed')
     };
-    const [alert, setAlert] = useState(null);
 
-    const showAlert = (message, type) => {
-      setAlert({
-        message,
-        type
-      })
-      setTimeout(() => {
-        setAlert(null)
-      }, 4000);
-    }
 
     const uploadFile = async (e) => {
         const formData = new FormData();
@@ -36,7 +26,7 @@ const Updateresult = () => {
 
         if (!credentials || credentials.testId === "") {
             // alert('Please select a Test');
-            showAlert('Please select a Test', 'danger')
+            props.alert('Please select a Test', 'danger')
             return;
         }
         if (!file) {
@@ -57,11 +47,11 @@ const Updateresult = () => {
         if (json.success) {
 
             // alert("Result Updated Successfully")
-            showAlert("Result Updated Successfully", "success")
+            props.alert("Result Updated Successfully", "success")
         }
         if (json.error)
             // alert(json.error)
-            showAlert(json.error, "danger")
+            props.alert(json.error, "danger")
     };
 
     let navigate = useNavigate()
@@ -80,7 +70,7 @@ const Updateresult = () => {
         console.log(testId);
         if (!testId || testId === "") {
             // alert('Please Select a Test !!!')
-            showAlert('Please Select a Test !!!', 'danger')
+            props.alert('Please Select a Test !!!', 'danger')
             return;
         }
 
@@ -101,7 +91,7 @@ const Updateresult = () => {
         if (json.success) {
             // onRender()
             // alert("Result Updated Successfully")
-            showAlert("Result Updated Successfully", "success")
+            props.alert("Result Updated Successfully", "success")
             // window.location.reload(true);
         }
         if (json.error)
@@ -137,7 +127,7 @@ const Updateresult = () => {
         <>
 
             <button style={mystyle} className="prev" onClick={() => goBack()} color="red" border="none"><img src={backImage} width='50rem'></img></button>
-            <Alert alert={alert} />
+            
             <div className="container mt-3">
                 <form className="form-control" onSubmit={(event) => event.preventDefault()} >
                     <h1 style={header_style}>Update Result</h1>

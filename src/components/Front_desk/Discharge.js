@@ -1,24 +1,14 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router';
-import Alert from '../Alert';
+;
 
-const Discharge = () => {
+const Discharge = (props) => {
     const header_style = { textAlign: 'center' }
 
     const [data, setCredentials] = useState({ PatientAadhar: "" });
 
     let navigate = useNavigate();
-    const [alert, setAlert] = useState(null);
 
-    const showAlert = (message, type) => {
-      setAlert({
-        message,
-        type
-      })
-      setTimeout(() => {
-        setAlert(null)
-      }, 4000);
-    }
     const handleOnClick = async (e) => {
         e.preventDefault();
         const { PatientAadhar } = data;
@@ -37,11 +27,11 @@ const Discharge = () => {
         if (json.success) {
             navigate("/frontdesk", { replace: true })
             // alert("Patient discharged successfully")
-            showAlert("Patient discharged successfully", "success")
+            props.alert("Patient discharged successfully", "success")
         }
         else if(json.error){
             // alert(json.error)
-            showAlert(json.error, "danger")
+            props.alert(json.error, "danger")
         }
     }
 
@@ -57,7 +47,7 @@ const Discharge = () => {
     return (
         <>
             <div className='container mt-3'>
-                <Alert alert={alert} />
+                
 
             <button className="btn btn-outline-primary m-3" onClick={goBack} type="submit">Go Back</button>
 

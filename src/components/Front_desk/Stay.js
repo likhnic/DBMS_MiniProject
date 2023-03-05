@@ -1,22 +1,12 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router';
-import Alert from '../Alert';
+;
 
-const Stay = () => {
+const Stay = (props) => {
     const header_style = { textAlign: 'center' }
 
     const [data, setCredentials] = useState({ StartTime: "", RoomNo: "", PatientAadhar: "" });
-    const [alert, setAlert] = useState(null);
 
-    const showAlert = (message, type) => {
-      setAlert({
-        message,
-        type
-      })
-      setTimeout(() => {
-        setAlert(null)
-      }, 4000);
-    }
     let navigate = useNavigate();
 
     const handleOnClick = async (e) => {
@@ -38,12 +28,12 @@ const Stay = () => {
         if (json.success) {
             // save the auth token and redirect
             // alert("Stay created successfully")
-            showAlert("Stay created successfully", "success")
+            props.alert("Stay created successfully", "success")
             navigate("/frontdesk", { replace: true })
         }
         else{
             // alert(json.error)
-            showAlert(json.error, "danger")
+            props.alert(json.error, "danger")
         }
     }
 
@@ -58,7 +48,7 @@ const Stay = () => {
     return (
         <>
             <div className='container mt-3'>
-                <Alert alert={alert} />
+                
             <button className="btn btn-outline-primary m-3" onClick={goBack} type="submit">Go Back</button>
 
                 <form className='form-control shadow bg-body p-3 mb-5 '>

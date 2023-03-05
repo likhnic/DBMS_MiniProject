@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useState } from 'react'
 import Login from './components/Login'
 import Navbar from './components/Navbar'
 import {
@@ -26,31 +26,78 @@ import ShowFrontDeskOperator from "./components/Admin_Dashboard/components/front
 import AdminHome from './components/Admin_Dashboard/AdminHome';
 import ViewPrescribes from './components/Data_Entry_Dashboard/ViewPrescribes';
 
+import { ToastContainer, toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
+
+
 const App = () => {
+
+
+    const showAlert = (message, type) => {
+
+        console.log(type, message);
+        if(type!=null && type === "success"){
+            toast.success(message, {
+                position: "top-center",
+                autoClose: 4000,
+                hideProgressBar: false,
+                closeOnClick: true,
+                pauseOnHover: false,
+                draggable: true,
+                progress: undefined,
+                theme: "dark",
+                });
+        }
+        else if(type!=null && type === "danger"){
+            toast.error(message, {
+                position: "top-center",
+                autoClose: 4000,
+                hideProgressBar: false,
+                closeOnClick: true,
+                pauseOnHover: false,
+                draggable: true,
+                progress: undefined,
+                theme: "dark",
+                });
+        }
+    }
     return (
         <>
             <Router>
-                <Navbar />
+                <Navbar alert={showAlert}/>
+    
+                <ToastContainer
+                position="top-center"
+                autoClose={4000}
+                hideProgressBar={false}
+                newestOnTop={false}
+                closeOnClick
+                rtl={false}
+                pauseOnFocusLoss
+                draggable
+                pauseOnHover={false}
+                theme="dark"
+                />
                 <Routes>
-                    <Route exact path="/" element={<Login />} />
-                    <Route exact path="/doctor" element={<ProtectedRoute element={DoctorDashboard} />} />
-                    <Route exact path='/frontdesk' element={<ProtectedRoute element={FrontDeskUsr} />}/>
-                    <Route exact path='/frontdesk/register' element={<ProtectedRoute element={RegisterPatient} />}/>
-                    <Route exact path='/frontdesk/appointment' element={<ProtectedRoute element={Appointment} />}/>
-                    <Route exact path='/frontdesk/room' element={<ProtectedRoute element={Stay} />}/>
-                    <Route exact path='/frontdesk/discharge' element={<ProtectedRoute element={Discharge} />}/>
-                    <Route exact path='/dataentryop' element={<ProtectedRoute element={Data_Entry_Dashboard} />}/>
-                    <Route exact path='/dataentryop/addtest' element={<ProtectedRoute element={Addtest} />}/>
-                    <Route exact path='/dataentryop/treatment' element={<ProtectedRoute element={Addtreatment} />}/>
-                    <Route exact path='/dataentryop/updateresult' element={<ProtectedRoute element={Updateresult} />}/>
-                    <Route exact path='/dataentryop/options' element={<ProtectedRoute element={Optionspage} />}/>
-                    <Route exact path='/dataentryop/viewprescribes' element={<ProtectedRoute element={ViewPrescribes}/>}/>
+                    <Route exact path="/" element={<Login alert={showAlert} />} />
+                    <Route exact path="/doctor" element={<ProtectedRoute alert={showAlert} element={DoctorDashboard} />} />
+                    <Route exact path='/frontdesk' element={<ProtectedRoute alert={showAlert} element={FrontDeskUsr} />}/>
+                    <Route exact path='/frontdesk/register' element={<ProtectedRoute alert={showAlert} element={RegisterPatient} />}/>
+                    <Route exact path='/frontdesk/appointment' element={<ProtectedRoute alert={showAlert} element={Appointment} />}/>
+                    <Route exact path='/frontdesk/room' element={<ProtectedRoute alert={showAlert} element={Stay} />}/>
+                    <Route exact path='/frontdesk/discharge' element={<ProtectedRoute alert={showAlert} element={Discharge} />}/>
+                    <Route exact path='/dataentryop' element={<ProtectedRoute alert={showAlert} element={Data_Entry_Dashboard} />}/>
+                    <Route exact path='/dataentryop/addtest' element={<ProtectedRoute alert={showAlert} element={Addtest} />}/>
+                    <Route exact path='/dataentryop/treatment' element={<ProtectedRoute alert={showAlert} element={Addtreatment} />}/>
+                    <Route exact path='/dataentryop/updateresult' element={<ProtectedRoute alert={showAlert} element={Updateresult} />}/>
+                    <Route exact path='/dataentryop/options' element={<ProtectedRoute alert={showAlert} element={Optionspage} />}/>
+                    <Route exact path='/dataentryop/viewprescribes' element={<ProtectedRoute alert={showAlert} element={ViewPrescribes}/>}/>
 
-                    <Route exact path="/admin" element={<ProtectedRoute element={AdminHome}/>} />
-                    <Route exact path = '/admin/dbadmin' element={<ProtectedRoute element={ShowDatabaseAdministrator}/>}/>
-                    <Route exact path = '/admin/dataentry' element={<ProtectedRoute element={ShowDataEntryOperator}/>}/>
-                    <Route exact path = '/admin/doctor' element={<ProtectedRoute element={ShowDoctor}/>}/>
-                    <Route exact path = '/admin/frontdesk' element={<ProtectedRoute  element={ShowFrontDeskOperator}/>}/>
+                    <Route exact path="/admin" element={<ProtectedRoute alert={showAlert} element={AdminHome}/>} />
+                    <Route exact path = '/admin/dbadmin' element={<ProtectedRoute alert={showAlert} element={ShowDatabaseAdministrator}/>}/>
+                    <Route exact path = '/admin/dataentry' element={<ProtectedRoute alert={showAlert} element={ShowDataEntryOperator}/>}/>
+                    <Route exact path = '/admin/doctor' element={<ProtectedRoute alert={showAlert} element={ShowDoctor}/>}/>
+                    <Route exact path = '/admin/frontdesk' element={<ProtectedRoute alert={showAlert}  element={ShowFrontDeskOperator}/>}/>
                 
                 </Routes>
             </Router>

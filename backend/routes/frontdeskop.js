@@ -140,7 +140,7 @@ router.post("/appointment", fetchuser, async (req, res) => {
     var time = getTime();
     var dateTime = date + ' ' + time;
     const curr_time = new Date(dateTime);
-    const start_time = new Date(StartTime);
+    const start_time = new Date(StartDate+" "+StartTime);
     const emrgncy = Emergency ? 1 : 0;
 
     if (start_time < curr_time) {
