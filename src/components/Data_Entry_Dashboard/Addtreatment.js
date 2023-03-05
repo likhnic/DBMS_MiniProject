@@ -46,6 +46,15 @@ const Addtreatment = (props) => {
             }
         );
         console.log(response)
+        const json = await response.json();
+		console.log('Response : ', json)
+		if (json.success) {
+			// alert("Test Added Successfully")
+            props.alert("Treatment Added Successfully", "success")
+		}
+		if (json.error)
+			// alert(json.error)
+            props.alert(json.error, "danger")
     };
 
     const onRender = async () => {
@@ -74,7 +83,26 @@ const Addtreatment = (props) => {
         console.log("DATA : ", datadoc);
     }
 
+    const [loading, setLoading] = useState(true);
+    const onRenderpage = async () => {
+        const token = localStorage.getItem("token");
+        const response = await fetch('http://localhost:5000/checkUser/1', {
+            method: 'GET',
+            headers: {
+                'Content-Type': 'application/json',
+                'token': token
+            }
+        }
+        )
+        const json = await response.json();
+        if (json.error) {
+            navigate("/", { replace: true })
+        }
+        setLoading(false);
+    }
+
     useEffect(() => {
+        onRenderpage();
         onRender();
     }, []);
     const mystyle = {
@@ -86,6 +114,7 @@ const Addtreatment = (props) => {
     const header_style = { textAlign: "center" };
     return (
         <>
+            {!loading && <>
             <button style={mystyle} className="prev" onClick={() => goBack()} color="red" border="none"><img src={backImage} width='50rem'></img></button>
         
             <div className="container mt-3">
@@ -132,6 +161,7 @@ const Addtreatment = (props) => {
                     </button>
                 </form>
             </div>
+            </>}
         </>
     );
 };

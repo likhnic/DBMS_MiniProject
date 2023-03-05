@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router';
 ;
 
@@ -8,6 +8,27 @@ const Stay = (props) => {
     const [data, setCredentials] = useState({ StartTime: "", RoomNo: "", PatientAadhar: "" });
 
     let navigate = useNavigate();
+    const [loading, setLoading] = useState(true);
+    const onRender = async () => {
+        const token = localStorage.getItem("token");
+        const response = await fetch('http://localhost:5000/checkUser/0', {
+            method: 'GET',
+            headers: {
+                'Content-Type': 'application/json',
+                'token': token
+            }
+        }
+        )
+        const json = await response.json();
+        if (json.error) {
+            navigate("/", { replace: true })
+        }
+        setLoading(false);
+    }
+
+    useEffect(() => {
+        onRender();
+    }, [])
 
     const handleOnClick = async (e) => {
         e.preventDefault();
@@ -47,7 +68,7 @@ const Stay = (props) => {
 
     return (
         <>
-            <div className='container mt-3'>
+            {!loading && <div className='container mt-3'>
                 
             <button className="btn btn-outline-primary m-3" onClick={goBack} type="submit">Go Back</button>
 
@@ -70,7 +91,7 @@ const Stay = (props) => {
                         <button type="submit" className="btn btn-primary btn-block mb-4" onClick={handleOnClick}> Add Stay </button>
                     </div>
                 </form>
-            </div>
+            </div>}
         </>
     )
 }

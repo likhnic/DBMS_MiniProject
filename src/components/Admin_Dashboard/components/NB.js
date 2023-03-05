@@ -41,7 +41,7 @@ const NB = (props) => {
                   e.preventDefault();
                   localStorage.removeItem("token");
                   navigate("/");
-                  // props.alert("Logged out successfully", "success");
+                  props.alert("Logged out successfully", "success");
                 }}
               >
                 {<CgLogOut />}

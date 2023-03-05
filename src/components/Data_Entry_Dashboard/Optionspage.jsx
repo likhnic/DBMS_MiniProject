@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useEffect, useState } from 'react'
 import { useNavigate } from 'react-router-dom';
 import backImage from './back.png'
 import updateResultImg from './updateResult.jpg'
@@ -11,6 +11,28 @@ const Optionspage = () => {
     const queryParameters = new URLSearchParams(window.location.search)
     const patientID = queryParameters.get("patientID")
     let navigate = useNavigate()
+    
+    const [loading, setLoading] = useState(true);
+    const onRenderpage = async () => {
+        const token = localStorage.getItem("token");
+        const response = await fetch('http://localhost:5000/checkUser/1', {
+            method: 'GET',
+            headers: {
+                'Content-Type': 'application/json',
+                'token': token
+            }
+        }
+        )
+        const json = await response.json();
+        if (json.error) {
+            navigate("/", { replace: true })
+        }
+        setLoading(false);
+    }
+
+    useEffect(() => {
+        onRenderpage();
+    }, [])
     const sendToPage = (e) => {
         // window.location.replace('http://localhost:3000/dataentryop/addtest');
         console.log(e)
@@ -31,7 +53,8 @@ const Optionspage = () => {
                 cursor:'pointer'
     }
   return (
-    <div className='dataentry'>
+    <>
+    {!loading && <div className='dataentry'>
         <button style={mystyle} className="prev" onClick={()=>goBack()}  color="red" border="none"><img src={backImage} width='50rem'></img></button>
         <main id="app">
 
@@ -56,7 +79,8 @@ const Optionspage = () => {
           <button onClick={()=>sendToPage('3')} className="b1">VIEW PRESCRIPTION</button>
         </div>
       </main>
-    </div>
+    </div>}
+    </>
   )
 }
 

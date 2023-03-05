@@ -113,7 +113,26 @@ const Updateresult = (props) => {
         setData(json.test);
     }
 
+    const [loading, setLoading] = useState(true);
+    const onRenderpage = async () => {
+        const token = localStorage.getItem("token");
+        const response = await fetch('http://localhost:5000/checkUser/1', {
+            method: 'GET',
+            headers: {
+                'Content-Type': 'application/json',
+                'token': token
+            }
+        }
+        )
+        const json = await response.json();
+        if (json.error) {
+            navigate("/", { replace: true })
+        }
+        setLoading(false);
+    }
+
     useEffect(() => {
+        onRenderpage();
         onRender();
     }, []);
     const mystyle = {
@@ -125,7 +144,7 @@ const Updateresult = (props) => {
     const header_style = { textAlign: "center" };
     return (
         <>
-
+            {!loading && <>
             <button style={mystyle} className="prev" onClick={() => goBack()} color="red" border="none"><img src={backImage} width='50rem'></img></button>
             
             <div className="container mt-3">
@@ -161,6 +180,7 @@ const Updateresult = (props) => {
                     </button>
                 </form>
             </div>
+            </>}
         </>
     );
 };

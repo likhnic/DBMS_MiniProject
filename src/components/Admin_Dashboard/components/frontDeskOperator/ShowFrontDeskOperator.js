@@ -3,8 +3,10 @@ import ReadOnlyRow from "./ReadOnlyRow";
 import EditableRow from "./EditableRow";
 import RegistrationForm from "./RegistrationForm";
 import NB from "../NB";
+import { useNavigate } from "react-router-dom";
 
 const ShowFrontDeskOperator = (props) => {
+  let navigate = useNavigate();
   const [frontDeskOperators, setFrontDeskOperators] = useState([]);
   const [addFormData, setAddFormData] = useState({
     Name: "",
@@ -249,7 +251,26 @@ const ShowFrontDeskOperator = (props) => {
     }
   };
 
+  const [loading, setLoading] = useState(true);
+    const onRenderpage = async () => {
+        const token = localStorage.getItem("token");
+        const response = await fetch('http://localhost:5000/checkUser/3', {
+            method: 'GET',
+            headers: {
+                'Content-Type': 'application/json',
+                'token': token
+            }
+        }
+        )
+        const json = await response.json();
+        if (json.error) {
+            navigate("/", { replace: true })
+        }
+        setLoading(false);
+    }
+
   useEffect(() => {
+    onRenderpage();
     get_all_frontdeskoperators();
   }, [frontDeskOperators]);
 
@@ -282,7 +303,8 @@ const ShowFrontDeskOperator = (props) => {
 
   return (
     <>
-    <NB/>
+    {!loading && <>
+    <NB alert={props.alert}/>
     <div className="container">
       <h1 className="text-center container mt-3">Front Desk Operators</h1>
 
@@ -333,6 +355,7 @@ const ShowFrontDeskOperator = (props) => {
         onChange={handleAddFormChange}
       />
     </div>
+    </>}
     </>
   );
 };

@@ -6,9 +6,29 @@ import searchBarImg from './searchBar.png'
 const Data_Entry_Dashboard = () => {
     const [patient, setPatient] = useState([]);
 
+    const [loading, setLoading] = useState(true);
+    const onRender = async () => {
+        const token = localStorage.getItem("token");
+        const response = await fetch('http://localhost:5000/checkUser/1', {
+            method: 'GET',
+            headers: {
+                'Content-Type': 'application/json',
+                'token': token
+            }
+        }
+        )
+        const json = await response.json();
+        if (json.error) {
+            navigate("/", { replace: true })
+        }
+        setLoading(false);
+    }
+    
     useEffect(() => {
+        onRender();
         getPatients();
     }, []);
+
     let navigate = useNavigate()
     const getPatients = async () => {
         let result = await fetch(`http://localhost:5000/api/dataentryop/`,{
@@ -50,7 +70,7 @@ const Data_Entry_Dashboard = () => {
     return (
         <>
 
-            <div className='container'>
+            {!loading && <div className='container'>
                 <nav className="navbar bg-body-tertiary sticky-top bg-body-tertiary" >
                     <div className="container-fluid  searchBar">
                         <form className="d-flex" role="search">
@@ -83,7 +103,7 @@ const Data_Entry_Dashboard = () => {
                         }
                     </tbody>
                 </table>
-            </div>
+            </div>}
 
         </>
 

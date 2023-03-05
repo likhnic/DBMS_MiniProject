@@ -1,5 +1,5 @@
 // export default Addtest;
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { useNavigate } from "react-router";
 
 import useFetch from "../useFetch";
@@ -11,6 +11,28 @@ const Addtest = (props) => {
 	console.log('patient ID is here: ', patientID)
 	const [credentials, setCredentials] = useState({ Name: "" });
 	let navigate = useNavigate();
+
+	const [loading, setLoading] = useState(true);
+    const onRender = async () => {
+        const token = localStorage.getItem("token");
+        const response = await fetch('http://localhost:5000/checkUser/1', {
+            method: 'GET',
+            headers: {
+                'Content-Type': 'application/json',
+                'token': token
+            }
+        }
+        )
+        const json = await response.json();
+        if (json.error) {
+            navigate("/", { replace: true })
+        }
+        setLoading(false);
+    }
+
+    useEffect(() => {
+        onRender();
+    }, [])
 
 	const onChange = (e) => {
 		setCredentials({ ...credentials, [e.target.name]: e.target.value });
@@ -78,7 +100,7 @@ const Addtest = (props) => {
 	const header_style = { textAlign: "center" };
 	return (
 		<>
-        
+			{!loading && <>
 			<button style={mystyle} className="prev" onClick={() => goBack()} color="red" border="none"><img src={backImage} width='50rem' alt=""></img></button>
 			<div className="container mt-3">
 				<form className="form-control" onSubmit={(event) => event.preventDefault()} >
@@ -111,6 +133,7 @@ const Addtest = (props) => {
 					</button>
 				</form>
 			</div>
+			</>}
 		</>
 	);
 };

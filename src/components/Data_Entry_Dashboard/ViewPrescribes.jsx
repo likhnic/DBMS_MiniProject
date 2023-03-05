@@ -8,7 +8,26 @@ const ViewPrescribes = () => {
     const [patient,setPatient] = useState([]);
     const queryParameters = new URLSearchParams(window.location.search)
     const patientID = queryParameters.get("patientID")
+    const [loading, setLoading] = useState(true);
+    const onRenderpage = async () => {
+        const token = localStorage.getItem("token");
+        const response = await fetch('http://localhost:5000/checkUser/1', {
+            method: 'GET',
+            headers: {
+                'Content-Type': 'application/json',
+                'token': token
+            }
+        }
+        )
+        const json = await response.json();
+        if (json.error) {
+            navigate("/", { replace: true })
+        }
+        setLoading(false);
+    }
+
     useEffect(()=>{
+        onRenderpage();
         getPrescription();
     },[]);
     let navigate = useNavigate()
@@ -36,6 +55,7 @@ const ViewPrescribes = () => {
 
     return (
         <>
+        {!loading && <>
          <button style={mystyle} className="prev" onClick={()=>goBack()}  color="red" border="none"><img src={backImage} width='50rem'></img></button>
         <div className='container'>
         <nav className="navbar bg-body-tertiary sticky-top bg-body-tertiary" >
@@ -70,7 +90,7 @@ const ViewPrescribes = () => {
             </tbody>
         </table>
     </div>
-        
+    </>}
         </>
 
     )

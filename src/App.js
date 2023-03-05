@@ -14,10 +14,10 @@ import Stay from './components/Front_desk/Stay';
 import Discharge from './components/Front_desk/Discharge';
 import Appointment from './components/Front_desk/Appointment';
 import { ProtectedRoute } from './components/ProtectedRoute';
-import Addtest from './components/Data_Entry_Dashboard/Addtest'
-import Addtreatment from './components/Data_Entry_Dashboard/Addtreatment'
-import Updateresult from './components/Data_Entry_Dashboard/Updateresults'
-import Data_Entry_Dashboard from './components/Data_Entry_Dashboard/Data_Entry_Dashboard'
+import Addtest from './components/Data_Entry_Dashboard/Addtest';
+import Addtreatment from './components/Data_Entry_Dashboard/Addtreatment';
+import Updateresult from './components/Data_Entry_Dashboard/Updateresults';
+import Data_Entry_Dashboard from './components/Data_Entry_Dashboard/Data_Entry_Dashboard';
 import Optionspage from './components/Data_Entry_Dashboard/Optionspage';
 import ShowDatabaseAdministrator from "./components/Admin_Dashboard/components/databaseAdministrator/ShowDatabaseAdministrator";
 import ShowDataEntryOperator from "./components/Admin_Dashboard/components/dataEntryOperator/ShowDataEntryOperator";
