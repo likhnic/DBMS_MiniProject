@@ -6,7 +6,21 @@ const Stay = (props) => {
     const header_style = { textAlign: 'center' }
 
     const [data, setCredentials] = useState({ StartTime: "", RoomNo: "", PatientAadhar: "" });
+    const getTime = (t) => {
+        let time = new Date(t)
+        let ans = ("0" + time.getHours()).slice(-2) + ":" +
+            ("0" + time.getMinutes()).slice(-2) + ":" +
+            ("0" + time.getSeconds()).slice(-2)
+        return ans;
+    }
 
+    const getDate = (t) => {
+        let time = new Date(t)
+        let ans = (time.getFullYear()) + "-" +
+            ("0" + (time.getMonth() + 1)).slice(-2) + "-" +
+            ("0" + time.getDate()).slice(-2)
+        return ans;
+    }
     let navigate = useNavigate();
     const [loading, setLoading] = useState(true);
     const onRender = async () => {
@@ -34,7 +48,7 @@ const Stay = (props) => {
         e.preventDefault();
         let { StartTime, RoomNo, PatientAadhar } = data;
         console.log(data);
-        StartTime = new Date(StartTime).toISOString().slice(0, 19).replace('T', ' ');
+        StartTime = getDate(StartTime)+" "+getTime(StartTime);
         const response = await fetch(
             'http://localhost:5000/api/frontdeskop/stay', {
                 method: 'PUT',

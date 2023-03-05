@@ -150,17 +150,17 @@ const getDate = () => {
 router.post("/appointment", fetchuser, async (req, res) => {
 
     const { StartTime, StartDate, ExaminationRoom, PatientAadhar, DocID, Emergency } = req.body;
-    var date = getDate();
-    var time = getTime();
-    var dateTime = date + ' ' + time;
+    // var date = getDate();
+    // var time = getTime();
+    // var dateTime = date + ' ' + time;
     const emrgncy = Emergency ? 1 : 0;
-    console.log(date, time, StartDate+" "+StartTime);
-    if (StartDate+" "+StartTime < dateTime) {
-        res.status(404).json({
-            error: "Invalid time"
-        });
-        return;
-    }
+    // console.log(date, time, StartDate+" "+StartTime);
+    // if (StartDate+" "+StartTime < dateTime) {
+    //     res.status(404).json({
+    //         error: "Invalid time"
+    //     });
+    //     return;
+    // } ;
     try {
         let sql = `INSERT INTO Appointment (StartTime, StartDate, ExaminationRoom, PatientAadhar, DocID, Emrgncy) VALUES ('${StartTime}', '${StartDate}', '${ExaminationRoom}', '${PatientAadhar}', ${DocID}, ${emrgncy})`
         result = await query(sql);
@@ -193,20 +193,20 @@ router.post("/appointment", fetchuser, async (req, res) => {
 router.put("/stay", fetchuser, async (req, res) => {
 
     const { StartTime, RoomNo, PatientAadhar } = req.body;
-    var today = new Date();
-    var date = today.getFullYear() + '-' + (today.getMonth() + 1) + '-' + today.getDate();
-    var time = today.getHours() + ":" + today.getMinutes() + ":" + today.getSeconds();
-    var dateTime = date + ' ' + time;
-    const curr_time = new Date(dateTime);
-    const start_time = new Date(StartTime);
+    // var today = new Date();
+    // var date = today.getFullYear() + '-' + (today.getMonth() + 1) + '-' + today.getDate();
+    // var time = today.getHours() + ":" + today.getMinutes() + ":" + today.getSeconds();
+    // var dateTime = date + ' ' + time;
+    // const curr_time = new Date(dateTime);
+    // const start_time = new Date(StartTime);
 
-    if (start_time < curr_time) {
-        res.status(404).json({
-            error: "Invalid time"
-        });
-        return;
-    }
-
+    // if (start_time < curr_time) {
+    //     res.status(404).json({
+    //         error: "Invalid time"
+    //     });
+    //     return;
+    // }
+    console.log(StartTime);
     try {
         sql = `SELECT Availability from Room WHERE RoomNo = ${RoomNo}`
         result = await query(sql);

@@ -445,3 +445,65 @@ insert into Stay values
 -- insert into Prescribes values
 -- (CURRENT_DATE,3,2,51,1,4),
 -- (CURRENT_DATE,3,1,50,2,2);
+
+
+DELIMITER $$
+create trigger validateuser
+before insert on User
+for each row
+begin
+    if length(new.Aadhar) < 12 or length(new.Aadhar) > 12
+    then signal sqlstate  '45000'
+        set message_text = 'Aadhar Should be 12 characters';
+    end if;
+    if length(new.Password) < 5 or length(new.Password) > 50
+    then signal sqlstate  '45000'
+        set message_text = 'Password Should be between 5 and 50 characters';
+    end if;
+end;
+$$
+DELIMITER ;
+
+DELIMITER $$
+create trigger validatepatient 
+before insert on Patient 
+for each row 
+begin 
+    if length(new.Aadhar) < 12 or length(new.Aadhar) > 12
+    then signal sqlstate  '45000' 
+        set message_text = 'Aadhar Should be 12 characters';
+    end if;
+    if length(new.Phone) < 10 or length(new.Phone) > 10
+    then signal sqlstate  '45000' 
+        set message_text = 'Phone Number Should be 10 characters';
+    end if;
+end;
+$$
+DELIMITER ;
+
+
+DELIMITER $$
+create trigger validateappointment
+before insert on Appointment
+for each row
+begin
+    if new.StartDate < curdate() or (new.StartDate = curdate() and new.StartTime < curtime())
+    then signal sqlstate  '45000'
+        set message_text = 'Appointment Date cannot be in the past';
+    end if;
+end;
+$$
+DELIMITER ;
+
+DELIMITER $$
+create trigger validatestay
+before insert on Stay
+for each row
+begin
+    if new.StartTime < concat(curdate(), ' ', curtime())
+    then signal sqlstate  '45000'
+        set message_text = 'Start Time cannot be in the past';
+    end if;
+end;
+$$
+DELIMITER ;
