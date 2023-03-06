@@ -142,42 +142,19 @@ router.post('/:appointmentId', fetchuser,async(req, res)=>{
     catch(error){
         return res.json({error:"Not Authorised"})
     }
-    const appointmentId = req.params.appointmentId;
-    const {MedicationCode, Dose} = req.body;
-    if(!MedicationCode || !Dose || MedicationCode.length === 0 || Dose.length === 0){
-        return res.json({error: "Please enter all the fields"});
-    }
-    let patientId, DocId;
-    let sqlQuery = `SELECT PatientAadhar, DocID FROM Appointment WHERE AppointmentID = ${appointmentId};`
-     
-    try{
-        let patientDet = await query(sqlQuery);
-        patientId = patientDet[0].PatientAadhar;
-        DocId = patientDet[0].DocID;
-        if(!patientId){
-            return res.json({error: "Patient not found!"})
-        }
-        if(!DocId){
-            return res.json({error: "Doctor not found!"})
-        }
-    }
-    catch(error){
-        console.log(error);
-        return res.json({error: "Cannot fetch patient details"});
-    }
-    
-    let DateN = new Date().toISOString().slice(0, 19).replace('T', ' ');
-    sqlQuery = `INSERT INTO Prescribes(MedicationCode, Dose, DocID, AppointmentID, PatientAadhar, Date) VALUES(${MedicationCode}, '${Dose}', ${DocId}, ${appointmentId}, '${patientId}', '${DateN}');`
 
-    
+    const {MedicationCode, Dose} = req.body;
+
+    let sqlQuery = `CALL insertPrescribes(${req.params.appointmentId}, ${MedicationCode}, "${Dose}");`
     try{
-        const result = await query(sqlQuery);
+        let result = await query(sqlQuery);
         return res.json({result: result});
     }
     catch(error){
         console.log(error);
-        return res.json({error: "Cannot Add Medication"});
+        return res.json({error:error.sqlMessage});
     }
+
 })
 
 module.exports = router;

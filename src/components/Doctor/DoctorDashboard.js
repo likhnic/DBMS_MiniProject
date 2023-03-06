@@ -23,10 +23,10 @@ const DoctorDashboard = (props) => {
         e.preventDefault();
         let appointmentId = patientDetails.appointmentid
         const { medicationcode, dose } = patientPrescribe
-        if (!dose || dose === '') {
-            props.alert("Please enter a dose", "danger")
-            return;
-        }
+        // if (!dose || dose === '') {
+        //     props.alert("Please enter a dose", "danger")
+        //     return;
+        // }
         const response = await fetch(`http://localhost:5000/api/doctor/${appointmentId}`, {
             method: 'POST',
             headers: {
@@ -56,7 +56,8 @@ const DoctorDashboard = (props) => {
         const json = await response.json();
         // console.log(json);
         if (json.error) {
-            alert(json.error)
+            // alert(json.error)
+            props.alert(json.error, "danger")
             return;
         }
         setMedications(json.medications)

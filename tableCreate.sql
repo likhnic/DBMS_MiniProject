@@ -540,3 +540,28 @@ begin
 end;
 $$
 DELIMITER ;
+
+-- inserts medication into prescribes
+drop procedure if exists insertPrescribes;
+DELIMITER $$
+create procedure insertPrescribes(IN AppointmentIDParam int, IN MedicationCode int, IN Dose varchar(50)) 
+begin
+    declare DoctorID int;
+    declare PatientAadharVal varchar(12);
+    declare MedicationPresent boolean;
+    select DocID, PatientAadhar into DoctorID, PatientAadharVal from Appointment where AppointmentID = AppointmentIDParam;
+    if DoctorID is null or PatientAadharVal is null
+    then
+        signal sqlstate  '45000'
+        set message_text = 'AppointmentID does not exist';
+    end if;
+    select count(*) = 1 into MedicationPresent from Medication where MedicationCode = MedicationCode;
+    if MedicationPresent = false
+    then
+        signal sqlstate  '45000'
+        set message_text = 'Medication does not exist';
+    end if;
+    insert into Prescribes(MedicationCode, Dose, DocID, AppointmentID, PatientAadhar, Date) values (MedicationCode, Dose, DoctorID, AppointmentIDParam, PatientAadharVal, CURRENT_TIMESTAMP);
+end;
+$$
+DELIMITER ;
