@@ -466,6 +466,9 @@ end;
 $$
 DELIMITER ;
 
+
+
+
 DELIMITER $$
 create trigger validatepatient 
 before insert on Patient 
@@ -483,6 +486,34 @@ end;
 $$
 DELIMITER ;
 
+DELIMITER $$
+create procedure getAppointmentTimeGivenID(IN id int, OUT ok boolean)
+begin
+    select count(*) >= 1 into ok from Appointment where AppointmentID = id and (StartDate < curdate() or (StartDate = curdate() and StartTime < curtime()));
+end;
+$$
+DELIMITER ;
+
+
+DELIMITER $$
+create trigger validateprescribes
+before insert on Prescribes
+for each row
+begin
+    if length(new.Dose) <= 0
+    then signal sqlstate  '45000'
+        set message_text = 'Quantity cannot be negative';
+    end if;
+    set @ok = false;
+    call getAppointmentTimeGivenID(new.AppointmentID, @ok);
+    if @ok = false
+    then
+        signal sqlstate  '45000'
+        set message_text = 'Appointment is in the future';
+    end if;
+end;
+$$
+DELIMITER ;
 
 DELIMITER $$
 create trigger validateappointment

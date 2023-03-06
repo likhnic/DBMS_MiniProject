@@ -214,7 +214,7 @@ const DoctorDashboard = (props) => {
                                 searchResult.map((result, i) => {
                                     return (
                                         <div key={i} className='col-md-6'>
-                                            <div className={`card position-relative shadow mt-3 p-3 mb-3 rounded bg-${result.startdate.slice(0,10)+" "+result.starttime >= currTime ? 'light' : 'secondary bg-gradient bg-opacity-25'} text-${result.starttime >= currTime ? 'dark' : 'dark'}`} key={result}>
+                                            <div className={`card position-relative shadow mt-3 p-3 mb-3 rounded bg-light text-dark`} key={result}>
                                                 <PatientDetailsCard result={result} />
                                                 <button className="btn btn-primary mt-3" name={i} onClick={patientClick}>View</button>
                                             </div>
@@ -352,7 +352,7 @@ const DoctorDashboard = (props) => {
                                 {showType === 2 && (
 
                                     <div className="container mt-3">
-                                        {patientDetails.startdate.slice(0,10)+" "+patientDetails.starttime >= currTime && <div className="card shadow p-3 mb-5 bg-body rounded">
+                                        {<div className="card shadow p-3 mb-5 bg-body rounded">
                                             <div className="card-body">
                                                 <form>
                                                     <select className='form-control mb-3' defaultValue={"Medication"} onChange={changeMed}>

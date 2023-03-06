@@ -38,7 +38,7 @@ router.get('/', fetchuser, async(req, res)=>{
     }
     const docId = req.user.id;
 
-    let sqlQuery = `SELECT Patient.Name as patientname, Patient.Aadhar as patientaadhar, Patient.Gender ad gender, Patient.Age as age, Appointment.AppointmentID as appointmentid, Appointment.StartTime as starttime, Appointment.StartDate as startdate, Patient.Phone as phone, Patient.Address as address, Appointment.Emrgncy as Emrgncy 
+    let sqlQuery = `SELECT Patient.Name as patientname, Patient.Aadhar as patientaadhar, Patient.Gender as gender, Patient.Age as age, Appointment.AppointmentID as appointmentid, Appointment.StartTime as starttime, Appointment.StartDate as startdate, Patient.Phone as phone, Patient.Address as address, Appointment.Emrgncy as Emrgncy 
                 FROM Patient
                 JOIN Appointment ON Patient.Aadhar = Appointment.PatientAadhar
                 WHERE Appointment.DocID = ${docId}

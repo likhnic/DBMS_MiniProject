@@ -82,16 +82,16 @@ const sendReport = async()=>{
             
         }
     }
-    catch(error){
+    catch(error){ 
         console.log(error);
         return;
     }
 }
 
-setInterval(() => {
-    console.log("Sending Mail");
-    sendReport();
-}, 1*10*1000);
+// setInterval(() => {
+//     console.log("Sending Mail");
+//     sendReport();
+// }, 1*10*1000);
 
 router.get("/getnews", async (req, res) => {
     let sql = `SELECT * from news`;
@@ -108,7 +108,7 @@ router.get("/getnews", async (req, res) => {
     }
 })
 
-// add the fetuser middleware this route
+// add the fetuser middleware this route 
 router.post("/getslots", fetchuser, async (req, res) => {
     const { StartDate, DocID, Emergency } = req.body;
     console.log(StartDate);
