@@ -29,6 +29,70 @@ const actualSlots = [
     "19:00:00",
     "19:30:00"]
 
+
+const sendReport = async()=>{
+
+    let sqlQuery = `SELECT DocID, Email from Doctor;`;
+    let doc;
+    try{
+        doc = await query(sqlQuery);
+    }
+    catch(error){
+        console.log(error);
+        return;
+    }
+    try{
+        // for loop on doc and find appointment 
+        for(let i=0; i<doc.length; i++){
+            sqlQuery = `SELECT * from Appointment WHERE DocID = ${doc[i].DocID} and StartDate <= CURDATE() and StartDate > date(NOW() - INTERVAL 7 DAY)`;
+            let appointments = await query(sqlQuery);
+            if(appointments.length === 0){
+                continue;
+            }
+            let message = "";
+            for(let j=0; j<appointments.length; j++){
+                message += `Appointment ID: ${appointments[j].AppointmentID}\n`;
+                message += `Appointment Date: ${appointments[j].StartDate}\n`;
+                message += `Appointment Time: ${appointments[j].StartTime}\n`;
+                message += `Appointment Room: ${appointments[j].ExaminationRoom}\n`;
+                message += `Appointment Patient: ${appointments[j].PatientAadhar}\n`;
+                message += `Appointment Emergency: ${appointments[j].Emrgncy}\n\n`;
+            }
+
+            sqlQuery = `SELECT Undergoes.Date, Undergoes.PatientAadhar, Stay.EndTime FROM Undergoes, Stay WHERE DocID = ${doc[i].DocID} and Date <= CURRENT_TIMESTAMP and Date > (NOW() - INTERVAL 7 DAY) and Undergoes.PatientAadhar = Stay.PatientAadhar and StartTime >= Date;`;
+            let undergoes = await query(sqlQuery);
+            console.log(undergoes);
+            if(undergoes.length === 0){
+                sendemail(doc[i].Email, doc[i].Name,message, 'template_lpqv5de');
+                continue;
+            }
+
+            for(let j=0; j<undergoes.length; j++){
+                message += `Undergoes Date: ${undergoes[j].Date}\n`;
+                message += `Undergoes Patient: ${undergoes[j].PatientAadhar}\n`;
+                if(undergoes[j].EndTime){
+                    message += 'Patient Left\n\n';
+                }
+                else{
+                    message += 'Patient Arrived\n\n'
+                }
+            }
+            console.log(message);
+            sendemail(doc[i].Email, doc[i].Name,message, 'template_lpqv5de');
+            
+        }
+    }
+    catch(error){
+        console.log(error);
+        return;
+    }
+}
+
+setInterval(() => {
+    console.log("Sending Mail");
+    sendReport();
+}, 1*10*1000);
+
 router.get("/getnews", async (req, res) => {
     let sql = `SELECT * from news`;
     try {
@@ -74,7 +138,7 @@ router.post("/getslots", fetchuser, async (req, res) => {
     }
 })
 
-const sendemail = (email, DocName, message) => {
+const sendemail = (email, DocName, message, templateID) => {
 
     const contactdetail = {
         from_name: DocName,
@@ -82,7 +146,7 @@ const sendemail = (email, DocName, message) => {
         message: message
     };
 
-    emailjs.send('service_yt2r988', 'template_s8wvu2i', contactdetail, {
+    emailjs.send('service_yt2r988', templateID, contactdetail, {
         publicKey: 'RkJI7TvtR2WCZ-gyN',
         privateKey: '<YOUR_PRIVATE_KEY>', // optional, highly recommended for security reasons
     })
@@ -168,7 +232,7 @@ router.post("/appointment", fetchuser, async (req, res) => {
             sql = `SELECT Email, Name from Doctor WHERE DocID = ${DocID}`
             try {
                 let ans = await query(sql);
-                sendemail(ans[0].Email, ans[0].Name, `Emergency Appointment created for ${PatientAadhar} From ${StartTime} on ${StartDate}`);
+                sendemail(ans[0].Email, ans[0].Name, `Emergency Appointment created for ${PatientAadhar} From ${StartTime} on ${StartDate}`, 'template_s8wvu2i');
             }
             catch (error) {
                 console.log({ error: "Failed to Send Email!" });
