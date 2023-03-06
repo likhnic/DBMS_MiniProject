@@ -264,7 +264,7 @@ const ShowDoctor = (props) => {
     useEffect(() => {
         onRenderpage();
         get_all_docs();
-    }, [doctors]);
+    }, []);
 
     const handleSearch = async (event) => {
         event.preventDefault();

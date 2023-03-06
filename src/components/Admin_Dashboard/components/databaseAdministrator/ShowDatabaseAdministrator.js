@@ -8,6 +8,7 @@ import { useNavigate } from "react-router-dom";
 const ShowDatabaseAdministrator = (props) => {
     let navigate = useNavigate();
     const [databaseAdministrators, setDatabaseAdministrators] = useState([]);
+    const [searchGET, setSearchGET] = useState("");
     const [addFormData, setAddFormData] = useState({
         Name: "",
         Phone: "",
@@ -51,6 +52,7 @@ const ShowDatabaseAdministrator = (props) => {
     };
 
     const addUser = async (newUser) => {
+        console.log(newUser);
         const res = await fetch("http://localhost:5000/api/admin/adduser", {
             method: "POST",
             headers: {
@@ -67,6 +69,7 @@ const ShowDatabaseAdministrator = (props) => {
     };
 
     const addDatabaseAdministrator = async (newDatabaseAdministrator) => {
+        console.log(newDatabaseAdministrator);
         const res = await fetch("http://localhost:5000/api/admin/adddbadmin", {
             method: "POST",
             headers: {
@@ -260,15 +263,13 @@ const ShowDatabaseAdministrator = (props) => {
         setLoading(false);
     }
 
-    useEffect(() => {
-        onRenderpage();
-        get_all_dbadmins();
-    }, [databaseAdministrators]);
-
     const handleSearch = async (event) => {
         event.preventDefault();
+        setSearchGET(event.target.value)
         let searchKey = event.target.value;
-        if (searchKey) {
+        if (searchKey!=="") {
+            console.log(searchKey);
+            console.log(searchGET)
             let result = await fetch(
                 `http://localhost:5000/api/admin/getdbadmins/${searchKey}`,
                 {
@@ -290,6 +291,11 @@ const ShowDatabaseAdministrator = (props) => {
             get_all_dbadmins();
         }
     };
+    useEffect(() => {
+        onRenderpage();
+        if(searchGET==="")get_all_dbadmins();
+    }, []);
+
 
     return (
         <>

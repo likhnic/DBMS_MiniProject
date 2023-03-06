@@ -272,7 +272,7 @@ const ShowFrontDeskOperator = (props) => {
   useEffect(() => {
     onRenderpage();
     get_all_frontdeskoperators();
-  }, [frontDeskOperators]);
+  }, []);
 
   const handleSearch = async (event) => {
     event.preventDefault();

@@ -272,7 +272,7 @@ const ShowDataEntryOperator = (props) => {
     useEffect(() => {
         onRenderpage();
         get_all_dataentryoperators();
-    }, [dataEntryOperators]);
+    }, []);
 
     const handleSearch = async (event) => {
         event.preventDefault();

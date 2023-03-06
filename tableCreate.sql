@@ -346,9 +346,9 @@ insert into Doctor (DocID, Position, isWorking, Name, Phone, Address, Email) val
 insert into Doctor (DocID, Position, isWorking, Name, Phone, Address, Email) values (55, 'Senior Doctor', true, 'Eldridge Morfey', '312-232-2460', '17455 Manufacturers Parkway', 'likhith26090@gmail.com');
 
 
-insert into Patient Values ('1','ram','099','seattle banswada',11,50);
-insert into Patient Values ('2','shyam','099','silicon banswada',10,52);
-insert into Patient Values ('3','dam','199','hybrid banswada',12,51);
+insert into Patient Values ('1','ram','099','seattle banswada',11,50, 20, 'M');
+insert into Patient Values ('2','shyam','099','silicon banswada',10,52, 20, 'M');
+insert into Patient Values ('3','dam','199','hybrid banswada',12,51, 20, 'M');
 
 -- select * from Prescribes;
 -- select * from Doctor;

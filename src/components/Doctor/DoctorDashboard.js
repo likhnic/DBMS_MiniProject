@@ -105,7 +105,7 @@ const DoctorDashboard = (props) => {
             },
         })
         json = await response.json();
-        // console.log(json);
+        console.log(json);
         if (json.error) {
             alert(json.error)
             setSearchResult([])
@@ -242,6 +242,18 @@ const DoctorDashboard = (props) => {
                                                 <h4 className="col-md-8">
                                                     {patientDetails.patientname}
                                                 </h4>
+                                                <h4 className="col-md-4">
+                                                    Gender
+                                                </h4>
+                                                <h4 className="col-md-8">
+                                                    {patientDetails.gender}
+                                                </h4>
+                                                <h4 className="col-md-4">
+                                                    Age
+                                                </h4>
+                                                <h4 className="col-md-8">
+                                                    {patientDetails.age}
+                                                </h4>
                                                 <h5 className="col-md-4">
                                                     Appointment ID
                                                 </h5>
@@ -252,7 +264,7 @@ const DoctorDashboard = (props) => {
                                                     Appointment Time
                                                 </div>
                                                 <div className="col-md-8">
-                                                    {patientDetails.startdate.slice(0,10)} {patientDetails.starttime}
+                                                    {new Date(patientDetails.startdate).toLocaleString(undefined, {timeZone:'Asia/Kolkata'}).slice(0,10).slice(0,10)} {patientDetails.starttime}
                                                 </div>
                                                 <div className="col-md-4 text-muted">
                                                     Phone Number
