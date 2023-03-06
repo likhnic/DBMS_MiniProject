@@ -32,7 +32,7 @@ const actualSlots = [
 
 const sendReport = async()=>{
 
-    let sqlQuery = `SELECT DocID, Email from Doctor;`;
+    let sqlQuery = `SELECT DocID, Email from Doctor WHERE isWorking = 1;`;
     let doc;
     try{
         doc = await query(sqlQuery);
