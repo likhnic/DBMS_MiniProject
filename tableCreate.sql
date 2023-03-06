@@ -357,17 +357,17 @@ insert into Patient Values ('3','dam','199','hybrid banswada',12,51, 20, 'M');
 -- select * from `Procedure`;
 -- select * from Patient;
 -- select * from Stay;
-insert into `Procedure` (Code,Name,Cost,Type) values 
+insert into `Procedure` (Code,Name, Cost, Type) values 
 (1,'X-Ray',100,0),
 (2,'Check up',200,0),
 (3,'DAm',100,0),
-(4,'plus ultra',100,0),
+(4,'plus ultra',100,1),
 (5,'shake up',200,0),
 (6,'super',100,0),
-(7,'gym',100,0),
-(8,'good day',100,0),
+(7,'gym',100,1),
+(8,'good day',100,1),
 (9,'biscuit',100,0),
-(10,'sugar',100,0),
+(10,'sugar',100,1),
 (11,'blood test',100,0),
 (12,'asdm',100,0),
 (13,'as',100,0);

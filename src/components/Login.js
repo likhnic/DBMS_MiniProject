@@ -81,7 +81,7 @@ const Login = (props) => {
 
     return (
         <>
-            <div className="container mt-3">
+            <div className="container mt-3" style={{padding: "10rem 20rem"}}>
                 <div className="card shadow bg-body rounded p-3 mb-5" >
                     <div className="card-body">
                         <h2 className="card-title">Login</h2>
