@@ -97,6 +97,8 @@ CREATE TABLE Patient
     Address VARCHAR(200),
     InsuranceID INTEGER,
     PCPDocID INTEGER,
+    Age INTEGER,
+    Gender VARCHAR(10),
     PRIMARY KEY (Aadhar),
     FOREIGN KEY (PCPDocID) REFERENCES Doctor(DocID)
 );  

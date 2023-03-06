@@ -102,10 +102,13 @@ const Login = (props) => {
                 </div>
             </div>
             <div className="container mt-3">
-            <h1 style={{ textAlign: "center", color:"ButtonText" }} className="mt-3">News and Highlights</h1>
+                <h1 style={{ textAlign: "center", color: "ButtonText" }} className="mt-3">News and Highlights</h1>
+                <div className="row">
+                    <NewsCard body="Welcome to RRR Hospital" />
+                </div>
                 <div className="row">
                     {news.map((news_i, i) => {
-                        return <NewsCard body={news_i.body} key={i}/>
+                        return <NewsCard body={news_i.body} key={i} />
                     })}
                     {/* <NewsCard body="News 1" /> */}
                 </div>

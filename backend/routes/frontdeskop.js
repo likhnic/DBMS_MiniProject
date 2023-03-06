@@ -101,7 +101,7 @@ const sendemail = (email, DocName, message) => {
 // registering a new patient (using patient table)
 router.post("/register", fetchuser, async (req, res) => {
 
-    const { Aadhar, Name, Address, Phone, InsuranceID, PCPDocID } = req.body;
+    const { Aadhar, Name, Address, Phone, InsuranceID, PCPDocID, Age, Gender } = req.body;
 
     let sql = `SELECT * from Patient WHERE Aadhar = '${Aadhar}'`
     try {
@@ -114,7 +114,7 @@ router.post("/register", fetchuser, async (req, res) => {
             return;
         }
 
-        sql = `INSERT INTO Patient (Aadhar, Name, Address, Phone, InsuranceId, PCPDocID) VALUES ('${Aadhar}', '${Name}', '${Address}', '${Phone}', ${InsuranceID}, ${PCPDocID})`
+        sql = `INSERT INTO Patient (Aadhar, Name, Address, Phone, InsuranceId, PCPDocID, Age, Gender) VALUES ('${Aadhar}', '${Name}', '${Address}', '${Phone}', ${InsuranceID}, ${PCPDocID}, ${Age}, '${Gender}')`
 
         result = await query(sql);
         console.log("Patient registered successfully");
