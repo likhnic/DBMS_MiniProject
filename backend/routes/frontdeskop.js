@@ -71,10 +71,10 @@ const sendReport = async()=>{
                 message += `Undergoes Date: ${undergoes[j].Date}\n`;
                 message += `Undergoes Patient: ${undergoes[j].PatientAadhar}\n`;
                 if(undergoes[j].EndTime){
-                    message += 'Patient Left\n\n';
+                    message += 'Patient is fine now and left the hospital\n\n';
                 }
                 else{
-                    message += 'Patient Arrived\n\n'
+                    message += 'Patient is still taking rest\n\n'
                 }
             }
             console.log(message);
