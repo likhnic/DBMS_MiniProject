@@ -5,16 +5,8 @@ import NB from "../NB";
 import { useNavigate } from "react-router-dom";
 
 const ShowDatabaseAdministrator = (props) => {
-    let navigate = useNavigate();
-    const [databaseAdministrators, setDatabaseAdministrators] = useState([]);
-    const [addFormData, setAddFormData] = useState({
-        Name: "",
-        Phone: "",
-        Address: "",
-        Aadhar: "",
-        Password: "",
-        rePassword: "",
-    });
+  let navigate = useNavigate();
+  const [databaseAdministrators, setDatabaseAdministrators] = useState([]);
 
   const [editFormData, setEditFormData] = useState({
     Name: "",
@@ -34,80 +26,8 @@ const ShowDatabaseAdministrator = (props) => {
     const newFormData = { ...editFormData };
     newFormData[fieldName] = fieldValue;
 
-        setEditFormData(newFormData);
-    };
-
-    const addUser = async (newUser) => {
-        const res = await fetch("http://localhost:5000/api/admin/adduser", {
-            method: "POST",
-            headers: {
-                "Content-Type": "application/json",
-                'token': localStorage.getItem('token')
-            },
-
-            body: JSON.stringify(newUser),
-        });
-
-        const jsonData = await res.json();
-
-        return jsonData;
-    };
-
-    const addDatabaseAdministrator = async (newDatabaseAdministrator) => {
-        const res = await fetch("http://localhost:5000/api/admin/adddbadmin", {
-            method: "POST",
-            headers: {
-                "Content-Type": "application/json",
-                'token': localStorage.getItem('token')
-            },
-
-            body: JSON.stringify(newDatabaseAdministrator),
-        });
-
-        const jsonData = await res.json();
-
-        return jsonData;
-    };
-
-    const handleAddFormSubmit = async (event) => {
-        event.preventDefault();
-        if (addFormData.Password !== addFormData.rePassword) {
-            props.alert("Password mismatch", "danger");
-            return;
-        }
-        const newUser = {
-            Aadhar: addFormData.Aadhar,
-            Password: addFormData.Password,
-            Type: 3,
-            Status: 1,
-        };
-        var jsonData = await addUser(newUser);
-        if (jsonData.error) {
-            console.log(jsonData.error);
-            props.alert("Error adding database administrator", "danger");
-            return;
-        }
-        const newDatabaseAdministrator = {
-            AdminID: jsonData.ID,
-            Name: addFormData.Name,
-            Phone: addFormData.Phone,
-            Address: addFormData.Address,
-        };
-        jsonData = await addDatabaseAdministrator(newDatabaseAdministrator);
-        if (jsonData.error) {
-            console.log(jsonData.error);
-            props.alert("Error adding database administrator", "danger");
-            return;
-        }
-        props.alert("Added " + newDatabaseAdministrator.Name + " with Employee ID: " + newDatabaseAdministrator.AdminID, "success");
-
-        const newDatabaseAdministrators = [
-            ...databaseAdministrators,
-            newDatabaseAdministrator,
-        ];
-
-        setDatabaseAdministrators(newDatabaseAdministrators);
-    };
+    setEditFormData(newFormData);
+  };
 
   const update_dbadmin = async (editedDatabaseAdministrator) => {
     const res = await fetch("http://localhost:5000/api/admin/updatedbadmin", {
@@ -118,21 +38,6 @@ const ShowDatabaseAdministrator = (props) => {
       },
 
       body: JSON.stringify(editedDatabaseAdministrator),
-    });
-
-    const jsonData = await res.json();
-
-    return jsonData;
-  };
-
-  const delete_dbadmin = async (id) => {
-    const res = await fetch(`http://localhost:5000/api/admin/deletedbadmin`, {
-      method: "DELETE",
-      headers: {
-        "Content-Type": "application/json",
-        token: localStorage.getItem("token"),
-      },
-      body: JSON.stringify({ AdminID: id }),
     });
 
     const jsonData = await res.json();
@@ -188,27 +93,6 @@ const ShowDatabaseAdministrator = (props) => {
     setEditDatabaseAdministratorId(null);
   };
 
-  const handleDeleteClick = (databaseAdministratorId) => {
-    const jsonData = delete_dbadmin(databaseAdministratorId);
-    if (jsonData.error) {
-      console.log(jsonData.error);
-      props.alert("Error deleting database administrator", "danger");
-    } else {
-      props.alert("Deleted database administrator", "success");
-
-      const newDatabaseAdministrators = [...databaseAdministrators];
-
-      const index = databaseAdministrators.findIndex(
-        (databaseAdministrator) =>
-          databaseAdministrator.AdminID === databaseAdministratorId
-      );
-
-      newDatabaseAdministrators.splice(index, 1);
-
-      setDatabaseAdministrators(newDatabaseAdministrators);
-    }
-  };
-
   const get_all_dbadmins = async () => {
     const response = await fetch(
       `http://localhost:5000/api/admin/getdbadmins`,
@@ -233,54 +117,52 @@ const ShowDatabaseAdministrator = (props) => {
     }
   };
 
-    const [loading, setLoading] = useState(true);
-    const onRenderpage = async () => {
-        const token = localStorage.getItem("token");
-        const response = await fetch('http://localhost:5000/checkUser/3', {
-            method: 'GET',
-            headers: {
-                'Content-Type': 'application/json',
-                'token': token
-            }
-        }
-        )
-        const json = await response.json();
-        if (json.error) {
-            navigate("/", { replace: true })
-        }
-        setLoading(false);
+  const [loading, setLoading] = useState(true);
+  const onRenderpage = async () => {
+    const token = localStorage.getItem("token");
+    const response = await fetch("http://localhost:5000/checkUser/3", {
+      method: "GET",
+      headers: {
+        "Content-Type": "application/json",
+        token: token,
+      },
+    });
+    const json = await response.json();
+    if (json.error) {
+      navigate("/", { replace: true });
     }
+    setLoading(false);
+  };
 
-    useEffect(() => {
-        onRenderpage();
-        get_all_dbadmins();
-    }, [databaseAdministrators]);
+  useEffect(() => {
+    onRenderpage();
+    get_all_dbadmins();
+  }, []);
 
-    const handleSearch = async (event) => {
-        event.preventDefault();
-        let searchKey = event.target.value;
-        if (searchKey) {
-            let result = await fetch(
-                `http://localhost:5000/api/admin/getdbadmins/${searchKey}`,
-                {
-                    method: "GET",
-                    headers: {
-                        "Content-Type": "application/json",
-                        'token': localStorage.getItem('token')
-                    },
-                }
-            );
-            result = await result.json();
-            if (result.error || result.empty) {
-                setDatabaseAdministrators([]);
-            }
-            else {
-                setDatabaseAdministrators(result.dbadmins);
-            }
-        } else {
-            get_all_dbadmins();
+  const handleSearch = async (event) => {
+    event.preventDefault();
+    let searchKey = event.target.value;
+    if (searchKey) {
+      let result = await fetch(
+        `http://localhost:5000/api/admin/getdbadmins/${searchKey}`,
+        {
+          method: "GET",
+          headers: {
+            "Content-Type": "application/json",
+            token: localStorage.getItem("token"),
+          },
         }
-    };
+      );
+      result = await result.json();
+      if (result.error || result.empty) {
+        setDatabaseAdministrators([]);
+      } else {
+        setDatabaseAdministrators(result.dbadmins);
+      }
+    } else {
+      get_all_dbadmins();
+    }
+  };
 
   return (
     <>
@@ -336,7 +218,6 @@ const ShowDatabaseAdministrator = (props) => {
                         <ReadOnlyRow
                           databaseAdministrator={databaseAdministrator}
                           handleEditClick={handleEditClick}
-                          handleDeleteClick={handleDeleteClick}
                         />
                       )}
                     </Fragment>

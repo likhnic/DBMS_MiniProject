@@ -1,6 +1,6 @@
 import React from "react";
 
-const ReadOnlyRow = ({ databaseAdministrator, handleEditClick, handleDeleteClick }) => {
+const ReadOnlyRow = ({ databaseAdministrator, handleEditClick }) => {
   return (
     <tr>
       <td>{databaseAdministrator.AdminID}</td>
@@ -14,9 +14,6 @@ const ReadOnlyRow = ({ databaseAdministrator, handleEditClick, handleDeleteClick
           onClick={(event) => handleEditClick(event, databaseAdministrator)}
         >
           Edit
-        </button>
-        <button className="btn btn-danger mx-3" type="button" onClick={() => handleDeleteClick(databaseAdministrator.AdminID)}>
-          Delete
         </button>
       </td>
     </tr>

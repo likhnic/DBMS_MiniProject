@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
 
 const AddDoctor = ({ alert }) => {
@@ -66,7 +66,7 @@ const AddDoctor = ({ alert }) => {
       return;
     } else if (!regexp.test(addFormData.Password)) {
       alert(
-        "Password must contain a number, a special character and, should be between 6-16 characters",
+        "Password must contain a letter, a number, a special character and, should be between 6-16 characters",
         "danger"
       );
       return;
@@ -105,10 +105,6 @@ const AddDoctor = ({ alert }) => {
 
     navigate("/admin/doctor");
   };
-
-//   useEffect(() => {
-//     console.log("Cam ");
-//   }, []);
 
 
   return (

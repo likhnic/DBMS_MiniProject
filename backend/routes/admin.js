@@ -287,21 +287,6 @@ router.put("/updatedbadmin", fetchuser, async (req, res) => {
   }
 });
 
-// delete the dbadmin
-// add fetchuser to the route to make it private later
-router.delete("/deletedbadmin/", fetchuser, async (req, res) => {
-  let sql = `UPDATE User SET Status=0 WHERE ID = ${req.body.AdminID}`;
-  try {
-    let result = await query(sql);
-    if (result.affectedRows == 0) {
-      return res.json({ error: "Cannot delete the dbadmin!" });
-    }
-    return res.json({success: "Successfully deleted"});
-  } catch (error) {
-    console.log(error);
-    res.json({ error: "Cannot delete the dbadmin!" });
-  }
-});
 
 // add a frontdeskoperator
 // add fetchuser to the route to make it private later

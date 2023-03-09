@@ -67,7 +67,7 @@ const AddDataEntryOperator = ({ alert }) => {
       return;
     } else if (!regexp.test(addFormData.Password)) {
       alert(
-        "Password must contain a number, a special character and, should be between 6-16 characters",
+        "Password must contain a letter, a number, a special character and, should be between 6-16 characters",
         "danger"
       );
       return;
