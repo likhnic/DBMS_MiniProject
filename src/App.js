@@ -25,6 +25,10 @@ import ShowDoctor from "./components/Admin_Dashboard/components/doctor/ShowDocto
 import ShowFrontDeskOperator from "./components/Admin_Dashboard/components/frontDeskOperator/ShowFrontDeskOperator";
 import AdminHome from './components/Admin_Dashboard/AdminHome';
 import ViewPrescribes from './components/Data_Entry_Dashboard/ViewPrescribes';
+import AddDatabaseAdministrator from './components/Admin_Dashboard/components/databaseAdministrator/AddDatabaseAdministrator';
+import AddDataEntryOperator from './components/Admin_Dashboard/components/dataEntryOperator/AddDataEntryOperator';
+import AddDoctor from './components/Admin_Dashboard/components/doctor/AddDoctor';
+import AddFrontDeskOperator from './components/Admin_Dashboard/components/frontDeskOperator/AddFrontDeskOperator';
 
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
@@ -95,10 +99,13 @@ const App = () => {
 
                     <Route exact path="/admin" element={<ProtectedRoute alert={showAlert} element={AdminHome}/>} />
                     <Route exact path = '/admin/dbadmin' element={<ProtectedRoute alert={showAlert} element={ShowDatabaseAdministrator}/>}/>
+                    <Route exact path = '/admin/dbadmin/add' element={<ProtectedRoute alert={showAlert} element={AddDatabaseAdministrator}/>}/>
                     <Route exact path = '/admin/dataentry' element={<ProtectedRoute alert={showAlert} element={ShowDataEntryOperator}/>}/>
+                    <Route exact path = '/admin/dataentry/add' element={<ProtectedRoute alert={showAlert} element={AddDataEntryOperator}/>}/>
                     <Route exact path = '/admin/doctor' element={<ProtectedRoute alert={showAlert} element={ShowDoctor}/>}/>
+                    <Route exact path = '/admin/doctor/add' element={<ProtectedRoute alert={showAlert} element={AddDoctor}/>}/>
                     <Route exact path = '/admin/frontdesk' element={<ProtectedRoute alert={showAlert}  element={ShowFrontDeskOperator}/>}/>
-                
+                    <Route exact path = '/admin/frontdesk/add' element={<ProtectedRoute alert={showAlert}  element={AddFrontDeskOperator}/>}/>
                 </Routes>
             </Router>
         </>

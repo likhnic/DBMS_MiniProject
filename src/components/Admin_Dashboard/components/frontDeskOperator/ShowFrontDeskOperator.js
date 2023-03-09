@@ -1,21 +1,12 @@
 import React, { useState, Fragment, useEffect } from "react";
 import ReadOnlyRow from "./ReadOnlyRow";
 import EditableRow from "./EditableRow";
-import RegistrationForm from "./RegistrationForm";
 import NB from "../NB";
 import { useNavigate } from "react-router-dom";
 
 const ShowFrontDeskOperator = (props) => {
   let navigate = useNavigate();
   const [frontDeskOperators, setFrontDeskOperators] = useState([]);
-  const [addFormData, setAddFormData] = useState({
-    Name: "",
-    Phone: "",
-    Address: "",
-    Aadhar: "",
-    Password: "",
-    rePassword: "",
-  });
 
   const [editFormData, setEditFormData] = useState({
     Name: "",
@@ -24,53 +15,6 @@ const ShowFrontDeskOperator = (props) => {
   });
 
   const [editFrontDeskOperatorId, setEditFrontDeskOperatorId] = useState(null);
-
-  const handleAddFormChange = (event) => {
-    event.preventDefault();
-
-    const fieldName = event.target.getAttribute("name");
-    const fieldValue = event.target.value;
-
-    const newFormData = { ...addFormData };
-    newFormData[fieldName] = fieldValue;
-
-    setAddFormData(newFormData);
-  };
-
-  const addUser = async (newUser) => {
-    const res = await fetch("http://localhost:5000/api/admin/adduser", {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-        'token': localStorage.getItem('token')
-      },
-
-      body: JSON.stringify(newUser),
-    });
-
-    const jsonData = await res.json();
-
-    return jsonData;
-  };
-
-  const addFrontDeskOperator = async (newFrontDeskOperator) => {
-    const res = await fetch(
-      "http://localhost:5000/api/admin/addfrontdeskoperator",
-      {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-          'token': localStorage.getItem('token')
-        },
-
-        body: JSON.stringify(newFrontDeskOperator),
-      }
-    );
-
-    const jsonData = await res.json();
-
-    return jsonData;
-  };
 
   const handleEditFormChange = (event) => {
     event.preventDefault();
@@ -84,48 +28,6 @@ const ShowFrontDeskOperator = (props) => {
     setEditFormData(newFormData);
   };
 
-  const handleAddFormSubmit = async (event) => {
-    event.preventDefault();
-    if (addFormData.Password !== addFormData.rePassword) {
-      props.alert("Password mismatch", "danger");
-      return;
-    }
-    const newUser = {
-      Aadhar: addFormData.Aadhar,
-      Password: addFormData.Password,
-      Type: 0,
-      Status: 1,
-    };
-    var jsonData = await addUser(newUser);
-    if (jsonData.error) {
-      console.log(jsonData.error);
-      props.alert("Error adding front desk operator", "danger");
-      return;
-    }
-
-    const newFrontDeskOperator = {
-      FrontDeskOpID: jsonData.ID,
-      Name: addFormData.Name,
-      Phone: addFormData.Phone,
-      Address: addFormData.Address,
-    };
-    jsonData = await addFrontDeskOperator(newFrontDeskOperator);
-    if (jsonData.error) {
-      console.log(jsonData.error);
-      props.alert("Error adding front desk operator", "danger");
-      return;
-    }
-    props.alert(
-      "Added " +
-        newFrontDeskOperator.Name +
-        " with Employee ID: " +
-        newFrontDeskOperator.FrontDeskOpID, "success"
-    );
-
-    const newFrontDeskOperators = [...frontDeskOperators, newFrontDeskOperator];
-    setFrontDeskOperators(newFrontDeskOperators);
-  };
-
   const update_frontdeskoperator = async (editedFrontDeskOperator) => {
     const res = await fetch(
       "http://localhost:5000/api/admin/updatefrontdeskoperator",
@@ -133,7 +35,7 @@ const ShowFrontDeskOperator = (props) => {
         method: "PUT",
         headers: {
           "Content-Type": "application/json",
-          'token': localStorage.getItem('token')
+          token: localStorage.getItem("token"),
         },
 
         body: JSON.stringify(editedFrontDeskOperator),
@@ -152,7 +54,7 @@ const ShowFrontDeskOperator = (props) => {
         method: "DELETE",
         headers: {
           "Content-Type": "application/json",
-          'token': localStorage.getItem('token')
+          token: localStorage.getItem("token"),
         },
         body: JSON.stringify({ FrontDeskOpID: id }),
       }
@@ -175,8 +77,10 @@ const ShowFrontDeskOperator = (props) => {
     const jsonData = update_frontdeskoperator(editedFrontDeskOperator);
     if (jsonData.error) {
       console.log(jsonData.error);
-      props.alert("Error updating frontdeskoperator", "danger");
+      props.alert("Error updating front desk operator", "danger");
     } else {
+      props.alert("Updated front desk operator", "success");
+
       const newFrontDeskOperators = [...frontDeskOperators];
 
       const index = frontDeskOperators.findIndex(
@@ -212,8 +116,9 @@ const ShowFrontDeskOperator = (props) => {
     const jsonData = delete_frontdeskoperator(frontDeskOperatorId);
     if (jsonData.error) {
       console.log(jsonData.error);
-      props.alert("Error deleting frontdeskoperator", "danger");
+      props.alert("Error deleting front desk operator", "danger");
     } else {
+      props.alert("Deleted front desk operator", "success");
       const newFrontDeskOperators = [...frontDeskOperators];
 
       const index = frontDeskOperators.findIndex(
@@ -234,7 +139,7 @@ const ShowFrontDeskOperator = (props) => {
         method: "GET",
         headers: {
           "Content-Type": "application/json",
-          'token': localStorage.getItem('token')
+          token: localStorage.getItem("token"),
         },
       }
     );
@@ -252,22 +157,21 @@ const ShowFrontDeskOperator = (props) => {
   };
 
   const [loading, setLoading] = useState(true);
-    const onRenderpage = async () => {
-        const token = localStorage.getItem("token");
-        const response = await fetch('http://localhost:5000/checkUser/3', {
-            method: 'GET',
-            headers: {
-                'Content-Type': 'application/json',
-                'token': token
-            }
-        }
-        )
-        const json = await response.json();
-        if (json.error) {
-            navigate("/", { replace: true })
-        }
-        setLoading(false);
+  const onRenderpage = async () => {
+    const token = localStorage.getItem("token");
+    const response = await fetch("http://localhost:5000/checkUser/3", {
+      method: "GET",
+      headers: {
+        "Content-Type": "application/json",
+        token: token,
+      },
+    });
+    const json = await response.json();
+    if (json.error) {
+      navigate("/", { replace: true });
     }
+    setLoading(false);
+  };
 
   useEffect(() => {
     onRenderpage();
@@ -284,7 +188,7 @@ const ShowFrontDeskOperator = (props) => {
           method: "GET",
           headers: {
             "Content-Type": "application/json",
-            'token': localStorage.getItem('token')
+            token: localStorage.getItem("token"),
           },
         }
       );
@@ -292,8 +196,7 @@ const ShowFrontDeskOperator = (props) => {
       if (result.error || result.empty) {
         // alert("No doctors found");
         setFrontDeskOperators([]);
-      }
-      else{
+      } else {
         setFrontDeskOperators(result.frontdeskoperators);
       }
     } else {
@@ -303,59 +206,66 @@ const ShowFrontDeskOperator = (props) => {
 
   return (
     <>
-    {!loading && <>
-    <NB alert={props.alert}/>
-    <div className="container">
-      <h1 className="text-center container mt-3">Front Desk Operators</h1>
+      {!loading && (
+        <>
+          <NB alert={props.alert} />
+          <div className="container">
+            <h1 className="text-center container mt-3">Front Desk Operators</h1>
 
-      <div className="form-outline mb-4">
-        <input
-          className="form-control-sm"
-          type="text"
-          placeholder="Search by name..."
-          onChange={handleSearch}
-        />
-      </div>
+            <div className="form-outline mb-4">
+              <input
+                className="form-control-sm"
+                type="text"
+                placeholder="Search by name..."
+                onChange={handleSearch}
+              />
+              <button
+                className="btn btn-primary mx-3"
+                onClick={() => {
+                  navigate("/admin/frontdesk/add");
+                }}
+              >
+                Add Front Desk Operator
+              </button>
+            </div>
 
-      <form onSubmit={handleEditFormSubmit}>
-        <table className="table table-hover">
-          <thead>
-            <tr style={{ backgroundColor: "#060b26", color: "white" }}>
-              <th>Employee ID</th>
-              <th>Name</th>
-              <th>Phone</th>
-              <th>Address</th>
-              <th>Actions</th>
-            </tr>
-          </thead>
-          <tbody>
-            {frontDeskOperators.map((frontDeskOperator) => (
-              <Fragment key={frontDeskOperator.FrontDeskOpID}>
-                {editFrontDeskOperatorId === frontDeskOperator.FrontDeskOpID ? (
-                  <EditableRow
-                    id={editFrontDeskOperatorId}
-                    editFormData={editFormData}
-                    handleEditFormChange={handleEditFormChange}
-                    handleCancelClick={handleCancelClick}
-                  />
-                ) : (
-                  <ReadOnlyRow
-                    frontDeskOperator={frontDeskOperator}
-                    handleEditClick={handleEditClick}
-                    handleDeleteClick={handleDeleteClick}
-                  />
-                )}
-              </Fragment>
-            ))}
-          </tbody>
-        </table>
-      </form>
-      <RegistrationForm
-        onSubmit={handleAddFormSubmit}
-        onChange={handleAddFormChange}
-      />
-    </div>
-    </>}
+            <form onSubmit={handleEditFormSubmit}>
+              <table className="table table-hover">
+                <thead>
+                  <tr style={{ backgroundColor: "#060b26", color: "white" }}>
+                    <th>Employee ID</th>
+                    <th>Name</th>
+                    <th>Phone</th>
+                    <th>Address</th>
+                    <th>Actions</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  {frontDeskOperators.map((frontDeskOperator) => (
+                    <Fragment key={frontDeskOperator.FrontDeskOpID}>
+                      {editFrontDeskOperatorId ===
+                      frontDeskOperator.FrontDeskOpID ? (
+                        <EditableRow
+                          id={editFrontDeskOperatorId}
+                          editFormData={editFormData}
+                          handleEditFormChange={handleEditFormChange}
+                          handleCancelClick={handleCancelClick}
+                        />
+                      ) : (
+                        <ReadOnlyRow
+                          frontDeskOperator={frontDeskOperator}
+                          handleEditClick={handleEditClick}
+                          handleDeleteClick={handleDeleteClick}
+                        />
+                      )}
+                    </Fragment>
+                  ))}
+                </tbody>
+              </table>
+            </form>
+          </div>
+        </>
+      )}
     </>
   );
 };

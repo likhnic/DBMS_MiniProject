@@ -65,6 +65,7 @@ router.post("/adddoctor", fetchuser, async (req, res) => {
     if (result.affectedRows == 0) {
       return res.json({ error: "Couldn't add doctor!" });
     }
+    return res.json({success: "Successfully added"});
   } catch (error) {
     console.log(error);
     res.json({ error: "Error adding doctor" });
@@ -112,6 +113,7 @@ router.put("/updatedoctor", fetchuser, async (req, res) => {
     if (result.affectedRows == 0) {
       return res.json({ error: "Cannot update the doctor's data!" });
     }
+    return res.json({success: "Successfully updated"});
   } catch (error) {
     console.log(error);
     res.json({ error: "Cannot update the doctor's data!" });
@@ -132,6 +134,7 @@ router.delete("/deletedoctor/", fetchuser, async (req, res) => {
     if (result.affectedRows == 0) {
       return res.json({ error: "Cannot delete the doctor!" });
     }
+    return res.json({success: "Successfully deleted"});
   } catch (error) {
     console.log(error);
     res.json({ error: "Cannot delete the doctor!" });
@@ -147,6 +150,7 @@ router.post("/adddataentryoperator", fetchuser, async (req, res) => {
     if (result.affectedRows == 0) {
       return res.json({ error: "Couldn't add dataentryoperator!" });
     }
+    return res.json({success: "Successfully added"});
   } catch (error) {
     console.log(error);
     res.json({ error: "Error adding dataentryoperator" });
@@ -196,6 +200,7 @@ router.put("/updatedataentryoperator", fetchuser, async (req, res) => {
         error: "Cannot update the dataentryoperators's data!",
       });
     }
+    return res.json({success: "Successfully updated"});
   } catch (error) {
     console.log(error);
     res.json({ error: "Cannot update the dataentryoperators's data!" });
@@ -211,6 +216,7 @@ router.delete("/deletedataentryoperator/", fetchuser, async (req, res) => {
     if (result.affectedRows == 0) {
       return res.json({ error: "Cannot delete the dataentryoperators!" });
     }
+    return res.json({success: "Successfully deleted"});
   } catch (error) {
     console.log(error);
     res.json({ error: "Cannot delete the dataentryoperators!" });
@@ -226,6 +232,7 @@ router.post("/adddbadmin", fetchuser, async (req, res) => {
     if (result.affectedRows == 0) {
       return res.json({ error: "Couldn't add dbadmin!" });
     }
+    return res.json({success: "Successfully added"});
   } catch (error) {
     console.log(error);
     res.json({ error: "Error adding dbadmin" });
@@ -273,6 +280,7 @@ router.put("/updatedbadmin", fetchuser, async (req, res) => {
     if (result.affectedRows == 0) {
       return res.json({ error: "Cannot update the dbadmin's data!" });
     }
+    return res.json({success: "Successfully updated"});
   } catch (error) {
     console.log(error);
     res.json({ error: "Cannot update the dbadmin's data!" });
@@ -288,6 +296,7 @@ router.delete("/deletedbadmin/", fetchuser, async (req, res) => {
     if (result.affectedRows == 0) {
       return res.json({ error: "Cannot delete the dbadmin!" });
     }
+    return res.json({success: "Successfully deleted"});
   } catch (error) {
     console.log(error);
     res.json({ error: "Cannot delete the dbadmin!" });
@@ -303,6 +312,7 @@ router.post("/addfrontdeskoperator", fetchuser, async (req, res) => {
     if (result.affectedRows == 0) {
       return res.json({ error: "Couldn't add frontdeskoperator!" });
     }
+    return res.json({success: "Successfully added"});
   } catch (error) {
     console.log(error);
     res.json({ error: "Error adding frontdeskoperator" });
@@ -350,6 +360,7 @@ router.put("/updatefrontdeskoperator", fetchuser, async (req, res) => {
     if (result.affectedRows == 0) {
       return res.json({ error: "Cannot update the frontdeskoperator's data!" });
     }
+    return res.json({success: "Successfully updated"});
   } catch (error) {
     console.log(error);
     res.json({ error: "Cannot update the frontdeskoperator's data!" });
@@ -365,6 +376,7 @@ router.delete("/deletefrontdeskoperator/", fetchuser, async (req, res) => {
     if (result.affectedRows == 0) {
       return res.json({ error: "Cannot delete the frontdeskoperator!" });
     }
+    return res.json({success: "Successfully deleted"});
   } catch (error) {
     console.log(error);
     res.json({ error: "Cannot delete the frontdeskoperator!" });

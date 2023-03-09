@@ -30,10 +30,11 @@ const EditableRow = ({
         ></input>
       </td>
       <td>
-        <input
-          type="text"
+      <input
+          type="tel"
+          pattern="[0-9]{3}-[0-9]{3}-[0-9]{4}"
           required="required"
-          placeholder="Enter a phone number..."
+          placeholder="Enter a phone number (XXX-XXX-XXXX)..."
           name="Phone"
           value={editFormData.Phone}
           onChange={handleEditFormChange}
