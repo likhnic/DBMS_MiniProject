@@ -24,7 +24,7 @@ const AddDataEntryOperator = ({ alert }) => {
     });
 
     const jsonData = await res.json();
-
+    console.log(jsonData);
     return jsonData;
   };
 
@@ -59,7 +59,7 @@ const AddDataEntryOperator = ({ alert }) => {
     setAddFormData(newFormData);
   };
 
-  const handleAddFormSubmit = (event) => {
+  const handleAddFormSubmit = async(event) => {
     event.preventDefault();
     const regexp = /^(?=.*[0-9])(?=.*[!@#$%^&*])[a-zA-Z0-9!@#$%^&*]{6,16}$/;
     if (addFormData.Password !== addFormData.rePassword) {
@@ -78,7 +78,7 @@ const AddDataEntryOperator = ({ alert }) => {
       Type: 1,
       Status: 1,
     };
-    var jsonData = addUser(newUser);
+    var jsonData = await addUser(newUser);
     if (jsonData.error) {
       console.log(jsonData.error);
       alert("Error adding data entry operator", "danger");
@@ -90,7 +90,8 @@ const AddDataEntryOperator = ({ alert }) => {
       Phone: addFormData.Phone,
       Address: addFormData.Address,
     };
-    jsonData = addDataEntryOperator(newDataEntryOperator);
+    console.log(newDataEntryOperator);
+    jsonData = await addDataEntryOperator(newDataEntryOperator);
     if (jsonData.error) {
       console.log(jsonData.error);
       alert("Error adding data entry operator", "danger");
@@ -107,7 +108,7 @@ const AddDataEntryOperator = ({ alert }) => {
   };
 
   return (
-    <div style={{ padding: "2rem 337rem" }}>
+    <div style={{ padding: "2rem 37rem" }}>
       <h1 style={{ textAlign: "center" }} className="mt-3">
         Add a Data Entry Operator
       </h1>

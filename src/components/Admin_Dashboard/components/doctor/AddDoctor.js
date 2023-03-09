@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 
 const AddDoctor = ({ alert }) => {
@@ -106,8 +106,13 @@ const AddDoctor = ({ alert }) => {
     navigate("/admin/doctor");
   };
 
+//   useEffect(() => {
+//     console.log("Cam ");
+//   }, []);
+
+
   return (
-    <div style={{ padding: "2rem 337rem" }}>
+    <div style={{ padding: "2rem 37rem" }}>
       <h1 style={{ textAlign: "center" }} className="mt-3">
         Add a Doctor
       </h1>

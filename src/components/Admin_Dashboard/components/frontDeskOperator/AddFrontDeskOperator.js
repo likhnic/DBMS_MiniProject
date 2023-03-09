@@ -109,7 +109,7 @@ const AddFrontDeskOperator = ({ alert }) => {
   };
 
   return (
-    <div style={{ padding: "2rem 337rem" }}>
+    <div style={{ padding: "2rem 37rem" }}>
       <h1 style={{ textAlign: "center" }} className="mt-3">
         Add a Front Desk Operator
       </h1>

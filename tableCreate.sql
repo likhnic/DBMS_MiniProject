@@ -458,9 +458,9 @@ begin
     then signal sqlstate  '45000'
         set message_text = 'Aadhar Should be 12 characters';
     end if;
-    if length(new.Password) < 5 or length(new.Password) > 50
+    if length(new.Password) < 6 or length(new.Password) > 16
     then signal sqlstate  '45000'
-        set message_text = 'Password Should be between 5 and 50 characters';
+        set message_text = 'Password Should be between 6 and 16 characters';
     end if;
 end;
 $$
@@ -478,7 +478,7 @@ begin
     then signal sqlstate  '45000' 
         set message_text = 'Aadhar Should be 12 characters';
     end if;
-    if length(new.Phone) < 10 or length(new.Phone) > 10
+    if length(new.Phone) < 12 or length(new.Phone) > 12
     then signal sqlstate  '45000' 
         set message_text = 'Phone Number Should be 10 characters';
     end if;
