@@ -555,7 +555,7 @@ begin
         signal sqlstate  '45000'
         set message_text = 'AppointmentID does not exist';
     end if;
-    select count(*) = 1 into MedicationPresent from Medication where MedicationCode = MedicationCode;
+    select count(*) >= 1 into MedicationPresent from Medication where MedicationCode = MedicationCode;
     if MedicationPresent = false
     then
         signal sqlstate  '45000'
