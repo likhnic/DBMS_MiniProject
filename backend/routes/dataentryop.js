@@ -156,7 +156,7 @@ router.post('/treatment/:patientId', fetchuser, async (req, res) => {
         return res.json({ error: error });
     }
 
-    sqlQuery = `SELECT StayID FROM Stay WHERE PatientAadhar = ${req.params.patientId} ORDER BY StartTime DESC LIMIT 1;`
+    sqlQuery = `SELECT StayID FROM Stay WHERE PatientAadhar = '${req.params.patientId}' ORDER BY StartTime DESC LIMIT 1;`
     let StayID;
     console.log(sqlQuery)
     try {

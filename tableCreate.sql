@@ -225,21 +225,21 @@ Create TABLE news
 );
 
 
-insert into User (ID, Aadhar, Password, Type, Status) values (1, '194-77-0729', '4eFPFK3ggMpP', 0, true);
-insert into User (ID, Aadhar, Password, Type, Status) values (2, '248-52-3360', 'q4j1yaoPU', 0, false);
-insert into User (ID, Aadhar, Password, Type, Status) values (3, '362-15-1497', 'LuHkJJg3', 0, false);
-insert into User (ID, Aadhar, Password, Type, Status) values (4, '751-44-5620', 'sFmEaSUYGr', 0, false);
-insert into User (ID, Aadhar, Password, Type, Status) values (5, '495-39-1739', 'oQ4hqU', 0, false);
-insert into User (ID, Aadhar, Password, Type, Status) values (6, '113-96-7152', '1ezlhke', 0, true);
-insert into User (ID, Aadhar, Password, Type, Status) values (7, '668-11-8553', 'Xws9F7f2t', 0, false);
-insert into User (ID, Aadhar, Password, Type, Status) values (8, '409-27-3839', 'YuTHybn21S', 0, false);
-insert into User (ID, Aadhar, Password, Type, Status) values (9, '655-26-8817', 'T7SPY5Z3', 0, false);
-insert into User (ID, Aadhar, Password, Type, Status) values (10, '748-77-9356', 'spVgo132O5p3', 0, false);
-insert into User (ID, Aadhar, Password, Type, Status) values (11, '271-65-2287', 'oVIhHFbamH', 0, true);
-insert into User (ID, Aadhar, Password, Type, Status) values (12, '296-57-6307', '20RAaQ79bqy', 0, true);
-insert into User (ID, Aadhar, Password, Type, Status) values (13, '549-46-2960', 'gFoT6mch0', 0, true);
-insert into User (ID, Aadhar, Password, Type, Status) values (14, '781-19-4026', 'fBdpd4Q9', 0, false);
-insert into User (ID, Aadhar, Password, Type, Status) values (15, '464-03-6286', 'qLcISbO', 0, false);
+insert into User (ID, Aadhar, Password, Type, Status) values (1, '194-770-0729', 'password@123', 0, true);
+insert into User (ID, Aadhar, Password, Type, Status) values (2, '248-520-3360', 'password@123', 0, true);
+insert into User (ID, Aadhar, Password, Type, Status) values (3, '362-150-1497', 'password@123', 0, true);
+insert into User (ID, Aadhar, Password, Type, Status) values (4, '751-440-5620', 'password@123', 0, true);
+insert into User (ID, Aadhar, Password, Type, Status) values (5, '495-390-1739', 'password@123', 0, true);
+insert into User (ID, Aadhar, Password, Type, Status) values (6, '113-960-7152', 'password@123', 0, true);
+insert into User (ID, Aadhar, Password, Type, Status) values (7, '668-110-8553', 'password@123', 0, true);
+insert into User (ID, Aadhar, Password, Type, Status) values (8, '409-270-3839', 'password@123', 0, true);
+insert into User (ID, Aadhar, Password, Type, Status) values (9, '655-260-8817', 'password@123', 0, true);
+insert into User (ID, Aadhar, Password, Type, Status) values (10, '748-707-9356', 'password@123', 0, true);
+insert into User (ID, Aadhar, Password, Type, Status) values (11, '271-605-2287', 'password@123', 0, true);
+insert into User (ID, Aadhar, Password, Type, Status) values (12, '296-507-6307', 'password@123', 0, true);
+insert into User (ID, Aadhar, Password, Type, Status) values (13, '549-406-2960', 'password@123', 0, true);
+insert into User (ID, Aadhar, Password, Type, Status) values (14, '781-109-4026', 'password@123', 0, true);
+insert into User (ID, Aadhar, Password, Type, Status) values (15, '464-003-6286', 'password@123', 0, true);
 
 
 insert into Front_desk_operator (FrontDeskOpID, Name, Phone, Address) values (1, 'Sebastien Lefever', '239-199-7154', '7 Calypso Point');
@@ -258,21 +258,21 @@ insert into Front_desk_operator (FrontDeskOpID, Name, Phone, Address) values (13
 insert into Front_desk_operator (FrontDeskOpID, Name, Phone, Address) values (14, 'Kacy Gedge', '707-996-1453', '8311 Burrows Trail');
 insert into Front_desk_operator (FrontDeskOpID, Name, Phone, Address) values (15, 'Ondrea Kenion', '556-954-4111', '4837 Evergreen Court');
 
-insert into User (ID, Aadhar, Password, Type, Status) values (16, '204-33-2761', 'zKP1fxIJV', 1, true);
-insert into User (ID, Aadhar, Password, Type, Status) values (17, '522-55-1427', 'UreXtShlwX1k', 1, true);
-insert into User (ID, Aadhar, Password, Type, Status) values (18, '469-47-2832', '80FJ9s8fQkIT', 1, true);
-insert into User (ID, Aadhar, Password, Type, Status) values (19, '595-56-9562', '1Bf6TW', 1, false);
-insert into User (ID, Aadhar, Password, Type, Status) values (20, '356-44-1236', 'VnbKBc', 1, true);
-insert into User (ID, Aadhar, Password, Type, Status) values (21, '500-57-0317', 'CpT0SsCr2cO', 1, false);
-insert into User (ID, Aadhar, Password, Type, Status) values (22, '353-63-3925', 'NjMBaOW6a8S', 1, false);
-insert into User (ID, Aadhar, Password, Type, Status) values (23, '811-28-1086', 'uOpHhb', 1, true);
-insert into User (ID, Aadhar, Password, Type, Status) values (24, '356-60-2716', 'AkJ6UMi', 1, true);
-insert into User (ID, Aadhar, Password, Type, Status) values (25, '329-27-6149', 'Lxy3GcVL2', 1, true);
-insert into User (ID, Aadhar, Password, Type, Status) values (26, '284-14-6532', 'ntCW4L31W7', 1, false);
-insert into User (ID, Aadhar, Password, Type, Status) values (27, '824-69-4106', 'tyVlYQj5Br5', 1, false);
-insert into User (ID, Aadhar, Password, Type, Status) values (28, '225-61-6869', 'T3zDhg', 1, false);
-insert into User (ID, Aadhar, Password, Type, Status) values (29, '156-13-3322', 'mTnEdMnBc', 1, true);
-insert into User (ID, Aadhar, Password, Type, Status) values (30, '601-38-9458', 'Y6EKbiHS01E', 1, false);
+insert into User (ID, Aadhar, Password, Type, Status) values (16, '204-303-2761', 'password@123', 1, true);
+insert into User (ID, Aadhar, Password, Type, Status) values (17, '522-505-1427', 'password@123', 1, true);
+insert into User (ID, Aadhar, Password, Type, Status) values (18, '469-407-2832', 'password@123', 1, true);
+insert into User (ID, Aadhar, Password, Type, Status) values (19, '595-506-9562', 'password@123', 1, true);
+insert into User (ID, Aadhar, Password, Type, Status) values (20, '356-404-1236', 'password@123', 1, true);
+insert into User (ID, Aadhar, Password, Type, Status) values (21, '500-507-0317', 'password@123', 1, true);
+insert into User (ID, Aadhar, Password, Type, Status) values (22, '353-603-3925', 'password@123', 1, true);
+insert into User (ID, Aadhar, Password, Type, Status) values (23, '811-208-1086', 'password@123', 1, true);
+insert into User (ID, Aadhar, Password, Type, Status) values (24, '356-600-2716', 'password@123', 1, true);
+insert into User (ID, Aadhar, Password, Type, Status) values (25, '329-207-6149', 'password@123', 1, true);
+insert into User (ID, Aadhar, Password, Type, Status) values (26, '284-104-6532', 'password@123', 1, true);
+insert into User (ID, Aadhar, Password, Type, Status) values (27, '824-609-4106', 'password@123', 1, true);
+insert into User (ID, Aadhar, Password, Type, Status) values (28, '225-601-6869', 'password@123', 1, true);
+insert into User (ID, Aadhar, Password, Type, Status) values (29, '156-103-3322', 'password@123', 1, true);
+insert into User (ID, Aadhar, Password, Type, Status) values (30, '601-308-9458', 'password@123', 1, true);
 
 insert into Data_entry_operator (DataEntryOpID, Name, Phone, Address) values (16, 'Gregorio Bohlmann', '147-695-3997', '813 Northport Court');
 insert into Data_entry_operator (DataEntryOpID, Name, Phone, Address) values (17, 'Wilbur Mosedale', '389-337-3092', '60 Declaration Circle');
@@ -290,21 +290,21 @@ insert into Data_entry_operator (DataEntryOpID, Name, Phone, Address) values (28
 insert into Data_entry_operator (DataEntryOpID, Name, Phone, Address) values (29, 'Corrinne Elven', '208-231-3310', '2008 Ilene Terrace');
 insert into Data_entry_operator (DataEntryOpID, Name, Phone, Address) values (30, 'Laurie Hainey', '583-547-2667', '7 Jay Way');
 
-insert into User (ID, Aadhar, Password, Type, Status) values (31, '425-16-7282', 'X6lbX474K3', 3, true);
-insert into User (ID, Aadhar, Password, Type, Status) values (32, '242-33-8211', 'MOXtJs', 3, true);
-insert into User (ID, Aadhar, Password, Type, Status) values (33, '475-03-9309', 'Fn5bnaUn9Omo', 3,  true);
-insert into User (ID, Aadhar, Password, Type, Status) values (34, '563-09-2838', 'oUFzgjmCXPQ0', 3,  false);
-insert into User (ID, Aadhar, Password, Type, Status) values (35, '102-54-5073', 'CphV1A9', 3,  false);
-insert into User (ID, Aadhar, Password, Type, Status) values (36, '889-36-1403', 'zQ8YenX', 3,  true);
-insert into User (ID, Aadhar, Password, Type, Status) values (37, '857-97-5094', 'X01gJ6', 3,  false);
-insert into User (ID, Aadhar, Password, Type, Status) values (38, '267-15-0013', 'RJKErLWLW4tn', 3,  false);
-insert into User (ID, Aadhar, Password, Type, Status) values (39, '685-78-5024', 'oPmRPQ7cx', 3,  false);
-insert into User (ID, Aadhar, Password, Type, Status) values (40, '635-91-6886', '5H745ayNk', 3,  false);
-insert into User (ID, Aadhar, Password, Type, Status) values (41, '810-04-0913', 'idPalGIn', 3,  true);
-insert into User (ID, Aadhar, Password, Type, Status) values (42, '200-87-5881', 'SMahjQokL6p4', 3,  true);
-insert into User (ID, Aadhar, Password, Type, Status) values (43, '843-73-7637', '7YxExc4PI3', 3,  true);
-insert into User (ID, Aadhar, Password, Type, Status) values (44, '431-43-4822', 'vwoVfgRBg', 3,  false);
-insert into User (ID, Aadhar, Password, Type, Status) values (45, '829-33-6505', 'm034f2LLpl', 3,  true);
+insert into User (ID, Aadhar, Password, Type, Status) values (31, '425-106-7282', 'password@123', 3, true);
+insert into User (ID, Aadhar, Password, Type, Status) values (32, '242-303-8211', 'password@123', 3, true);
+insert into User (ID, Aadhar, Password, Type, Status) values (33, '475-003-9309', 'password@123', 3,  true);
+insert into User (ID, Aadhar, Password, Type, Status) values (34, '563-009-2838', 'password@123', 3,  true);
+insert into User (ID, Aadhar, Password, Type, Status) values (35, '102-504-5073', 'password@123', 3,  true);
+insert into User (ID, Aadhar, Password, Type, Status) values (36, '889-306-1403', 'password@123', 3,  true);
+insert into User (ID, Aadhar, Password, Type, Status) values (37, '857-907-5094', 'password@123', 3,  true);
+insert into User (ID, Aadhar, Password, Type, Status) values (38, '267-105-0013', 'password@123', 3,  true);
+insert into User (ID, Aadhar, Password, Type, Status) values (39, '685-708-5024', 'password@123', 3,  true);
+insert into User (ID, Aadhar, Password, Type, Status) values (40, '635-901-6886', 'password@123', 3,  true);
+insert into User (ID, Aadhar, Password, Type, Status) values (41, '810-004-0913', 'password@123', 3,  true);
+insert into User (ID, Aadhar, Password, Type, Status) values (42, '200-807-5881', 'password@123', 3,  true);
+insert into User (ID, Aadhar, Password, Type, Status) values (43, '843-703-7637', 'password@123', 3,  true);
+insert into User (ID, Aadhar, Password, Type, Status) values (44, '431-403-4822', 'password@123', 3,  true);
+insert into User (ID, Aadhar, Password, Type, Status) values (45, '829-303-6505', 'password@123', 3,  true);
 
 insert into Database_administrator (AdminID, Name, Phone, Address) values (31, 'Hastie Le Fleming', '850-448-0336', '59 Memorial Point');
 insert into Database_administrator (AdminID, Name, Phone, Address) values (32, 'Delbert Carnall', '493-625-5739', '3855 3rd Point');
@@ -323,21 +323,21 @@ insert into Database_administrator (AdminID, Name, Phone, Address) values (44, '
 insert into Database_administrator (AdminID, Name, Phone, Address) values (45, 'Russ Bowbrick', '729-508-3521', '2 Ruskin Crossing');
 
 
-insert into User (ID, Aadhar, Password, Type, Status) values (46, '445-35-9925', 'UuI5BkBte', 2,  true);
-insert into User (ID, Aadhar, Password, Type, Status) values (47, '560-41-4103', 'V1Hke5', 2,  false);
-insert into User (ID, Aadhar, Password, Type, Status) values (48, '697-52-2996', '5jRQsP04Om3', 2,  true);
-insert into User (ID, Aadhar, Password, Type, Status) values (49, '438-68-3092', '79bbhrsNZuo', 2,  false);
-insert into User (ID, Aadhar, Password, Type, Status) values (50, '588-28-1983', 'q7mJMa', 2,  true);
-insert into User (ID, Aadhar, Password, Type, Status) values (51, '218-10-7339', 'cpyTrOw7oHdk', 2,  true);
-insert into User (ID, Aadhar, Password, Type, Status) values (52, '797-73-0010', 'AgLC84vVl', 2,  false);
-insert into User (ID, Aadhar, Password, Type, Status) values (53, '590-82-3312', 'ISiqolwRM', 2,  true);
-insert into User (ID, Aadhar, Password, Type, Status) values (54, '491-16-4778', '72OMqynb', 2,  true);
-insert into User (ID, Aadhar, Password, Type, Status) values (55, '721-31-4548', 'iEWTDi', 2,  true);
+insert into User (ID, Aadhar, Password, Type, Status) values (46, '445-350-9925', 'password@123', 2,  true);
+insert into User (ID, Aadhar, Password, Type, Status) values (47, '560-410-4103', 'password@123', 2,  true);
+insert into User (ID, Aadhar, Password, Type, Status) values (48, '697-520-2996', 'password@123', 2,  true);
+insert into User (ID, Aadhar, Password, Type, Status) values (49, '438-680-3092', 'password@123', 2,  true);
+insert into User (ID, Aadhar, Password, Type, Status) values (50, '588-280-1983', 'password@123', 2,  true);
+insert into User (ID, Aadhar, Password, Type, Status) values (51, '218-100-7339', 'password@123', 2,  true);
+insert into User (ID, Aadhar, Password, Type, Status) values (52, '797-730-0010', 'password@123', 2,  true);
+insert into User (ID, Aadhar, Password, Type, Status) values (53, '590-820-3312', 'password@123', 2,  true);
+insert into User (ID, Aadhar, Password, Type, Status) values (54, '491-160-4778', 'password@123', 2,  true);
+insert into User (ID, Aadhar, Password, Type, Status) values (55, '721-310-4548', 'password@123', 2,  true);
 
 insert into Doctor (DocID, Position, isWorking, Name, Phone, Address, Email) values (46, 'Junior Doctor', true, 'Ermentrude Simeons', '896-257-4702', '15010 Valley Edge Junction', 'likhith26090@gmail.com');
-insert into Doctor (DocID, Position, isWorking, Name, Phone, Address, Email) values (47, 'Senior Doctor', false, 'Tanney Ivushkin', '104-709-1973', '249 Emmet Street', 'likhith26090@gmail.com');
+insert into Doctor (DocID, Position, isWorking, Name, Phone, Address, Email) values (47, 'Senior Doctor', true, 'Tanney Ivushkin', '104-709-1973', '249 Emmet Street', 'likhith26090@gmail.com');
 insert into Doctor (DocID, Position, isWorking, Name, Phone, Address, Email) values (48, 'Junior Doctor', true, 'Patricia Lambkin', '984-456-8245', '04546 Oak Valley Alley', 'likhith26090@gmail.com');
-insert into Doctor (DocID, Position, isWorking, Name, Phone, Address, Email) values (49, 'Junior Doctor', false, 'Genvieve Hammell', '273-762-4027', '65 Algoma Hill', 'likhith26090@gmail.com');
+insert into Doctor (DocID, Position, isWorking, Name, Phone, Address, Email) values (49, 'Junior Doctor', true, 'Genvieve Hammell', '273-762-4027', '65 Algoma Hill', 'likhith26090@gmail.com');
 insert into Doctor (DocID, Position, isWorking, Name, Phone, Address, Email) values (50, 'Junior Doctor', true, 'Korella Deners', '743-501-8844', '4 Parkside Terrace', 'likhith26090@gmail.com');
 insert into Doctor (DocID, Position, isWorking, Name, Phone, Address, Email) values (51, 'Senior Doctor', true, 'Bailie Gower', '301-834-5370', '4654 Gateway Center', 'likhith26090@gmail.com');
 insert into Doctor (DocID, Position, isWorking, Name, Phone, Address, Email) values (52, 'Head', false, 'Bradley Beden', '721-772-0669', '81747 Onsgard Point', 'likhith26090@gmail.com');
@@ -346,9 +346,9 @@ insert into Doctor (DocID, Position, isWorking, Name, Phone, Address, Email) val
 insert into Doctor (DocID, Position, isWorking, Name, Phone, Address, Email) values (55, 'Senior Doctor', true, 'Eldridge Morfey', '312-232-2460', '17455 Manufacturers Parkway', 'likhith26090@gmail.com');
 
 
-insert into Patient Values ('1','ram','099','seattle banswada',11,50, 20, 'M');
-insert into Patient Values ('2','shyam','099','silicon banswada',10,52, 20, 'M');
-insert into Patient Values ('3','dam','199','hybrid banswada',12,51, 20, 'M');
+-- insert into Patient Values ('1','ram','099','seattle banswada',11,50, 20, 'M');
+-- insert into Patient Values ('2','shyam','099','silicon banswada',10,52, 20, 'M');
+-- insert into Patient Values ('3','dam','199','hybrid banswada',12,51, 20, 'M');
 
 -- select * from Prescribes;
 -- select * from Doctor;
@@ -357,20 +357,20 @@ insert into Patient Values ('3','dam','199','hybrid banswada',12,51, 20, 'M');
 -- select * from `Procedure`;
 -- select * from Patient;
 -- select * from Stay;
-insert into `Procedure` (Code,Name, Cost, Type) values 
-(1,'X-Ray',100,0),
-(2,'Check up',200,0),
-(3,'DAm',100,0),
-(4,'plus ultra',100,1),
-(5,'shake up',200,0),
-(6,'super',100,0),
-(7,'gym',100,1),
-(8,'good day',100,1),
-(9,'biscuit',100,0),
-(10,'sugar',100,1),
-(11,'blood test',100,0),
-(12,'asdm',100,0),
-(13,'as',100,0);
+-- insert into `Procedure` (Code,Name, Cost, Type) values 
+-- (1,'X-Ray',100,0),
+-- (2,'Check up',200,0),
+-- (3,'DAm',100,0),
+-- (4,'plus ultra',100,1),
+-- (5,'shake up',200,0),
+-- (6,'super',100,0),
+-- (7,'gym',100,1),
+-- (8,'good day',100,1),
+-- (9,'biscuit',100,0),
+-- (10,'sugar',100,1),
+-- (11,'blood test',100,0),
+-- (12,'asdm',100,0),
+-- (13,'as',100,0);
 
 
 
@@ -387,28 +387,27 @@ select * from Stay;
 select * from Room;
 -- Delete from Room;
 insert into Room values
-(1,'icu',1);
-insert into Room values
+(1,'icu',1),
 (2,'general ward',1),
 (3,'general ward',1),
 (4,'general ward',1),
 (5,'icu',1),
-(61,'super emergency',1),
-(11,'new room',0),
-(12,'guest room',1);
+(6,'super emergency',1),
+(7,'new room',0),
+(8,'guest room',1);
 
-insert into Stay values
-(1,CURRENT_TIMESTAMP,CURRENT_TIMESTAMP+100,1,1);
+-- insert into Stay values
+-- (1,CURRENT_TIMESTAMP,CURRENT_TIMESTAMP+100,1,1);
 
-insert into Stay values
-(2,CURRENT_TIMESTAMP,CURRENT_TIMESTAMP+100,1,1),
-(3,CURRENT_TIMESTAMP,CURRENT_TIMESTAMP+100,1,1),
-(4,CURRENT_TIMESTAMP,CURRENT_TIMESTAMP+100,1,1),
-(6,CURRENT_TIMESTAMP,CURRENT_TIMESTAMP+100,1,1),
-(5,CURRENT_TIMESTAMP,CURRENT_TIMESTAMP+100,1,1);
-insert into Stay values 
-(7,CURRENT_TIMESTAMP,CURRENT_TIMESTAMP+100,2,2),
-(8,CURRENT_TIMESTAMP,CURRENT_TIMESTAMP+100,3,3);
+-- insert into Stay values
+-- (2,CURRENT_TIMESTAMP,CURRENT_TIMESTAMP+100,1,1),
+-- (3,CURRENT_TIMESTAMP,CURRENT_TIMESTAMP+100,1,1),
+-- (4,CURRENT_TIMESTAMP,CURRENT_TIMESTAMP+100,1,1),
+-- (6,CURRENT_TIMESTAMP,CURRENT_TIMESTAMP+100,1,1),
+-- (5,CURRENT_TIMESTAMP,CURRENT_TIMESTAMP+100,1,1);
+-- insert into Stay values 
+-- (7,CURRENT_TIMESTAMP,CURRENT_TIMESTAMP+100,2,2),
+-- (8,CURRENT_TIMESTAMP,CURRENT_TIMESTAMP+100,3,3);
 -- (9,CURRENT_TIMESTAMP,CURRENT_TIMESTAMP+100,2,3);
 
 
